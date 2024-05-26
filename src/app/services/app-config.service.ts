@@ -3,26 +3,19 @@ import {AppConfig} from "../models/common/app-config";
 import {AppState} from "../models/common/app-state";
 import {Subject} from "rxjs";
 import {isPlatformBrowser} from "@angular/common";
-import {
-  DEF_LIGHT_THEME,
-  DEF_TABLE_LIGHT_THEME,
-  DEF_TABLE_THEME,
-  DEF_THEME,
-  HOME_TABLE_LINK,
-  THEME_LINK
-} from "../guards/f-constants";
-import {getLocalStorage, setLocalStorage} from "../guards/amhohwa";
+import * as FConstants from "../guards/f-constants";
+import {setLocalStorage} from "../guards/amhohwa";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppConfigService {
   private _config: AppConfig = {
-    theme: DEF_THEME,
+    theme: FConstants.DEF_THEME,
     darkMode: true,
     ripple: true,
     scale: 14,
-    tableTheme: DEF_TABLE_THEME
+    tableTheme: FConstants.DEF_TABLE_THEME
   }
   state: AppState = {
     configActive: false,
@@ -42,7 +35,7 @@ export class AppConfigService {
         if (this.updateStyle(config)) {
           this.changeTheme();
           const newTableTheme = !config.darkMode ? config.tableTheme?.replace('dark', 'light') : config.tableTheme?.replace('light', 'dark');
-          this.replaceTableTheme(newTableTheme ?? DEF_TABLE_THEME);
+          this.replaceTableTheme(newTableTheme ?? FConstants.DEF_TABLE_THEME);
         }
         this.changeScale(config.scale ?? 14);
         this.onConfigUpdate();
@@ -79,37 +72,37 @@ export class AppConfigService {
   }
   changeTheme(): void {
     const config = this.config();
-    const themeLink = <HTMLLinkElement>document.getElementById(THEME_LINK);
+    const themeLink = <HTMLLinkElement>document.getElementById(FConstants.THEME_LINK);
     const themeLinkHref = themeLink.getAttribute('href')!;
     const newHref = themeLinkHref.split('/')
-      .map((el) => (el == this._config.theme ? (el = config.theme ?? DEF_THEME) : el == `theme-${this._config.darkMode}` ? (el = `theme-${config.darkMode}`) : el))
+      .map((el) => (el == this._config.theme ? (el = config.theme ?? FConstants.DEF_THEME) : el == `theme-${this._config.darkMode}` ? (el = `theme-${config.darkMode}`) : el))
       .join('/');
     this.replaceThemeLink(newHref);
   }
   replaceThemeLink(href: string): void {
-    let themeLink = <HTMLLinkElement>document.getElementById(THEME_LINK);
+    let themeLink = <HTMLLinkElement>document.getElementById(FConstants.THEME_LINK);
     const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
     cloneLinkElement.setAttribute('href', href);
-    cloneLinkElement.setAttribute('id', THEME_LINK + '-clone');
+    cloneLinkElement.setAttribute('id', FConstants.THEME_LINK + '-clone');
     themeLink.parentNode!.insertBefore(cloneLinkElement, themeLink.nextSibling);
     cloneLinkElement.addEventListener('load', () => {
       themeLink.remove();
-      cloneLinkElement.setAttribute('id', THEME_LINK);
+      cloneLinkElement.setAttribute('id', FConstants.THEME_LINK);
     });
-    setLocalStorage('isDark', this.config().darkMode?.toString() ?? 'true');
+    setLocalStorage(FConstants.STORAGE_KEY_IS_DARK, this.config().darkMode?.toString() ?? 'true');
   }
   replaceTableTheme(newTheme: string): void {
-    const linkElement = <HTMLLinkElement>document.getElementById(HOME_TABLE_LINK);
+    const linkElement = <HTMLLinkElement>document.getElementById(FConstants.HOME_TABLE_LINK);
     const tableThemeTokens = linkElement?.getAttribute('href')?.split('/') ?? null;
-    const currentTableTheme = tableThemeTokens ? tableThemeTokens[tableThemeTokens.length - 2] : DEF_TABLE_THEME;
+    const currentTableTheme = tableThemeTokens ? tableThemeTokens[tableThemeTokens.length - 2] : FConstants.DEF_TABLE_THEME;
     if (currentTableTheme !== newTheme && tableThemeTokens) {
-      const newThemeUrl = linkElement?.getAttribute('href')?.replace(currentTableTheme, newTheme) ?? DEF_THEME;
+      const newThemeUrl = linkElement?.getAttribute('href')?.replace(currentTableTheme, newTheme) ?? FConstants.DEF_THEME;
       const cloneLinkElement = <HTMLLinkElement>linkElement.cloneNode(true);
-      cloneLinkElement.setAttribute('id', HOME_TABLE_LINK + '-clone');
+      cloneLinkElement.setAttribute('id', FConstants.HOME_TABLE_LINK + '-clone');
       cloneLinkElement.setAttribute('href', newThemeUrl);
       cloneLinkElement.addEventListener('load', () => {
         linkElement.remove();
-        cloneLinkElement.setAttribute('id', HOME_TABLE_LINK);
+        cloneLinkElement.setAttribute('id', FConstants.HOME_TABLE_LINK);
       });
       linkElement.parentNode?.insertBefore(cloneLinkElement, linkElement.nextSibling);
     }
@@ -118,6 +111,6 @@ export class AppConfigService {
     if (isPlatformBrowser(this.platformId)) {
       document.documentElement.style.fontStyle = `${value}px`;
     }
-    setLocalStorage('scale', value.toString());
+    setLocalStorage(FConstants.STORAGE_KEY_SCALE, value.toString());
   }
 }
