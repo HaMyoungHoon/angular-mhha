@@ -1,9 +1,17 @@
-import {effect, Inject, Injectable, PLATFORM_ID, signal} from '@angular/core';
+import {effect, Inject, Injectable, PLATFORM_ID, signal, WritableSignal} from '@angular/core';
 import {AppConfig} from "../models/common/app-config";
 import {AppState} from "../models/common/app-state";
 import {Subject} from "rxjs";
 import {isPlatformBrowser} from "@angular/common";
-import {DEF_TABLE_THEME, DEF_THEME, HOME_TABLE_LINK, THEME_LINK} from "../guards/f-constants";
+import {
+  DEF_LIGHT_THEME,
+  DEF_TABLE_LIGHT_THEME,
+  DEF_TABLE_THEME,
+  DEF_THEME,
+  HOME_TABLE_LINK,
+  THEME_LINK
+} from "../guards/f-constants";
+import {getLocalStorage, setLocalStorage} from "../guards/amhohwa";
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +29,13 @@ export class AppConfigService {
     menuActive: false,
     newsActive: false,
   }
-  config = signal<AppConfig>(this._config);
+  config: WritableSignal<AppConfig>;
   private configUpdate = new Subject<AppConfig>();
   configUpdate$ = this.configUpdate.asObservable();
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
+    this.config = signal<AppConfig>(this._config);
+
     effect(() => {
       const config = this.config();
       if (isPlatformBrowser(this.platformId)) {
@@ -86,6 +96,7 @@ export class AppConfigService {
       themeLink.remove();
       cloneLinkElement.setAttribute('id', THEME_LINK);
     });
+    setLocalStorage('isDark', this.config().darkMode?.toString() ?? 'true');
   }
   replaceTableTheme(newTheme: string): void {
     const linkElement = <HTMLLinkElement>document.getElementById(HOME_TABLE_LINK);
@@ -107,5 +118,6 @@ export class AppConfigService {
     if (isPlatformBrowser(this.platformId)) {
       document.documentElement.style.fontStyle = `${value}px`;
     }
+    setLocalStorage('scale', value.toString());
   }
 }

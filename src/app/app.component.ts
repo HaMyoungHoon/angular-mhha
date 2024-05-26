@@ -5,6 +5,7 @@ import {PrimeNGConfig} from "primeng/api";
 import {environment} from "../environments/environment.development";
 import {main} from "@angular/compiler-cli/src/main";
 import {AppConfigService} from "./services/app-config.service";
+import {DEF_LIGHT_THEME, DEF_THEME} from "./guards/f-constants";
 
 @Component({
   selector: 'app-root',
@@ -57,7 +58,7 @@ export class AppComponent implements OnInit {
         }
 
         const { theme, darkMode } = this.configService.config();
-        const landingTheme = darkMode ? 'aura-dark-blue' : 'aura-light-blue';
+        const landingTheme = darkMode ? DEF_THEME : DEF_LIGHT_THEME;
         if (event.urlAfterRedirects === '/' && theme !== landingTheme) {
           this.configService.config.update((config) => ({ ...config, theme: landingTheme, dark: darkMode }));
         }

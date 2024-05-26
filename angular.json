@@ -25,7 +25,6 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/primeng/resources/themes/aura-dark-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.scss"
             ],
@@ -92,7 +91,6 @@
               "src/assets"
             ],
             "styles": [
-              "node_modules/primeng/resources/themes/aura-dark-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
               "src/styles.scss"
             ],
