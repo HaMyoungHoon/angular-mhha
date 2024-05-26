@@ -1,0 +1,20 @@
+{
+  "/asp/*" : {
+    "target": "http://asp.mhha.kr",
+    "secure": "false",
+    "loglevel": "debug",
+    "pathRewrite": {
+      "^/asp": ""
+    },
+    "changeOrigin": true
+  },
+  "/spring/*" : {
+    "target": "http://spring.mhha.kr",
+    "secure": "false",
+    "loglevel": "debug",
+    "pathRewrite": {
+      "^/asp": ""
+    },
+    "changeOrigin": true
+  }
+}
