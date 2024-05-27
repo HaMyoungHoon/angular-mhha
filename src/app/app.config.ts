@@ -4,6 +4,7 @@ import {provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolli
 import { routes } from './app.routes';
 import {provideHttpClient, withFetch} from "@angular/common/http";
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
+import {MessageService} from "primeng/api";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,5 +15,6 @@ export const appConfig: ApplicationConfig = {
     }),
     withEnabledBlockingInitialNavigation()),
   provideHttpClient(withFetch()),
-  provideAnimationsAsync()]
+  provideAnimationsAsync(),
+  MessageService]
 };

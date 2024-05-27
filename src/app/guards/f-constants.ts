@@ -1,4 +1,6 @@
 export const NOTFOUND_URL = "/notfound";
+export const DASHBOARD_URL = "dashboard";
+
 export const THEME_LINK = 'theme-link';
 export const HOME_TABLE_LINK = 'home-table-link';
 export const DEF_THEME = 'aura-dark-green';

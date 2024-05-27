@@ -1,11 +1,16 @@
 import { Routes } from '@angular/router';
 import * as FConstants from "./guards/f-constants";
-import {DashBoardComponent} from "./components/dash-board/dash-board.component";
 import {LandingComponent} from "./components/landing/landing.component";
+import {AppComponent} from "./app.component";
 
 export const routes: Routes = [
   { path: '', component: LandingComponent, pathMatch: 'full' },
-  { path: '', component: DashBoardComponent },
+  { path: '', component: AppComponent,
+    children: [
+      { path: '', redirectTo: FConstants.DASHBOARD_URL, pathMatch: 'full' },
+      { path: FConstants.DASHBOARD_URL, loadChildren: () => import('./components/app-main/dash-board/dash-board.module').then((m) => m.DashBoardModule) }
+    ]
+  },
   { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import('./components/notfound/notfound.module').then((m) => m.NotfoundModule) },
   { path: '**', redirectTo: FConstants.NOTFOUND_URL },
 ];
