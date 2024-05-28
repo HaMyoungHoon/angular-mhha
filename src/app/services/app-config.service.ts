@@ -4,7 +4,7 @@ import {AppState} from "../models/common/app-state";
 import {Subject} from "rxjs";
 import {isPlatformBrowser} from "@angular/common";
 import * as FConstants from "../guards/f-constants";
-import {setLocalStorage} from "../guards/amhohwa";
+import {getLocalStorage, setLocalStorage} from "../guards/amhohwa";
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,7 @@ export class AppConfigService {
 
   constructor(@Inject(PLATFORM_ID) private platformId: any) {
     this.config = signal<AppConfig>(this._config);
+    this.config().scale = +getLocalStorage(FConstants.STORAGE_KEY_SCALE);
 
     effect(() => {
       const config = this.config();
@@ -109,7 +110,7 @@ export class AppConfigService {
   }
   changeScale(value: number): void {
     if (isPlatformBrowser(this.platformId)) {
-      document.documentElement.style.fontStyle = `${value}px`;
+      document.documentElement.style.fontSize = `${value}px`;
     }
     setLocalStorage(FConstants.STORAGE_KEY_SCALE, value.toString());
   }
