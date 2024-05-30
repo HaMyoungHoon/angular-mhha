@@ -1,7 +1,10 @@
 import {Component, Input} from '@angular/core';
 import {Location} from "@angular/common";
 import {Router} from "@angular/router";
-import {DocModel} from "../../../../models/common/doc-model";
+import {AngularCommonService} from "../../../../services/rest/angular-common.service";
+import {DocPage} from "../../../../models/doc/DocPage";
+import {MessageService} from "primeng/api";
+import {IRestResult} from "../../../../models/rest/IRestResult";
 
 @Component({
   selector: 'app-app-doc-api-section',
@@ -12,10 +15,30 @@ export class AppDocApiSectionComponent {
   @Input() header: string;
   @Input() docs: any[];
   _docs: any[];
-  constructor(private location: Location, private router: Router) {
+  apiDoc?: DocPage[] | null = null;
+  constructor(private location: Location, private router: Router, private angularCommonService: AngularCommonService, private messageService: MessageService) {
     this.header = "";
     this.docs = [];
     this._docs = [];
+    this.angularCommonService.getDocPage().then(x => {
+      console.log(x);
+      if (x.Result) {
+        this.apiDoc = x.Data
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'getDocPage',
+          detail: x.Msg ?? ""
+        });
+      }
+    }).catch(y => {
+      console.log(y);
+      this.messageService.add({
+        severity: 'error',
+        summary: 'getDocPage catch',
+        detail: y.message
+      });
+    });
   }
 
   getDescription(module: any, docName: string): string {
@@ -35,7 +58,7 @@ export class AppDocApiSectionComponent {
     const newDocs: any[] = [];
     for (const docName of this.docs) {
       const moduleName = docName.toLowerCase();
-      let module = APIDoc
+      let module = this.apiDoc
     }
 
     return newDocs.filter((doc) => !doc.isInterface);

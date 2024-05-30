@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Inject, Output, Renderer2} from '@angular/core';
 import {DOCUMENT, NgClass, NgForOf} from "@angular/common";
-import {AppConfigService} from "../../../services/app-config.service";
+import {AppConfigService} from "../../../services/common/app-config.service";
 import {PrimeNGConfig} from "primeng/api";
 import {SidebarModule} from "primeng/sidebar";
 import {SelectButtonModule} from "primeng/selectbutton";

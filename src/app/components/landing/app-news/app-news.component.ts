@@ -1,7 +1,7 @@
 import {afterNextRender, ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {NewsItem} from "../../../models/common/news-item";
-import {AppConfigService} from "../../../services/app-config.service";
+import {AppConfigService} from "../../../services/common/app-config.service";
 import {getLocalStorage, setLocalStorage} from "../../../guards/amhohwa";
 import * as FConstants from "../../../guards/f-constants";
 import News from "./news.json";

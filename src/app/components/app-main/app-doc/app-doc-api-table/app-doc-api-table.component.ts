@@ -1,7 +1,7 @@
 import {booleanAttribute, Component, Input, numberAttribute} from '@angular/core';
 import {Router} from "@angular/router";
 import {Location} from "@angular/common";
-import {AppConfigService} from "../../../../services/app-config.service";
+import {AppConfigService} from "../../../../services/common/app-config.service";
 
 @Component({
   selector: 'app-app-doc-api-table',

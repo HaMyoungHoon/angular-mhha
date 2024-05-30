@@ -1,6 +1,6 @@
 import {Component, Inject} from '@angular/core';
 import {DOCUMENT, NgClass} from "@angular/common";
-import {AppConfigService} from "../../services/app-config.service";
+import {AppConfigService} from "../../services/common/app-config.service";
 import * as FConstants from "../../guards/f-constants";
 import {DomHandler} from "primeng/dom";
 import {AppNewsComponent} from "../landing/app-news/app-news.component";

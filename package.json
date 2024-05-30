@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json --disable-host-check",
-    "local": "ng serve --host 127.0.0.1 --port 4200 --proxy-config proxy.conf.json --disable-host-check",
+    "local": "ng serve --proxy-config proxy.conf.json --disable-host-check",
     "build": "ng build"
   },
   "private": true,

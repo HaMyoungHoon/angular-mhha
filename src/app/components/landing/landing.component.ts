@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
-import {AppConfigService} from "../../services/app-config.service";
+import {AppConfigService} from "../../services/common/app-config.service";
 import {Meta, Title} from "@angular/platform-browser";
 import {NgClass} from "@angular/common";
 import {AppNewsComponent} from "./app-news/app-news.component";

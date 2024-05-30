@@ -1,10 +1,10 @@
 import {effect, Inject, Injectable, PLATFORM_ID, signal, WritableSignal} from '@angular/core';
-import {AppConfig} from "../models/common/app-config";
-import {AppState} from "../models/common/app-state";
+import {AppConfig} from "../../models/common/app-config";
+import {AppState} from "../../models/common/app-state";
 import {Subject} from "rxjs";
 import {isPlatformBrowser} from "@angular/common";
-import * as FConstants from "../guards/f-constants";
-import {getLocalStorage, setLocalStorage} from "../guards/amhohwa";
+import * as FConstants from "../../guards/f-constants";
+import {getLocalStorage, setLocalStorage} from "../../guards/amhohwa";
 
 @Injectable({
   providedIn: 'root'

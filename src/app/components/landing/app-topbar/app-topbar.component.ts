@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import {DOCUMENT, NgClass, NgIf} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
-import {AppConfigService} from "../../../services/app-config.service";
+import {AppConfigService} from "../../../services/common/app-config.service";
 import {DomHandler} from "primeng/dom";
 
 @Component({

@@ -3,6 +3,9 @@ import {Router, RouterLink} from "@angular/router";
 import {DASHBOARD_URL} from "../../../guards/f-constants";
 import {ButtonModule} from "primeng/button";
 import {NgIf} from "@angular/common";
+import {AngularCommonService} from "../../../services/rest/angular-common.service";
+import {DocPage} from "../../../models/doc/DocPage";
+import {IRestResult} from "../../../models/rest/IRestResult";
 
 @Component({
   selector: 'app-app-mid',
@@ -17,7 +20,7 @@ import {NgIf} from "@angular/common";
 export class AppMidComponent {
   @Output() messageEvent = new EventEmitter<{severity: string, summary: string, detail: string}>();
   protected readonly DASHBOARD_URL = DASHBOARD_URL;
-  constructor(private router: Router) {
+  constructor(private router: Router, private angularCommonService: AngularCommonService) {
   }
 
   notYetLink() {
@@ -25,6 +28,26 @@ export class AppMidComponent {
       severity: 'warn',
       summary: 'href',
       detail: '아직 안만듦'
+    });
+  }
+  test(): void {
+    this.angularCommonService.getDocPage().then(x => {
+      if (x.Result) {
+        console.log(x);
+      } else {
+        this.messageEvent.emit({
+          severity: 'error',
+          summary: 'getDocPage',
+          detail: x.Msg ?? ""
+        });
+      }
+    }).catch(y => {
+      console.log(y);
+      this.messageEvent.emit({
+        severity: 'error',
+        summary: 'getDocPage Catch',
+        detail: y.message
+      });
     });
   }
 }

@@ -4,7 +4,7 @@ import {DOCUMENT} from "@angular/common";
 import {PrimeNGConfig} from "primeng/api";
 import {environment} from "../environments/environment.development";
 import {main} from "@angular/compiler-cli/src/main";
-import {AppConfigService} from "./services/app-config.service";
+import {AppConfigService} from "./services/common/app-config.service";
 import {DEF_LIGHT_THEME, DEF_THEME} from "./guards/f-constants";
 
 @Component({
