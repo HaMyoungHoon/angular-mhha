@@ -27,7 +27,7 @@ import {MessageService} from "primeng/api";
 })
 export class LandingComponent implements OnInit {
   subscription!: Subscription;
-  constructor(private configService: AppConfigService, private metaService: Meta, private titleService: Title, private messageService: MessageService) {
+  constructor(private configService: AppConfigService, private metaService: Meta, private titleService: Title) {
     if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK) == 'true') {
       this.toDark();
     } else {
@@ -78,8 +78,5 @@ export class LandingComponent implements OnInit {
   toLight(): void {
     const newTableTheme = this.tableTheme.replace('dark', 'light');
     this.configService.config.update((config) => ({ ...config, darkMode: false, theme: FConstants.DEF_LIGHT_THEME, tableTheme: newTableTheme }));
-  }
-  messageEvent(data: any): void {
-    this.messageService.add(data);
   }
 }

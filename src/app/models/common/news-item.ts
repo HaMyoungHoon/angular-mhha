@@ -1,5 +1,5 @@
 export interface NewsItem {
-  id: number,
+  thisIndex: number,
   content: string,
   linkHref: string,
   linkText: string,

@@ -6,6 +6,8 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withFetch} from "@angular/common/h
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {MessageService} from "primeng/api";
 import {HttpRequestInterceptorService} from "./services/common/http-request-interceptor.service";
+import {FDialogService} from "./services/common/f-dialog.service";
+import {DialogService} from "primeng/dynamicdialog";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,8 +22,10 @@ export const appConfig: ApplicationConfig = {
       scrollPositionRestoration: 'enabled'
     }),
     withEnabledBlockingInitialNavigation()),
-  provideHttpClient(withFetch()),
-  provideAnimationsAsync(),
-  MessageService
+    provideHttpClient(withFetch()),
+    provideAnimationsAsync(),
+    MessageService,
+    FDialogService,
+    DialogService
   ]
 };

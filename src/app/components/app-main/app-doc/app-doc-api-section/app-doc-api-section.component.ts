@@ -3,8 +3,7 @@ import {Location} from "@angular/common";
 import {Router} from "@angular/router";
 import {AngularCommonService} from "../../../../services/rest/angular-common.service";
 import {DocPage} from "../../../../models/doc/DocPage";
-import {MessageService} from "primeng/api";
-import {IRestResult} from "../../../../models/rest/IRestResult";
+import {FDialogService} from "../../../../services/common/f-dialog.service";
 
 @Component({
   selector: 'app-app-doc-api-section',
@@ -13,52 +12,37 @@ import {IRestResult} from "../../../../models/rest/IRestResult";
 })
 export class AppDocApiSectionComponent {
   @Input() header: string;
-  @Input() docs: any[];
-  _docs: any[];
-  apiDoc?: DocPage[] | null = null;
-  constructor(private location: Location, private router: Router, private angularCommonService: AngularCommonService, private messageService: MessageService) {
+  @Input() docs: DocPage[];
+  apiDoc: DocPage[];
+  constructor(private location: Location, private router: Router, private angularCommonService: AngularCommonService, private fDialogService: FDialogService) {
     this.header = "";
-    this.docs = [];
-    this._docs = [];
+    this.docs = []
+    this.apiDoc = []
     this.angularCommonService.getDocPage().then(x => {
       console.log(x);
       if (x.Result) {
-        this.apiDoc = x.Data
+        this.apiDoc = x.Data ?? []
       } else {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'getDocPage',
-          detail: x.Msg ?? ""
-        });
+        this.fDialogService.error('getDocPage', x.Msg);
       }
     }).catch(y => {
       console.log(y);
-      this.messageService.add({
-        severity: 'error',
-        summary: 'getDocPage catch',
-        detail: y.message
-      });
+      this.fDialogService.error('getDocPage catch', y.message);
     });
   }
 
-  getDescription(module: any, docName: string): string {
-    if (module.description) {
-      return module.description ?? "";
-    }
-    if (!module.description && module.components && Object.keys(module.components).length) {
-      return module.components[docName] && module.components[docName].description ? module.components[docName].description : "";
-    }
-
-    return "";
-  }
-  isInterface(module: any): boolean {
-    return module.components && !Object.keys(module.components).length && Object.keys(module.interfaces).indexOf('interfaces') === -1;
-  }
   createDocs(): any[] {
     const newDocs: any[] = [];
     for (const docName of this.docs) {
-      const moduleName = docName.toLowerCase();
-      let module = this.apiDoc
+      const moduleName = docName.name.toLowerCase();
+      if (!this.apiDoc) {
+        continue;
+      }
+
+      let module = this.apiDoc.filter(x => x.name.toLowerCase() == moduleName)[0]
+      let newDoc = {
+        id: `api.${module.name.toLowerCase()}`,
+      }
     }
 
     return newDocs.filter((doc) => !doc.isInterface);

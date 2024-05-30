@@ -528,6 +528,7 @@ button {
 }
 .layout-news .layout-news-link:hover {
   text-decoration: underline;
+  cursor: pointer;
 }
 .layout-news .layout-news-close {
   line-height: 1.5;

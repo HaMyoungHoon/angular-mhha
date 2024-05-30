@@ -3,6 +3,7 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {IRestResult} from "../../models/rest/IRestResult";
 import {HttpHeaders} from "@angular/common/http";
 import {DocPage} from "../../models/doc/DocPage";
+import {NewsItem} from "../../models/common/news-item";
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,14 @@ export class AngularCommonService {
     };
   }
 
+  getNews(): Promise<IRestResult<NewsItem[]>> {
+    const url = `${this.baseUrl}/common/get/news`;
+    return this.httpResponse.get(url).then();
+  }
+  getNewsOne(): Promise<IRestResult<NewsItem>> {
+    const url = `${this.baseUrl}/common/get/news/one`;
+    return this.httpResponse.get(url).then();
+  }
   getDocPage(): Promise<IRestResult<DocPage[]>> {
     return this.httpResponse.get(`${this.baseUrl}/doc/menu/get/doc`).then();
   }

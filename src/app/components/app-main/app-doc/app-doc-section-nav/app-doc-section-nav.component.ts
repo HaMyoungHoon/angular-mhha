@@ -15,6 +15,7 @@ import {Subscription} from "rxjs";
 import {DOCUMENT, isPlatformBrowser, Location} from "@angular/common";
 import {ObjectUtils} from "primeng/utils";
 import {DomHandler} from "primeng/dom";
+import {DocPage} from "../../../../models/doc/DocPage";
 
 @Component({
   selector: 'app-app-doc-section-nav',
@@ -22,7 +23,7 @@ import {DomHandler} from "primeng/dom";
   templateUrl: './app-doc-section-nav.component.html'
 })
 export class AppDocSectionNavComponent implements OnInit, OnDestroy {
-  @Input() docs: DocModel[];
+  @Input() docs: DocPage[];
   visible: boolean;
   subscription!: Subscription;
   scrollListener: any;
@@ -52,7 +53,7 @@ export class AppDocSectionNavComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       const hash = window.location.hash.substring(1);
       const hasHash = ObjectUtils.isNotEmpty(hash);
-      const id = hasHash ? hash : ((this.docs && this.docs[0]) || {}).id;
+      const id = hasHash ? hash : ((this.docs && this.docs[0]) || {}).name;
 
       this.activeId = id;
       hasHash &&

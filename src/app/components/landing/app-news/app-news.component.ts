@@ -1,10 +1,16 @@
-import {afterNextRender, ChangeDetectionStrategy, ChangeDetectorRef, Component} from '@angular/core';
+import {
+  afterNextRender,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component
+} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {NewsItem} from "../../../models/common/news-item";
 import {AppConfigService} from "../../../services/common/app-config.service";
 import {getLocalStorage, setLocalStorage} from "../../../guards/amhohwa";
 import * as FConstants from "../../../guards/f-constants";
-import News from "./news.json";
+import {AngularCommonService} from "../../../services/rest/angular-common.service";
+import {FDialogService} from "../../../services/common/f-dialog.service";
 
 @Component({
   selector: 'app-app-news',
@@ -16,17 +22,11 @@ import News from "./news.json";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppNewsComponent {
-  announcement: NewsItem | null = null;
-  constructor(private configService: AppConfigService, private cd: ChangeDetectorRef) {
+  news?: NewsItem;
+  constructor(private configService: AppConfigService, private cd: ChangeDetectorRef,
+              private angularService: AngularCommonService, private fDialogService: FDialogService) {
     this.initNews();
     afterNextRender(() => {
-      const itemString = getLocalStorage(FConstants.STORAGE_KEY_NEWS);
-      if (itemString.length > 0) {
-        const item = JSON.parse(itemString);
-        this.configService.state.newsActive = !item.hiddenNews || item.hiddenNews !== News.id;
-      } else {
-        this.configService.state.newsActive = true;
-      }
       this.cd.markForCheck();
     });
   }
@@ -36,17 +36,28 @@ export class AppNewsComponent {
   }
   hideNews(): void {
     this.configService.hideNews();
-    const item = {
-      hiddenNews: this.announcement?.id
-    };
-    setLocalStorage(FConstants.STORAGE_KEY_NEWS, JSON.stringify(item));
+    if (this.news?.thisIndex) {
+      setLocalStorage(FConstants.STORAGE_KEY_NEWS, this.news.thisIndex.toString());
+    }
   }
   initNews() : void {
-    this.announcement = new class implements NewsItem {
-      content = News.content;
-      id = News.id;
-      linkHref = News.linkHref;
-      linkText = News.linkText;
-    }();
+    this.angularService.getNewsOne().then(x => {
+      this.news = x.Data;
+      const hiddenNewsIndex = getLocalStorage(FConstants.STORAGE_KEY_NEWS);
+      if (hiddenNewsIndex.length > 0) {
+        this.configService.state.newsActive = hiddenNewsIndex !== this.news?.thisIndex.toString();
+      } else {
+        this.configService.showNews();
+      }
+    }).catch(x => {
+      this.fDialogService.warn('news', x.message);
+    }).finally(() => {
+      this.cd.detectChanges();
+    });
+  }
+  gotoLink(): void {
+    if (this.news?.linkHref) {
+      window.open(this.news.linkHref, "_blank");
+    }
   }
 }
