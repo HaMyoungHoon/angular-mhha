@@ -1,0 +1,12 @@
+<div class="layout-wrapper" [ngClass]="containerClass" [attr.data-p-theme]="theme">
+  <app-app-news/>
+  <app-app-topbar [showConfigurator]="true" [showMenuButton]="true" (onDarkModeSwitch)="toggleDarkMode()"></app-app-topbar>
+  <app-app-config (onDarkModeSwitch)="toggleDarkMode()"></app-app-config>
+  <div class="layout-mask" [ngClass]="{ 'layout-mask-active': isMenuActive }" (click)="hideMenu()"></div>
+  <div class="layout-content">
+    <div class="layout-content-slot">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <app-footer-section></app-footer-section>
+</div>

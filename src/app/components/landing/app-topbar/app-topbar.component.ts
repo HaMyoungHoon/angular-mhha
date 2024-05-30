@@ -9,7 +9,7 @@ import {
   Output,
   Renderer2
 } from '@angular/core';
-import {DOCUMENT} from "@angular/common";
+import {DOCUMENT, NgClass, NgIf} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {AppConfigService} from "../../../services/app-config.service";
 import {DomHandler} from "primeng/dom";
@@ -18,14 +18,15 @@ import {DomHandler} from "primeng/dom";
   selector: 'app-app-topbar',
   standalone: true,
   imports: [
-    RouterLink
+    RouterLink,
+    NgClass,
+    NgIf
   ],
-  templateUrl: './app-topbar.component.html',
-  styleUrl: './app-topbar.component.scss'
+  templateUrl: './app-topbar.component.html'
 })
 export class AppTopbarComponent implements OnDestroy {
-  @Input() showConfigurator = true;
-  @Input() showMenuButton = true;
+  @Input() showConfigurator = false;
+  @Input() showMenuButton = false;
   @Output() onDarkModeSwitch = new EventEmitter<any>();
   scrollListener: VoidFunction | null = null;
   window: Window;
@@ -39,6 +40,16 @@ export class AppTopbarComponent implements OnDestroy {
 
   get isDarkMode() {
     return this.configService.config().darkMode;
+  }
+  get isNewsActive() {
+    return this.configService.state.newsActive;
+  }
+  get topbarClass() {
+    return {
+      "layout-topbar": true,
+      "layout-news-active": this.isNewsActive,
+      "layout-news-deactive": !this.isNewsActive,
+    };
   }
   toggleMenu(): void {
     if (this.configService.state.menuActive) {

@@ -1,0 +1,25 @@
+<div class="doc-component">
+  <ul class="doc-tabmenu" *ngIf="docs && apiDocs">
+    <li [ngClass]="{ 'doc-tabmenu-active': activeTab === 0}">
+      <button type="button" (click)="activateTab(0)">Features</button>
+    </li>
+    <li *ngIf="apiDocs" [ngClass]="{ 'doc-tabmenu-active': activeTab === 1}">
+      <button type="button" (click)="activateTab(1)">Api</button>
+    </li>
+  </ul>
+  <div class="doc-tabpanels">
+    <div [ngClass]="{ hidden: activeTab === 1}" class="doc-tabpanel">
+      <div class="doc-main">
+        <div class="doc-intro">
+          <h1>{{ header }}</h1>
+          <p>{{ description }}</p>
+        </div>
+        <app-app-doc-section [docs]="docs"/>
+      </div>
+      <app-app-doc-section-nav [docs]="docs" />
+    </div>
+    <div [ngClass]="{ hidden: activeTab === 0 }">
+      <app-app-doc-api-section [docs]="apiDocs" [header]="header" class="doc-tabpanel" />
+    </div>
+  </div>
+</div>

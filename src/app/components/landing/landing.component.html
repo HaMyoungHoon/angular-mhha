@@ -1,5 +1,7 @@
+<p-toast></p-toast>
 <div class="landing" [ngClass]="landingClass">
   <app-app-news/>
-  <app-app-topbar/>
+  <app-app-topbar [showConfigurator]="false" [showMenuButton]="false" (onDarkModeSwitch)="toggleDarkMode()"/>
+  <app-app-mid (messageEvent)="messageEvent($event)"/>
   <app-footer-section/>
 </div>

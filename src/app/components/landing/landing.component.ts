@@ -2,11 +2,15 @@ import {Component, OnInit} from '@angular/core';
 import {Subscription} from "rxjs";
 import {AppConfigService} from "../../services/app-config.service";
 import {Meta, Title} from "@angular/platform-browser";
-import {DEF_TABLE_THEME} from "../../guards/f-constants";
 import {NgClass} from "@angular/common";
 import {AppNewsComponent} from "./app-news/app-news.component";
 import {AppTopbarComponent} from "./app-topbar/app-topbar.component";
 import {FooterSectionComponent} from "./footer-section/footer-section.component";
+import {getLocalStorage} from "../../guards/amhohwa";
+import * as FConstants from "../../guards/f-constants";
+import {AppMidComponent} from "./app-mid/app-mid.component";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-landing',
@@ -15,14 +19,25 @@ import {FooterSectionComponent} from "./footer-section/footer-section.component"
     NgClass,
     AppNewsComponent,
     AppTopbarComponent,
-    FooterSectionComponent
+    FooterSectionComponent,
+    AppMidComponent,
+    ToastModule
   ],
-  templateUrl: './landing.component.html',
-  styleUrl: './landing.component.scss'
+  templateUrl: './landing.component.html'
 })
 export class LandingComponent implements OnInit {
   subscription!: Subscription;
-  constructor(private configService: AppConfigService, private metaService: Meta, private titleService: Title) {
+  constructor(private configService: AppConfigService, private metaService: Meta, private titleService: Title, private messageService: MessageService) {
+    if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK) == 'true') {
+      this.toDark();
+    } else {
+      this.toLight();
+    }
+
+    let scale :number = +getLocalStorage(FConstants.STORAGE_KEY_SCALE);
+    if (scale != 0) {
+      this.configService.changeScale(scale);
+    }
   }
   ngOnInit(): void {
     this.titleService.setTitle('angular mhha');
@@ -33,7 +48,7 @@ export class LandingComponent implements OnInit {
   }
 
   get tableTheme() {
-    return this.configService.config().tableTheme ?? DEF_TABLE_THEME;
+    return this.configService.config().tableTheme ?? FConstants.DEF_TABLE_THEME;
   }
   get landingClass() {
     return {
@@ -50,7 +65,21 @@ export class LandingComponent implements OnInit {
   }
   toggleDarkMode(): void {
     const dark = !this.isDarkMode;
-    const newTableTheme = !dark ? this.tableTheme.replace('dark', 'light') : this.tableTheme.replace('light', 'dark');
-    this.configService.config.update((config) => ({ ...config, darkMode: dark, theme: dark ? 'lara-dark-blue' : 'lara-light-blue', tableTheme: newTableTheme }));
+    if (dark) {
+      this.toDark();
+    } else {
+      this.toLight();
+    }
+  }
+  toDark(): void {
+    const newTableTheme = this.tableTheme.replace('light', 'dark');
+    this.configService.config.update((config) => ({ ...config, darkMode: true, theme: FConstants.DEF_THEME, tableTheme: newTableTheme }));
+  }
+  toLight(): void {
+    const newTableTheme = this.tableTheme.replace('dark', 'light');
+    this.configService.config.update((config) => ({ ...config, darkMode: false, theme: FConstants.DEF_LIGHT_THEME, tableTheme: newTableTheme }));
+  }
+  messageEvent(data: any): void {
+    this.messageService.add(data);
   }
 }
