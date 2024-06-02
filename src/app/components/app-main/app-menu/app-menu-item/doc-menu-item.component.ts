@@ -45,11 +45,18 @@ export class DocMenuItemComponent {
     if (this.item?.children?.length === undefined) {
       return false
     }
-    if (this.item?.children?.length <= 0) {
+
+    return this.item?.children?.length > 0;
+  }
+  haveChild(): boolean {
+    if (this.root) {
+      return false
+    }
+    if (this.item?.children?.length === undefined) {
       return false
     }
 
-    return true
+    return this.item?.children?.length > 0;
   }
   haveIcon(): boolean {
     if (!this.root) {

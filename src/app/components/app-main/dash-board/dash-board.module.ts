@@ -13,6 +13,5 @@ import {DashBoardRoutingModule} from "./dash-board-routing.module";
 })
 export class DashBoardModule {
   constructor() {
-    console.log(DashBoardModule);
   }
 }
