@@ -4,6 +4,7 @@
   <app-app-config (onDarkModeSwitch)="toggleDarkMode()"></app-app-config>
   <div class="layout-mask" [ngClass]="{ 'layout-mask-active': isMenuActive }" (click)="hideMenu()"></div>
   <div class="layout-content">
+    <doc-menu />
     <div class="layout-content-slot">
       <router-outlet></router-outlet>
     </div>

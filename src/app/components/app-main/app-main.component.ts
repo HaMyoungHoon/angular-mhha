@@ -9,6 +9,7 @@ import {RouterOutlet} from "@angular/router";
 import {FooterSectionComponent} from "../landing/footer-section/footer-section.component";
 import {getLocalStorage} from "../../guards/amhohwa";
 import {AppConfigComponent} from "./app-config/app-config.component";
+import {DocMenuComponent} from "./app-menu/doc-menu.component";
 
 @Component({
   selector: 'app-app-main',
@@ -19,7 +20,8 @@ import {AppConfigComponent} from "./app-config/app-config.component";
     AppTopbarComponent,
     RouterOutlet,
     FooterSectionComponent,
-    AppConfigComponent
+    AppConfigComponent,
+    DocMenuComponent
   ],
   templateUrl: './app-main.component.html'
 })

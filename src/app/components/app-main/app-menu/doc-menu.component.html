@@ -1,0 +1,7 @@
+<aside>
+  <nav>
+    <ol class="layout-menu">
+      <li *ngFor="let item of menu; let i = index" doc-menu-item [item]="item" [root]="true"></li>
+    </ol>
+  </nav>
+</aside>

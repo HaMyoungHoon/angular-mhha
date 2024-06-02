@@ -11,4 +11,8 @@ import {DashBoardRoutingModule} from "./dash-board-routing.module";
     CommonModule, DashBoardRoutingModule
   ]
 })
-export class DashBoardModule { }
+export class DashBoardModule {
+  constructor() {
+    console.log(DashBoardModule);
+  }
+}

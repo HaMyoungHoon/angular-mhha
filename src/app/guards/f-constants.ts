@@ -1,4 +1,6 @@
 export const NOTFOUND_URL = "/notfound";
+export const MAIN_URL = "main";
+export const NOT_YET_URL = "not_yet";
 export const DASHBOARD_URL = "dashboard";
 
 export const THEME_LINK = 'theme-link';
