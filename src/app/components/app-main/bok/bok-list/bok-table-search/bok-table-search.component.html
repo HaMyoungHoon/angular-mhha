@@ -1,19 +1,33 @@
-<div class="card flex justify-content-center">
-  <p-floatLabel>
-    <input [ngClass]="authKeyClass" type="text" id="authKey" pInputText [(ngModel)]="reqData.authKey">
-    <label for="authKey">인증키</label>
-  </p-floatLabel>
-  <p-floatLabel>
-    <input [ngClass]="langTypeClass" type="text" id="langType" pInputText [(ngModel)]="reqData.langType">
-    <label for="langType">언어</label>
-  </p-floatLabel>
-  <p-floatLabel>
-    <input [ngClass]="startNumberClass" type="text" id="startNumber" pInputText [(ngModel)]="reqData.startNumber">
-    <label for="startNumber">시작번호</label>
-  </p-floatLabel>
-  <p-floatLabel>
-    <input [ngClass]="endNumberClass" type="text" id="endNumber" pInputText [(ngModel)]="reqData.endNumber">
-    <label for="endNumber">끝번호</label>
-  </p-floatLabel>
-  <p-button label="ㄱㄱ" [disabled]="searchDisable" (click)="getTableData()" />
+<div class="card grid flex justify-content-center">
+  <div class="col-12 flex justify-content-center">
+    <p-floatLabel>
+      <input [ngClass]="authKeyClass" type="text" id="authKey" pInputText [(ngModel)]="authKey">
+      <label for="authKey">인증키</label>
+    </p-floatLabel>
+    <p-floatLabel>
+      <input [ngClass]="langTypeClass" type="text" id="langType" pInputText [(ngModel)]="langType">
+      <label for="langType">언어</label>
+    </p-floatLabel>
+  </div>
+  <div class="col-6 flex justify-content-center">
+    <p-floatLabel>
+      <input [ngClass]="tableStartNumberClass" type="text" id="tableStartNumber" pInputText [(ngModel)]="reqDataTable.startNumber">
+      <label for="tableStartNumber">시작번호</label>
+    </p-floatLabel>
+    <p-floatLabel>
+      <input [ngClass]="tableEndNumberClass" type="text" id="tableEndNumber" pInputText [(ngModel)]="reqDataTable.endNumber">
+      <label for="tableEndNumber">끝번호</label>
+    </p-floatLabel>
+    <p-button label="ㄱㄱ" [disabled]="searchDisable" (click)="getTableData()" />
+  </div>
+  <div class="col-6 flex justify-content-center">
+    <p-floatLabel>
+      <input [ngClass]="itemStartNumberClass" type="text" id="itemStartNumber" pInputText [(ngModel)]="reqDataItem.startNumber">
+      <label for="itemStartNumber">시작번호</label>
+    </p-floatLabel>
+    <p-floatLabel>
+      <input [ngClass]="itemEndNumberClass" type="text" id="itemEndNumber" pInputText [(ngModel)]="reqDataItem.endNumber">
+      <label for="itemEndNumber">끝번호</label>
+    </p-floatLabel>
+  </div>
 </div>

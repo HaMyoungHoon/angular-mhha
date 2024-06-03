@@ -2,8 +2,8 @@
 <h3 class="on-click" (click)="gotoBOK()">이거 https://ecos.bok.or.kr/api/#/DevGuide/StatisticalCodeSearch 데이터 보는 거임</h3>
 <h5 class="on-click" (click)="gotoBOK()">인증키가 샘플인 경우는 10개씩 밖에 못 부름.</h5>
 <h5 class="on-click" (click)="gotoBOK()">인증키가 샘플인 경우는 30분에 300개 까지 밖에 못 부름.</h5>
-<app-bok-table-search #BokTableSearchComponent [reqData]="bokTableReqData" (getTableEvent)="getTableData()" />
+<app-bok-table-search #BokTableSearchComponent [reqDataTable]="bokTableReqData" [reqDataItem]="bokItemReqData" (getTableEvent)="getTableData()" />
 <div class="grid justify-content-center">
   <app-bok-table #BokTableComponent class="col-6" [reqData]="bokTableReqData" (selectRow)="setBokTableRow($event)" />
-  <app-bok-table-sub #BokTableSubComponent class="col-6" [reqData]="bokTableReqData" />
+  <app-bok-table-sub #BokTableSubComponent class="col-6" [reqData]="bokItemReqData" />
 </div>

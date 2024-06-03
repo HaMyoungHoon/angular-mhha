@@ -1,3 +1,4 @@
+<span>테이블 아이템 총 개수 {{ endOfList }}</span>
 <p-tree class="w-full" [value]="treeNode" [loading]="loading" (onNodeSelect)="nodeSelect($event)"
         scrollHeight="500px" selectionMode="single" [filter]="canFilter" filterMode="strict">
   <ng-template let-node pTemplate="default">

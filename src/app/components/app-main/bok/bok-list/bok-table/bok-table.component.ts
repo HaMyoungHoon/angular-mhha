@@ -22,20 +22,21 @@ export class BokTableComponent {
   loading: boolean;
   @Input() reqData!: BokStatisticTableListRequest;
   @Output() selectRow: EventEmitter<BokStatisticTableRow | undefined>;
-  endOfList: number;
+  endOfList: string;
   treeNode: TreeNode<BokStatisticTableRow>[];
   constructor(private bokService: BokService, private fDialogService: FDialogService) {
     this.loading = false;
     this.selectRow = new EventEmitter<BokStatisticTableRow | undefined>();
-    this.endOfList = 1000;
+    this.endOfList = "";
     this.treeNode = [];
   }
 
   getTableData(): void {
     this.loading = true;
+    this.reqData.code = undefined;
     this.bokService.getStatisticTableList(this.reqData).then(x => {
       this.loading = false;
-      this.endOfList = x.StatisticTableList?.list_total_count ?? 0;
+      this.endOfList = `${x.StatisticTableList?.list_total_count ?? 0}`;
       if (x.StatisticTableList) {
         this.addTree(x.StatisticTableList.row);
       }
@@ -64,7 +65,7 @@ export class BokTableComponent {
         if (parent.children === undefined) {
           parent.children = [];
         }
-        if (parent.children?.filter(y => y.data?.STAT_NAME === x.STAT_CODE).length > 0) {
+        if (parent.children?.filter(y => y.data?.STAT_CODE === x.STAT_CODE).length > 0) {
           return;
         }
 

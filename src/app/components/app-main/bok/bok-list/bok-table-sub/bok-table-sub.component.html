@@ -1,4 +1,5 @@
-<p-table class="w-full" [value]="itemRows" scrollHeight="500px">
+<span>상세 총 개수 {{ endOfList }}</span>
+<p-table class="w-full" [value]="itemRows" scrollHeight="500px" [loading]="loading">
   <ng-template pTemplate="header">
     <tr>
       <th>통계표 코드</th>

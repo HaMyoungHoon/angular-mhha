@@ -20,7 +20,8 @@ import {NgClass} from "@angular/common";
   styleUrl: './bok-table-search.component.scss'
 })
 export class BokTableSearchComponent {
-  @Input() reqData!: BokStatisticTableListRequest;
+  @Input() reqDataTable!: BokStatisticTableListRequest;
+  @Input() reqDataItem!: BokStatisticTableListRequest;
   @Output() getTableEvent: EventEmitter<void>;
   constructor() {
     this.getTableEvent = new EventEmitter<void>();
@@ -30,54 +31,89 @@ export class BokTableSearchComponent {
     this.getTableEvent.next();
   }
 
+  set authKey(data: string) {
+    this.reqDataTable.authKey = data;
+    this.reqDataItem.authKey = data;
+  }
+  get authKey(): string {
+    return this.reqDataTable.authKey;
+  }
+  set langType(data: string) {
+    this.reqDataTable.langType = data;
+    this.reqDataItem.langType = data;
+  }
+  get langType(): string {
+    return this.reqDataTable.langType;
+  }
+
   get authKeyClass(): string {
-    if (this.reqData.authKey.length <= 0) {
+    if (this.reqDataTable.authKey.length <= 0) {
       return "ng-invalid";
     }
 
     return "";
   }
   get langTypeClass(): string {
-    if (this.reqData.langType.length <= 0) {
+    if (this.reqDataTable.langType.length <= 0) {
       return "ng-invalid";
     }
 
     return "";
   }
-  get startNumberClass(): string {
-    if (this.reqData.startNumber > this.reqData.endNumber) {
+  get tableStartNumberClass(): string {
+    if (this.reqDataTable.startNumber > this.reqDataTable.endNumber) {
       return "ng-invalid";
     }
-    if (this.reqData.startNumber.toString().length <= 0) {
+    if (this.reqDataTable.startNumber.toString().length <= 0) {
       return "ng-invalid";
     }
 
     return "";
   }
-  get endNumberClass(): string {
-    if (this.reqData.endNumber < this.reqData.startNumber) {
+  get tableEndNumberClass(): string {
+    if (this.reqDataTable.endNumber < this.reqDataTable.startNumber) {
       return "ng-invalid";
     }
-    if (this.reqData.endNumber.toString().length <= 0) {
+    if (this.reqDataTable.endNumber.toString().length <= 0) {
+      return "ng-invalid";
+    }
+
+    return "";
+  }
+  get itemStartNumberClass(): string {
+    if (this.reqDataItem.startNumber > this.reqDataItem.endNumber) {
+      return "ng-invalid";
+    }
+    if (this.reqDataItem.startNumber.toString().length <= 0) {
+      return "ng-invalid";
+    }
+
+    return "";
+  }
+  get itemEndNumberClass(): string {
+    if (this.reqDataItem.endNumber < this.reqDataItem.startNumber) {
+      return "ng-invalid";
+    }
+    if (this.reqDataItem.endNumber.toString().length <= 0) {
       return "ng-invalid";
     }
 
     return "";
   }
   get searchDisable(): boolean {
-    if (this.reqData.authKey.length <= 0) {
+    if (this.reqDataTable.authKey.length <= 0) {
       return true;
     }
-    if (this.reqData.langType.length <= 0) {
+    if (this.reqDataTable.langType.length <= 0) {
       return true;
     }
-    if (this.reqData.startNumber > this.reqData.endNumber) {
+    if (this.reqDataTable.startNumber > this.reqDataTable.endNumber) {
       return true;
     }
-    if (this.reqData.startNumber.toString().length <= 0) {
+    if (this.reqDataTable.startNumber.toString().length <= 0) {
       return true;
     }
-    if (this.reqData.endNumber.toString().length <= 0) {
+    if (this.reqDataTable.endNumber.toString().length <= 0) {
       return true;
     }
 

@@ -20,10 +20,12 @@ export class BokTableSubComponent {
   row?: BokStatisticTableRow
   @Input() reqData!: BokStatisticTableListRequest;
   itemRows: BokStatisticItemRow[];
+  endOfList: string;
 
   constructor(private bokService: BokService, private fDialogService: FDialogService) {
     this.itemRows = [];
     this.loading = false;
+    this.endOfList = "";
   }
 
   getTableItem(row: BokStatisticTableRow | undefined): void {
@@ -33,15 +35,19 @@ export class BokTableSubComponent {
     }
     this.reqData.code = this.row.STAT_CODE;
 
+    this.loading = true;
     this.bokService.getStatisticTableItem(this.reqData).then(x => {
       if (x.StatisticItemList) {
+        this.endOfList = `${x.StatisticItemList.list_total_count ?? 0}`;
         this.itemRows = x.StatisticItemList.row;
       }
       if (x.RESULT) {
         this.fDialogService.warn(x.RESULT.CODE ?? "", x.RESULT.RESULT);
       }
+      this.loading = false;
     }).catch(x => {
       this.fDialogService.error("getTableItem", x.message);
+      this.loading = false;
     });
   }
 }
