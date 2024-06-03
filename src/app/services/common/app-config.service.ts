@@ -109,6 +109,9 @@ export class AppConfigService {
     }
   }
   changeScale(value: number): void {
+    if (value < 10) {
+      value = 14;
+    }
     if (isPlatformBrowser(this.platformId)) {
       document.documentElement.style.fontSize = `${value}px`;
     }

@@ -6,7 +6,7 @@ import {NgClass} from "@angular/common";
 import {AppNewsComponent} from "./app-news/app-news.component";
 import {AppTopbarComponent} from "./app-topbar/app-topbar.component";
 import {FooterSectionComponent} from "./footer-section/footer-section.component";
-import {getLocalStorage} from "../../guards/amhohwa";
+import {getLocalStorage, setLocalStorage} from "../../guards/amhohwa";
 import * as FConstants from "../../guards/f-constants";
 import {AppMidComponent} from "./app-mid/app-mid.component";
 import {ToastModule} from "primeng/toast";
@@ -28,7 +28,10 @@ import {MessageService} from "primeng/api";
 export class LandingComponent implements OnInit {
   subscription!: Subscription;
   constructor(private configService: AppConfigService, private metaService: Meta, private titleService: Title) {
-    if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK) == 'true') {
+    if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK).length <= 0) {
+      setLocalStorage(FConstants.STORAGE_KEY_IS_DARK, 'true');
+    }
+    if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK) != 'false') {
       this.toDark();
     } else {
       this.toLight();
