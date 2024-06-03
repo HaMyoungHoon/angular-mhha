@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
-import {IRestResult} from "../../models/rest/IRestResult";
+import {IRestResult} from "../../models/common/IRestResult";
 import {HttpHeaders} from "@angular/common/http";
 import {DocPage} from "../../models/doc/DocPage";
 import {NewsItem} from "../../models/common/news-item";
@@ -10,7 +10,7 @@ import {DocMenuItem} from "../../models/common/doc-menu-item";
   providedIn: 'root'
 })
 export class AngularCommonService {
-  private baseUrl = "/apiSpring/angular/common"
+  private baseUrl = "/apiSpring/angular/common";
 
   constructor(private httpResponse: HttpResponseInterceptorService) {
     this.httpResponse.options = {

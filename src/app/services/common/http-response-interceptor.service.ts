@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
-import {IRestResult} from "../../models/rest/IRestResult";
+import {IRestResult} from "../../models/common/IRestResult";
 import {lastValueFrom, map} from "rxjs";
 import {ApiValidationService} from "./api-validation.service";
 
@@ -46,7 +46,7 @@ export class HttpResponseInterceptorService {
     reportProgress?: boolean,
     responseType?: "json",
     withCredentials?: boolean,
-  }): Promise<any> {
+  }): Promise<T> {
     return lastValueFrom(this.http.get<T>(url, options).pipe(
       map(response => response)
     ));
@@ -58,7 +58,7 @@ export class HttpResponseInterceptorService {
     reportProgress?: boolean,
     responseType?: "json",
     withCredentials?: boolean,
-  }): Promise<any> {
+  }): Promise<T> {
     return lastValueFrom(this.http.post<T>(url, param).pipe(
       map(response => response)
     ));

@@ -2,6 +2,8 @@ export const NOTFOUND_URL = "/notfound";
 export const MAIN_URL = "main";
 export const NOT_YET_URL = "not_yet";
 export const DASHBOARD_URL = "dashboard";
+export const BOK_LIST_URL = "bok/list";
+export const BOK_TEST_URL = "bok/test";
 
 export const THEME_LINK = 'theme-link';
 export const HOME_TABLE_LINK = 'home-table-link';

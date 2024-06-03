@@ -6,12 +6,10 @@ import {DashBoardRoutingModule} from "./dash-board-routing.module";
 
 
 @NgModule({
-  declarations: [ DashBoardComponent ],
+  declarations: [DashBoardComponent],
   imports: [
     CommonModule, DashBoardRoutingModule
   ]
 })
 export class DashBoardModule {
-  constructor() {
-  }
 }

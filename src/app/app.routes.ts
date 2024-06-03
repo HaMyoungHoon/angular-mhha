@@ -8,11 +8,13 @@ export const routes: Routes = [
   { path: FConstants.MAIN_URL, component: AppMainComponent,
     children: [
       { path: FConstants.MAIN_URL, redirectTo: `${FConstants.MAIN_URL}/${FConstants.DASHBOARD_URL}`, pathMatch: 'full' },
-      { path: FConstants.DASHBOARD_URL, loadChildren: () => import('./components/app-main/dash-board/dash-board.module').then((m) => m.DashBoardModule) },
-      { path: FConstants.NOT_YET_URL, loadChildren: () => import('./components/app-main/not-yet/not-yet.module').then((m) => m.NotYetModule) },
+      { path: FConstants.DASHBOARD_URL, loadChildren: () => import('./components/app-main/dash-board/dash-board.module').then(m => m.DashBoardModule) },
+      { path: FConstants.BOK_LIST_URL, loadChildren: () => import('./components/app-main/bok/bok-list/bok-list.module').then(m => m.BokListModule) },
+      { path: FConstants.BOK_TEST_URL, loadChildren: () => import('./components/app-main/bok/bok-test/bok-test.module').then(m => m.BokTestModule) },
+      { path: FConstants.NOT_YET_URL, loadChildren: () => import('./components/app-main/not-yet/not-yet.module').then(m => m.NotYetModule) },
       { path: '**', redirectTo: FConstants.NOT_YET_URL },
     ]
   },
-  { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import('./components/notfound/notfound.module').then((m) => m.NotfoundModule) },
+  { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import('./components/notfound/notfound.module').then(m => m.NotfoundModule) },
   { path: '**', redirectTo: FConstants.NOTFOUND_URL },
 ];
