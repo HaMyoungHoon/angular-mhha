@@ -2,33 +2,8 @@
 <h3 class="on-click" (click)="gotoBOK()">이거 https://ecos.bok.or.kr/api/#/DevGuide/StatisticalCodeSearch 데이터 보는 거임</h3>
 <h5 class="on-click" (click)="gotoBOK()">인증키가 샘플인 경우는 10개씩 밖에 못 부름.</h5>
 <h5 class="on-click" (click)="gotoBOK()">인증키가 샘플인 경우는 30분에 300개 까지 밖에 못 부름.</h5>
-<div class="card flex justify-content-center">
-  <p-floatLabel>
-    <input [ngClass]="{ 'ng-invalid': reqData.authKey.length <= 0}" type="text" id="authKey" pInputText [(ngModel)]="reqData.authKey">
-    <label for="authKey">인증키</label>
-  </p-floatLabel>
-  <p-floatLabel>
-    <input [ngClass]="{ 'ng-invalid': reqData.langType.length <= 0}" type="text" id="langType" pInputText [(ngModel)]="reqData.langType">
-    <label for="langType">언어</label>
-  </p-floatLabel>
-  <p-floatLabel>
-    <input [ngClass]="startNumberClass" type="text" id="startNumber" pInputText [(ngModel)]="reqData.startNumber">
-    <label for="startNumber">시작번호</label>
-  </p-floatLabel>
-  <p-floatLabel>
-    <input [ngClass]="endNumberClass" type="text" id="endNumber" pInputText [(ngModel)]="reqData.endNumber">
-    <label for="endNumber">끝번호</label>
-  </p-floatLabel>
-  <p-button label="ㄱㄱ" [disabled]="searchDisable" (click)="getTableData()" />
-</div>
-
-<div class="card flex justify-content-center">
-  <p-tree class="w-full" [value]="treeNode" [loading]="loading" (onNodeSelect)="nodeSelect($event)"
-          scrollHeight="500px" selectionMode="single" [filter]="true" filterMode="strict">
-    <ng-template let-node pTemplate="default">
-      <b>{{ node.label }}</b>
-      <br *ngIf="node.data.CYCLE"/>
-      <b *ngIf="node.data.CYCLE">{{ node.data.CYCLE }}</b>
-    </ng-template>
-  </p-tree>
+<app-bok-table-search #BokTableSearchComponent [reqData]="bokTableReqData" (getTableEvent)="getTableData()" />
+<div class="grid justify-content-center">
+  <app-bok-table #BokTableComponent class="col-6" [reqData]="bokTableReqData" (selectRow)="setBokTableRow($event)" />
+  <app-bok-table-sub #BokTableSubComponent class="col-6" [reqData]="bokTableReqData" />
 </div>

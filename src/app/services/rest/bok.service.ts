@@ -12,8 +12,7 @@ import {BokStatisticTableListRequest} from "../../models/rest/bok/bok-statistic-
 export class BokService {
   private baseUrl = "/apiBOK/api";
   private tablePath = "/StatisticTableList";
-  private searchPath = "/StatisticSearch";
-  private keyStatisticPath = "/KeyStatisticList"
+  private tableItemPath = "/StatisticItemList"
 
   constructor(private httpResponse: HttpResponseInterceptorService) {
     this.httpResponse.options = {
@@ -24,20 +23,19 @@ export class BokService {
   }
 
   getKeyStatisticList(data: BokKeyStatisticRequest): Promise<BokResponse> {
-    const url = `${this.baseUrl}${this.keyStatisticPath}/${data.authKey}/json/${data.langType}/${data.startNumber}/${data.endNumber}`;
+    const url = `${this.baseUrl}/${data.getUrl()}`;
     return this.httpResponse.getAny(url, this.httpResponse.options).then();
   }
   getStatisticSearch(data: BokStatisticSearchRequest): Promise<BokResponse> {
-    let url = `${this.baseUrl}${this.searchPath}/${data.authKey}/json/${data.langType}/${data.startNumber}/${data.endNumber}/${data.code}/${data.cycle}/${data.startDate}/${data.endDate}`;
-    if (data.listCode1) url += `/${data.listCode1}`;
-    if (data.listCode2) url += `/${data.listCode2}`;
-    if (data.listCode3) url += `/${data.listCode3}`;
-    if (data.listCode4) url += `/${data.listCode4}`;
+    let url = `${this.baseUrl}/${data.getUrl()}`;
     return this.httpResponse.getAny(url, this.httpResponse.options).then();
   }
   getStatisticTableList(data: BokStatisticTableListRequest): Promise<BokResponse> {
-    let url = `${this.baseUrl}${this.tablePath}/${data.authKey}/json/${data.langType}/${data.startNumber}/${data.endNumber}`;
-    if (data.code) url += `/${data.code}`;
+    const url = `${this.baseUrl}${this.tablePath}/${data.getUrl()}`;
+    return this.httpResponse.getAny(url, this.httpResponse.options).then();
+  }
+  getStatisticTableItem(data: BokStatisticTableListRequest): Promise<BokResponse> {
+    const url = `${this.baseUrl}${this.tableItemPath}/${data.getUrl()}`;
     return this.httpResponse.getAny(url, this.httpResponse.options).then();
   }
 }

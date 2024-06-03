@@ -15,36 +15,11 @@ export class BokTestComponent {
   keyStatisticListRequest?: BokKeyStatisticRequest;
   constructor(private bokService: BokService) {
     this.initRequest();
-    this.bokService.getStatisticTableList(this.statisticTableListRequest!!).then(x => {
-      console.log(x);
-    }).catch(x => {
-      console.log(x);
-    });
   }
 
   initRequest(): void {
-    this.statisticTableListRequest = new class implements BokStatisticTableListRequest {
-      authKey = "sample";
-      langType = "kr";
-      startNumber = 1;
-      endNumber = 10;
-    }
-    this.statisticSearchRequest = new class implements BokStatisticSearchRequest {
-      authKey = "sample";
-      langType = "kr";
-      startNumber = 1;
-      endNumber = 10;
-      code = "200Y001";
-      cycle = "A";
-      startDate = 2015;
-      endDate = 2021;
-      listCode1 = "10101";
-    };
-    this.keyStatisticListRequest = new class implements BokKeyStatisticRequest {
-      authKey = "sample";
-      langType = "kr";
-      startNumber = 1;
-      endNumber = 10;
-    };
+    this.statisticTableListRequest = new BokStatisticTableListRequest();
+    this.statisticSearchRequest = new BokStatisticSearchRequest();
+    this.keyStatisticListRequest = new BokKeyStatisticRequest();
   }
 }

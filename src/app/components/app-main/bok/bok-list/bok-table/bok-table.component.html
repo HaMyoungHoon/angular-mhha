@@ -1,0 +1,8 @@
+<p-tree class="w-full" [value]="treeNode" [loading]="loading" (onNodeSelect)="nodeSelect($event)"
+        scrollHeight="500px" selectionMode="single" [filter]="canFilter" filterMode="strict">
+  <ng-template let-node pTemplate="default">
+    <b>{{ node.label }}</b>
+    <br *ngIf="node.data.CYCLE"/>
+    <b *ngIf="node.data.CYCLE">{{ node.data.CYCLE }}</b>
+  </ng-template>
+</p-tree>

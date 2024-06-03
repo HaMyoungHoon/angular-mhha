@@ -8,13 +8,16 @@ import {FormsModule} from "@angular/forms";
 import {TableModule} from "primeng/table";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {ButtonModule} from "primeng/button";
+import {BokTableComponent} from "./bok-table/bok-table.component";
+import {BokTableSearchComponent} from "./bok-table-search/bok-table-search.component";
+import {BokTableSubComponent} from "./bok-table-sub/bok-table-sub.component";
 
 
 
 @NgModule({
   declarations: [BokListComponent],
   imports: [
-    CommonModule, BokListRoutingModule, TreeModule, InputTextModule, FormsModule, TableModule, FloatLabelModule, ButtonModule
+    CommonModule, BokListRoutingModule, TreeModule, InputTextModule, FormsModule, TableModule, FloatLabelModule, ButtonModule, BokTableComponent, BokTableSearchComponent, BokTableSubComponent
   ]
 })
 export class BokListModule { }
