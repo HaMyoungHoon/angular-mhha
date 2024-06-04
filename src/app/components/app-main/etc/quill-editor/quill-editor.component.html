@@ -1,0 +1,13 @@
+<div class="card w-full justify-content-center">
+  <p-editor [(ngModel)]="editorData" (onTextChange)="editorChange($event)" />
+</div>
+
+<h6>raw result</h6>
+<div class="card w-full justify-content-center editor-data-result">
+  <span>{{ htmlValue }}</span>
+</div>
+
+<h6>transform result</h6>
+<div class="card w-full justify-content-center editor-data-result">
+  <span [innerHTML]="htmlValue | safeHtml"></span>
+</div>

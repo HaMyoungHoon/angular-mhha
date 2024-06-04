@@ -48,10 +48,10 @@ export class DocMenuComponent implements OnDestroy {
   }
   initMenu(): void {
     this.angularCommonService.getMenu().then(x => {
-      if (x.Result) {
-        this.menu = x.Data;
+      if (x.result) {
+        this.menu = x.data;
       } else {
-        this.fDialogService.warn('menu', x.Msg);
+        this.fDialogService.warn('menu', x.msg);
       }
     }).catch(x => {
       this.fDialogService.error('menu catch', x.message);

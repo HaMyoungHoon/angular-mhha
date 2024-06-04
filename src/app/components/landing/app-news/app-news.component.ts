@@ -42,7 +42,7 @@ export class AppNewsComponent {
   }
   initNews() : void {
     this.angularService.getNewsOne().then(x => {
-      this.news = x.Data;
+      this.news = x.data;
       const hiddenNewsIndex = getLocalStorage(FConstants.STORAGE_KEY_NEWS);
       if (hiddenNewsIndex.length > 0) {
         this.configService.state.newsActive = hiddenNewsIndex !== this.news?.thisIndex.toString();

@@ -1,6 +1,6 @@
 export interface IRestResult<T> {
-  Result?: boolean,
-  Code?: number,
-  Msg?: string,
-  Data?: T
+  result?: boolean,
+  code?: number,
+  msg?: string,
+  data?: T
 }

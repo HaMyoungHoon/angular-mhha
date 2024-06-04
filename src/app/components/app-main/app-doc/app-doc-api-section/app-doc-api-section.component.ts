@@ -19,10 +19,10 @@ export class AppDocApiSectionComponent {
     this.docs = []
     this.apiDoc = []
     this.angularCommonService.getDocPage().then(x => {
-      if (x.Result) {
-        this.apiDoc = x.Data ?? []
+      if (x.result) {
+        this.apiDoc = x.data ?? []
       } else {
-        this.fDialogService.error('getDocPage', x.Msg);
+        this.fDialogService.error('getDocPage', x.msg);
       }
     }).catch(y => {
       this.fDialogService.error('getDocPage catch', y.message);
