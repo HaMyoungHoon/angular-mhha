@@ -96,4 +96,12 @@ export function toNumber(data: string): string {
   return data.replace(regex, "").replace(regex2, ",");
 }
 
-export const auth_token = "token";
+export function isExpired(token: string): boolean {
+  const now = Math.floor(new Date().getTime() / 1000);
+  try {
+    const exp = (JSON.parse(atob(token.split('.')[1]))).exp ?? 0;
+    return now > exp;
+  } catch (e) {
+    return true;
+  }
+}

@@ -1,12 +1,13 @@
-import {HttpEvent, HttpHandler, HttpHandlerFn, HttpInterceptorFn, HttpRequest} from "@angular/common/http";
+import {HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {auth_token, getSessionStorage} from "../../guards/amhohwa";
+import {getLocalStorage} from "../../guards/amhohwa";
+import {AUTH_TOKEN} from "../../guards/f-constants";
 
 export const HttpRequestInterceptorService: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
-  const token = getSessionStorage(auth_token)
+  const token = getLocalStorage(AUTH_TOKEN)
   let reqHeader = req.headers;
   if (token) {
-    reqHeader = reqHeader.set(auth_token, token);
+    reqHeader = reqHeader.set(AUTH_TOKEN, token);
   }
 
   return next(req.clone( { headers: reqHeader }))

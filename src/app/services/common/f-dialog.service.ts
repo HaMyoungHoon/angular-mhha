@@ -4,6 +4,8 @@ import {ToastLevel} from "../../models/common/toast-level";
 import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {MessageService} from "primeng/api";
 import {FDialogComponent} from "../../components/common/f-dialog/f-dialog.component";
+import {SignDialogComponent} from "../../components/common/sign-dialog/sign-dialog.component";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +19,16 @@ export class FDialogService {
     this.dynamicDialogRef = this.dialogService.open(FDialogComponent, {
 
     });
+  }
+  openSignIn(): Observable<any> {
+    this.dynamicDialogRef = this.dialogService.open(SignDialogComponent, {
+      header: 'sign in',
+      modal: false,
+      closable: false,
+      closeOnEscape: false,
+    });
+
+    return this.dynamicDialogRef.onClose;
   }
   alertToast(data: ToastItem): void {
     this.add(data.level, data.title, data.detail)

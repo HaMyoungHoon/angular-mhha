@@ -1,5 +1,5 @@
 import {afterNextRender, ChangeDetectorRef, Component, ElementRef, OnDestroy} from '@angular/core';
-import {DocMenuItem} from "../../../models/common/doc-menu-item";
+import {DocMenuItem} from "../../../models/rest/doc/doc-menu-item";
 import {FDialogService} from "../../../services/common/f-dialog.service";
 import {AngularCommonService} from "../../../services/rest/angular-common.service";
 import {Subscription} from "rxjs";

@@ -5,7 +5,7 @@ import {
   Component
 } from '@angular/core';
 import {NgIf} from "@angular/common";
-import {NewsItem} from "../../../models/common/news-item";
+import {NewsItem} from "../../../models/rest/news/news-item";
 import {AppConfigService} from "../../../services/common/app-config.service";
 import {getLocalStorage, setLocalStorage} from "../../../guards/amhohwa";
 import * as FConstants from "../../../guards/f-constants";

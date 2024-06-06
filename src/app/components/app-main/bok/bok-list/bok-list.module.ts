@@ -11,13 +11,14 @@ import {ButtonModule} from "primeng/button";
 import {BokTableComponent} from "./bok-table/bok-table.component";
 import {BokTableSearchComponent} from "./bok-table-search/bok-table-search.component";
 import {BokTableSubComponent} from "./bok-table-sub/bok-table-sub.component";
+import {SafeHtmlPipe} from "../../../../guards/safe-html.pipe";
 
 
 
 @NgModule({
   declarations: [BokListComponent],
-  imports: [
-    CommonModule, BokListRoutingModule, TreeModule, InputTextModule, FormsModule, TableModule, FloatLabelModule, ButtonModule, BokTableComponent, BokTableSearchComponent, BokTableSubComponent
-  ]
+    imports: [
+        CommonModule, BokListRoutingModule, TreeModule, InputTextModule, FormsModule, TableModule, FloatLabelModule, ButtonModule, BokTableComponent, BokTableSearchComponent, BokTableSubComponent, SafeHtmlPipe
+    ]
 })
 export class BokListModule { }

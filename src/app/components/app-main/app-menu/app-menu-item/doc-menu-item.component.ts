@@ -1,5 +1,5 @@
 import {booleanAttribute, Component, Input} from '@angular/core';
-import {DocMenuItem} from "../../../../models/common/doc-menu-item";
+import {DocMenuItem} from "../../../../models/rest/doc/doc-menu-item";
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {ButtonModule} from "primeng/button";

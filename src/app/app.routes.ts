@@ -12,6 +12,7 @@ export const routes: Routes = [
       { path: FConstants.BOK_LIST_URL, loadChildren: () => import('./components/app-main/bok/bok-list/bok-list.module').then(m => m.BokListModule) },
       { path: FConstants.BOK_TEST_URL, loadChildren: () => import('./components/app-main/bok/bok-test/bok-test.module').then(m => m.BokTestModule) },
       { path: FConstants.ETC_QUILL_EDITOR_URL, loadChildren: () => import('./components/app-main/etc/quill-editor/quill-editor.module').then(m => m.QuillEditorModule) },
+      { path: FConstants.ETC_QUILL_EDITOR_PUSH_URL, loadChildren: () => import('./components/app-main/etc/quill-editor-push/quill-editor-push.module').then(m => m.QuillEditorPushModule) },
       { path: FConstants.NOT_YET_URL, loadChildren: () => import('./components/app-main/not-yet/not-yet.module').then(m => m.NotYetModule) },
       { path: '**', redirectTo: FConstants.NOT_YET_URL },
     ]

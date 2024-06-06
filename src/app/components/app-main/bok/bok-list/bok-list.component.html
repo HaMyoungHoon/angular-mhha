@@ -6,4 +6,8 @@
 <div class="grid justify-content-center">
   <app-bok-table #BokTableComponent class="col-6" [reqData]="bokTableReqData" (selectRow)="setBokTableRow($event)" />
   <app-bok-table-sub #BokTableSubComponent class="col-6" [reqData]="bokItemReqData" />
+
+  <div *ngIf="statisticsSummary.length > 0" class="card w-full justify-content-center editor-data-result">
+    <span [innerHTML]="statisticsSummary | safeHtml"></span>
+  </div>
 </div>

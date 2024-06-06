@@ -12,7 +12,7 @@ export class QuillEditorComponent {
     this.htmlValue = "";
     afterNextRender(() => {
       this.cd.markForCheck();
-    })
+    });
   }
 
   editorChange(event: any): void {
