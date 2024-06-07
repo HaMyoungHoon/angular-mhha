@@ -1,0 +1,19 @@
+<div>
+  <p-table [columns]="cols" [value]="data" [scrollable]="true" selectionMode="single" [(selection)]="selectedData" (selectionChange)="selectChange()">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns">
+          {{ col.header }}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of columns" >
+          {{ ellipsis(rowData[col.field]) }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-button class="flex w-full align-items-end mt-3" label="ok" (click)="select()" [disabled]="disableSelect" />
+</div>

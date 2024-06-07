@@ -1,0 +1,4 @@
+<p-button id="htmlButton" (click)="openHtmlEditor()" hidden="hidden">
+  <span class="pi pi-code"></span>
+</p-button>
+<p-editor id="quillEditor" #quillEditor [(ngModel)]="editorData" (onTextChange)="editorChange($event)" (onInit)="quillOnInit($event)" />

@@ -1,0 +1,7 @@
+<div class="card grid flex w-full h-full">
+  <textarea class="flex col-6" [(ngModel)]="htmlValue"></textarea>
+  <div class="card flex col-6">
+    <span [innerHTML]="htmlValue | safeHtml"></span>
+  </div>
+  <p-button class="align-items-end mt-1" label="ok" (click)="submit()" />
+</div>

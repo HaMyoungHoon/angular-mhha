@@ -9,13 +9,14 @@ import {TreeModule} from "primeng/tree";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
+import {QuillComponent} from "../../../common/quill/quill.component";
 
 
 
 @NgModule({
   declarations: [QuillEditorPushComponent],
-  imports: [
-    CommonModule, QuillEditorPushRoutingModule, EditorModule, FormsModule, SafeHtmlPipe, TreeModule, FloatLabelModule, InputTextModule, ButtonModule
-  ]
+    imports: [
+        CommonModule, QuillEditorPushRoutingModule, EditorModule, FormsModule, SafeHtmlPipe, TreeModule, FloatLabelModule, InputTextModule, ButtonModule, QuillComponent
+    ]
 })
 export class QuillEditorPushModule { }
