@@ -26,8 +26,8 @@ export class FDialogService {
   openSignIn(): Observable<any> {
     this.ref = this.dialogService.open(SignDialogComponent, {
       header: 'sign in',
-      modal: false,
-      closable: false,
+      modal: true,
+      closable: true,
       closeOnEscape: false,
     });
 
