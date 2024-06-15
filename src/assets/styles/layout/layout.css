@@ -323,7 +323,7 @@ button {
   flex-direction: column;
   padding: 0 0 0 0;
   flex: 0 0 250px;
-  margin-right: 4rem;
+  margin-right: 2rem;
   overflow: auto;
 }
 .layout-sidebar .logo {
@@ -469,7 +469,6 @@ button {
 }
 .layout-content .layout-content-slot {
   flex: 1 1 auto;
-  width: 1%;
   padding-top: 0.5rem;
 }
 
