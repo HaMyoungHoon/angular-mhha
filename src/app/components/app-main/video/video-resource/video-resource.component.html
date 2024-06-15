@@ -1,0 +1,3 @@
+<video #video *ngIf="videoSrc" width="1024" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
+       [controlsList]="controlList()" (canplay)="video.play()" (loadedmetadata)="video.muted = true">
+</video>
