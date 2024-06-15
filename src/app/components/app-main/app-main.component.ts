@@ -10,6 +10,7 @@ import {FooterSectionComponent} from "../landing/footer-section/footer-section.c
 import {getLocalStorage} from "../../guards/amhohwa";
 import {AppConfigComponent} from "./app-config/app-config.component";
 import {DocMenuComponent} from "./app-menu/doc-menu.component";
+import {AdvertisementComponent} from "../common/advertisement/advertisement.component";
 
 @Component({
   selector: 'app-app-main',
@@ -21,7 +22,8 @@ import {DocMenuComponent} from "./app-menu/doc-menu.component";
     RouterOutlet,
     FooterSectionComponent,
     AppConfigComponent,
-    DocMenuComponent
+    DocMenuComponent,
+    AdvertisementComponent
   ],
   templateUrl: './app-main.component.html'
 })

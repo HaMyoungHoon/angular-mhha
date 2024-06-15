@@ -1,4 +1,5 @@
 export const NOTFOUND_URL = "/notfound";
+export const API_SPRING = "/apiSpring";
 export const MAIN_URL = "main";
 export const NOT_YET_URL = "not_yet";
 export const DASHBOARD_URL = "dashboard";
@@ -6,6 +7,8 @@ export const BOK_LIST_URL = "bok/list";
 export const BOK_TEST_URL = "bok/test";
 export const ETC_QUILL_EDITOR_URL = "etc/quill_editor";
 export const ETC_QUILL_EDITOR_PUSH_URL = "etc/quill_editor/push";
+export const VIDEO_STREAM_URL = "video/stream"
+export const VIDEO_RESOURCE_URL = "video/resource"
 
 export const THEME_LINK = 'theme-link';
 export const HOME_TABLE_LINK = 'home-table-link';

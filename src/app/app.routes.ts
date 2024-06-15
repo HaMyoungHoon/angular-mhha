@@ -13,10 +13,13 @@ export const routes: Routes = [
       { path: FConstants.BOK_TEST_URL, loadChildren: () => import('./components/app-main/bok/bok-test/bok-test.module').then(m => m.BokTestModule) },
       { path: FConstants.ETC_QUILL_EDITOR_URL, loadChildren: () => import('./components/app-main/etc/quill-editor/quill-editor.module').then(m => m.QuillEditorModule) },
       { path: FConstants.ETC_QUILL_EDITOR_PUSH_URL, loadChildren: () => import('./components/app-main/etc/quill-editor-push/quill-editor-push.module').then(m => m.QuillEditorPushModule) },
+      { path: FConstants.VIDEO_STREAM_URL, loadChildren: () => import('./components/app-main/video/video-stream/video-stream.module').then(m => m.VideoStreamModule) },
+      { path: FConstants.VIDEO_RESOURCE_URL, loadChildren: () => import('./components/app-main/video/video-resource/video-resource.module').then(m => m.VideoResourceModule) },
       { path: FConstants.NOT_YET_URL, loadChildren: () => import('./components/app-main/not-yet/not-yet.module').then(m => m.NotYetModule) },
       { path: '**', redirectTo: FConstants.NOT_YET_URL },
     ]
   },
   { path: FConstants.NOTFOUND_URL.slice(1), loadChildren: () => import('./components/notfound/notfound.module').then(m => m.NotfoundModule) },
+  { path: FConstants.API_SPRING.slice(1), loadChildren: () => import('./components/notfound/notfound.module').then(m => m.NotfoundModule) },
   { path: '**', redirectTo: FConstants.NOTFOUND_URL },
 ];

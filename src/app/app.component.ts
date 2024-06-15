@@ -27,6 +27,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.injectScriptsAds();
     this.primeng.ripple = true;
   }
   injectScripts(): void {
@@ -45,6 +46,14 @@ export class AppComponent implements OnInit {
           gtag('config', 'GTM-TG4DXR8B');
         `;
     this.renderer.appendChild(this.document.body, scriptBody);
+  }
+  injectScriptsAds(): void {
+    const script = this.renderer.createElement('script');
+    script.type = 'text/javascript';
+    script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5278104943482837";
+    script.crossOrigin = true;
+    script.async = true;
+    this.renderer.appendChild(this.document.head, script);
   }
   bindRouteEvents(): void {
     this.router.events.subscribe((event) => {
