@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpContext, HttpHeaders, HttpParams} from "@angular/common/http";
 import {IRestResult} from "../../models/common/IRestResult";
 import {lastValueFrom, map} from "rxjs";
 import {ApiValidationService} from "./api-validation.service";
@@ -15,6 +15,20 @@ export class HttpResponseInterceptorService {
     reportProgress?: boolean,
     responseType?: "json",
     withCredentials?: boolean,
+  }
+  blobOptions?: {
+    headers?: HttpHeaders | {
+      [header: string]: string | string[];
+    };
+    context?: HttpContext;
+    observe?: 'body';
+    params?: HttpParams;
+    reportProgress?: boolean;
+    responseType: 'blob';
+    withCredentials?: boolean;
+    transferCache?: {
+      includeHeaders?: string[];
+    } | boolean;
   }
 
   constructor(private http: HttpClient) {
@@ -44,6 +58,13 @@ export class HttpResponseInterceptorService {
   }
   delete<T = any>(url: string): Promise<IRestResult<T>> {
     const ret = lastValueFrom(this.http.delete<IRestResult<T>>(url, this.options).pipe(
+      map(response => response)
+    ));
+    this.clear();
+    return ret;
+  }
+  getBlob(url: string): Promise<Blob> {
+    const ret = lastValueFrom(this.http.head(url, this.blobOptions!).pipe(
       map(response => response)
     ));
     this.clear();
@@ -81,11 +102,24 @@ export class HttpResponseInterceptorService {
 
     this.options!!.params = this.options!!.params.append(key, value);
   }
+  addBlobParam(key: string, value: string | number | boolean): void {
+    if (this.blobOptions!!.params === undefined) {
+      this.blobOptions!!.params = new HttpParams()
+    }
+
+    this.blobOptions!!.params = this.blobOptions!!.params.append(key, value);
+  }
   clear(): void {
     this.options = {
       headers: new HttpHeaders({
         "Content-Type": "application/json"
       }),
     };
+    this.blobOptions = {
+      headers: new HttpHeaders({
+        "Content-Type": "video/mp4"
+      }),
+      responseType: "blob"
+    }
   }
 }
