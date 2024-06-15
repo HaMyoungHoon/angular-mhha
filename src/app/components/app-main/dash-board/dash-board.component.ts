@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {RestDocComponent} from "../app-doc/rest-doc/rest-doc.component";
+import {afterNextRender, ChangeDetectorRef, Component} from '@angular/core';
+import {DomSanitizer} from "@angular/platform-browser";
 
 @Component({
   selector: 'app-dash-board',
@@ -7,11 +7,9 @@ import {RestDocComponent} from "../app-doc/rest-doc/rest-doc.component";
   styleUrl: './dash-board.component.scss'
 })
 export class DashBoardComponent {
-  docs = [
-    {
-      id: 'rest',
-      label: 'Rest',
-      component: RestDocComponent
-    }
-  ]
+  constructor(private cd: ChangeDetectorRef, private domSanitizer: DomSanitizer) {
+    afterNextRender(() => {
+      this.cd.markForCheck();
+    });
+  }
 }
