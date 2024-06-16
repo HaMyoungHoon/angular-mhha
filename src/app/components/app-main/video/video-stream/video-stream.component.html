@@ -1,3 +1,27 @@
-<video #video *ngIf="videoSrc" width="1024" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
-       [controlsList]="controlList()" (canplay)="video.play()" (loadedmetadata)="video.muted = true">
-</video>
+<div class="video-stream-container">
+  <div class="video-view-container">
+    <app-video-view #videoView />
+  </div>
+  <div class="video-list-container">
+    <p-dropdown class="video-category-model" [options]="videoCategoryModels"
+                [(ngModel)]="selectedVideoCategoryModel" optionLabel="dirName" (onChange)="selectVideoCategoryModel($event)">
+      <ng-template pTemplate="selectedItem" [ngIf]="selectedVideoCategoryModel">
+        <div>{{ selectedVideoCategoryModel.dirName }}</div>
+      </ng-template>
+      <ng-template let-videoCategory pTemplate="item">
+        <div>
+          {{ videoCategory.dirName }}
+        </div>
+      </ng-template>
+    </p-dropdown>
+    <p-listbox class="video-model" [options]="videoModels" *ngIf="videoModels" optionLabel="title"
+               [filter]="true" [(ngModel)]="selectedVideoModel" (onChange)="selectVideoModel($event)" [disabled]="videoModelDisable">
+      <ng-template let-video pTemplate="item">
+        <div class="flex align-items-center">
+          {{ video.title }}
+        </div>
+      </ng-template>
+    </p-listbox>
+  </div>
+  <app-advertisement class="advertisement-right-container" />
+</div>
