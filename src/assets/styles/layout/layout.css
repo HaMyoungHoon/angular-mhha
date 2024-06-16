@@ -464,7 +464,7 @@ button {
 }
 
 .layout-content {
-  padding: 6rem 4rem 0 4rem;
+  padding: 6rem 2rem 0 2rem;
   display: flex;
 }
 .layout-content .layout-content-slot {
