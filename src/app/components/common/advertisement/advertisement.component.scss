@@ -1,11 +1,21 @@
-.ad-container {
-  width: 10rem;
-  height: 100%;
-  margin-left: 1rem;
+
+@media screen and (max-width: 700px) {
+  .ad-container {
+    width: 100%;
+    height: 10%;
+    margin-top: 1rem;
+  }
+}
+@media screen and (min-width: 700px) {
+  .ad-container {
+    width: 100%;
+    height: 100%;
+    margin-left: 1rem;
+  }
 }
 
 .ad-border {
-  border-width: 0px;
+  border-width: 0;
   border-color: var(--card-border);
   border-style: solid;
   height: 100%;
