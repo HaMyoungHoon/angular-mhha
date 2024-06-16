@@ -1,15 +1,27 @@
 <div class="video-resource-container">
   <div [ngClass]="videoViewContainerStyle">
-    <div class="video-title-container">
+    <section class="video-title-container">
       <label class="video-title" *ngIf="selectedVideoModel">{{selectedVideoModel.title}}</label>
-      <p-iconField class="video-search" iconPosition="left">
-        <p-inputIcon [styleClass]="searchStyle" />
-        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
-      </p-iconField>
+      <div class="flex">
+        <p-button [ngClass]="videoRandomPlayStyle" (click)="randomVideo()" pTooltip="random" (mouseover)="videoIn($event)">
+          <span class="pi pi-refresh"></span>
+        </p-button>
+        <p-iconField class="video-search" iconPosition="left">
+          <p-inputIcon [styleClass]="searchStyle" />
+          <input pInputText type="text" class="w-full" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
+        </p-iconField>
+      </div>
+    </section>
+    <div>
+      <p-button [ngClass]="videoRandomOverlayPlayStyle" (click)="randomVideo()" pTooltip="random" (mouseover)="refreshButtonIn($event)">
+        <span class="pi pi-refresh"></span>
+      </p-button>
+      <video #videoView *ngIf="videoSrc" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
+             (mouseover)="videoIn($event)" (mouseleave)="videoOut($event)"
+             (fullscreenchange)="videoFullScreen($event)"
+             (playing)="videoPlaying($event)" [controlsList]="controlList()" [volume]="volume" (volumechange)="volumechange($event)">
+      </video>
     </div>
-    <video #videoView *ngIf="videoSrc" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
-           (playing)="videoPlaying($event)" [controlsList]="controlList()" [volume]="volume" (volumechange)="volumechange($event)">
-    </video>
   </div>
   <div [ngClass]="videoListContainerStyle">
     <p-listbox class="video-model" [options]="videoModels" *ngIf="videoModels && videoModels.length > 0" optionLabel="title"

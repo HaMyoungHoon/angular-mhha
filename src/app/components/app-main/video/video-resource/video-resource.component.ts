@@ -1,4 +1,4 @@
-import {afterNextRender, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component, ElementRef, Inject, ViewChild} from '@angular/core';
 import {VideoStreamService} from "../../../../services/rest/video-stream.service";
 import {HttpEvent, HttpEventType} from "@angular/common/http";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
@@ -6,6 +6,7 @@ import {VideoModel} from "../../../../models/rest/file/video/video-model";
 import {getLocalStorage, setLocalStorage} from "../../../../guards/amhohwa";
 import * as FConstants from "../../../../guards/f-constants";
 import {debounceTime, Subject, Subscription} from "rxjs";
+import {DOCUMENT} from "@angular/common";
 
 @Component({
   selector: 'app-video-resource',
@@ -23,10 +24,16 @@ export class VideoResourceComponent {
   consoleLog: number = 0;
   searchLoading: boolean = false;
   searchValue: string = "";
-  modelChanged: Subject<string> = new Subject<string>();
-  subscription?: Subscription;
-  debounceTime: number = 1000;
-  constructor(private cd: ChangeDetectorRef, private videoStreamService: VideoStreamService, private fDialogService: FDialogService) {
+  searchSubject: Subject<string> = new Subject<string>();
+  searchObserver?: Subscription;
+  searchDebounceTime: number = 1000;
+  mouseOver: boolean = false;
+  isMobile: boolean = false;
+  refreshSubject: Subject<boolean> = new Subject<boolean>();
+  refreshObserver?: Subscription;
+  refreshDebounceTime: number = 1000;
+  constructor(@Inject(DOCUMENT) private document: Document, private cd: ChangeDetectorRef,
+              private videoStreamService: VideoStreamService, private fDialogService: FDialogService) {
     this.init();
     afterNextRender(() => {
       this.cd.markForCheck();
@@ -37,33 +44,25 @@ export class VideoResourceComponent {
   }
 
   init(): void {
-    this.initVolume();
+    this.initVideo();
     this.initSearch();
-    this.videoStreamService.getVideoList().then(x => {
-      if (x.result) {
-        const videoModels = x.data;
-        if (videoModels === undefined) {
-          return;
-        }
-        this.selectedVideoModel = videoModels[Math.floor(Math.random() * videoModels.length + 1)];
-        this.videoSrc = this.videoStreamService.getVideoResourceUrl(this.selectedVideoModel.thisIndex);
-        return;
-      }
-      this.fDialogService.warn('init', x.msg);
-    }).catch(x => {
-      this.fDialogService.error('init catch', x.message);
-    });
+    this.randomVideo();
+    this.isMobile = !navigator.userAgent.includes("Window");
   }
-  initVolume(): void {
+  initVideo(): void {
     let defVolume = +getLocalStorage(FConstants.DEF_VOLUME)
     if (defVolume === 0 || defVolume > 1) {
       defVolume = 0.3;
       setLocalStorage(FConstants.DEF_VOLUME, "0.3");
     }
     this.volume = defVolume;
+    this.refreshObserver = this.refreshSubject.pipe(debounceTime(this.refreshDebounceTime))
+      .subscribe((x) => {
+        this.mouseOver = x;
+      });
   }
   initSearch(): void {
-    this.subscription = this.modelChanged.pipe(debounceTime(this.debounceTime))
+    this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
       .subscribe((x) => {
         this.searchLoading = false;
         this.searchVideo();
@@ -75,6 +74,21 @@ export class VideoResourceComponent {
     }
     return "video-view-container";
   }
+  get videoRandomOverlayPlayStyle(): string {
+    if (this.isMobile) {
+      return "video-overlay-random-button";
+    }
+    if (this.mouseOver) {
+      return "video-overlay-random-button active";
+    }
+    return "video-overlay-random-button";
+  }
+  get videoRandomPlayStyle(): string {
+    if (this.isMobile) {
+      return "video-side-random-button active";
+    }
+    return "video-side-random-button";
+  }
   get videoListContainerStyle(): string {
     if (this.videoModels && this.videoModels.length > 0) {
       return "video-list-container-active";
@@ -84,9 +98,48 @@ export class VideoResourceComponent {
   controlList(): string {
     return "nodownload";
   }
+  randomVideo(): void {
+    this.videoStreamService.getVideoList().then(x => {
+      if (x.result) {
+        const videoModels = x.data;
+        if (videoModels === undefined) {
+          return;
+        }
+        this.selectedVideoModel = videoModels[Math.floor(Math.random() * videoModels.length)];
+        this.videoSrc = this.videoStreamService.getVideoResourceUrl(this.selectedVideoModel.thisIndex);
+        return;
+      }
+      this.fDialogService.warn('init', x.msg);
+    }).catch(x => {
+      this.fDialogService.error('init catch', x.message);
+    });
+  }
   get searchStyle(): string {
     if (this.searchLoading) return "pi pi-spinner pi-spin";
     else return "pi pi-search";
+  }
+  refreshButtonIn(data: any): void {
+    this.mouseOver = true;
+    this.refreshSubject.next(true);
+  }
+  videoIn(data: any): void {
+    this.mouseOver = true;
+    this.refreshSubject.next(false);
+  }
+  videoOut(data: any): void {
+    this.mouseOver = false;
+  }
+  videoFullScreen(data: any): void {
+    // @ts-ignore
+    const screenElem = this.document.webkitFullscreenElement;
+    // 이게 null 이면 full screen이 아닌 거임.
+//    if (screenElem != null) {
+//      this.mouseOver = true;
+//      console.log(this.mouseOver);
+//    } else {
+//      this.mouseOver = false;
+//      console.log(this.mouseOver);
+//    }
   }
   videoPlaying(data: any): void {
   }
@@ -99,7 +152,7 @@ export class VideoResourceComponent {
   }
   searchChange(data: any): void {
     this.searchLoading = true;
-    this.modelChanged.next(data);
+    this.searchSubject.next(data);
   }
   searchVideo(): void {
     if (this.searchValue.length <= 0) {

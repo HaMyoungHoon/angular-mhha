@@ -8,10 +8,7 @@
 video {
   width: 100%;
   height: 100%;
-  max-height: 80vh;
-  border-width: 1px;
-  border-color: var(--card-border);
-  border-style: solid;
+  max-height: 90vh;
 }
 .video-title-container {
   display: flex;
@@ -19,12 +16,34 @@ video {
 }
 .video-title {
   display: flex;
+  width: 100%;
   flex-wrap: wrap;
   align-content: center;
 }
+.video-overlay-random-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  z-index: 2;
+  visibility: hidden;
+  transition: .3s linear;
+  align-content: center;
+}
+.video-overlay-random-button.active {
+  z-index: 10;
+  opacity: 0.7;
+  visibility: visible;
+}
+.video-side-random-button {
+  visibility: hidden;
+}
+.video-side-random-button.active {
+  margin: 1px;
+  visibility: visible;
+}
 .video-search {
-  display: flex;
-  flex-wrap: wrap;
+  flex: 1;
 }
 
 @media screen and (max-width: 700px)  {
@@ -41,7 +60,7 @@ video {
     flex: 0 0 auto;
   }
   .advertisement-right-container {
-    display: block;
+    display: flex;
     width: 100%;
     padding: 1px;
     flex: 0 0 auto;

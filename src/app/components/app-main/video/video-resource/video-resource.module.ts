@@ -10,13 +10,15 @@ import {InputIconModule} from "primeng/inputicon";
 import {IconFieldModule} from "primeng/iconfield";
 import {ListboxModule} from "primeng/listbox";
 import {SkeletonModule} from "primeng/skeleton";
+import {ButtonModule} from "primeng/button";
+import {TooltipModule} from "primeng/tooltip";
 
 
 
 @NgModule({
   declarations: [VideoResourceComponent],
   imports: [
-    CommonModule, VideoResourceRoutingModule, AdvertisementComponent, FloatLabelModule, InputTextModule, FormsModule, InputIconModule, IconFieldModule, ListboxModule, SkeletonModule
+    CommonModule, VideoResourceRoutingModule, AdvertisementComponent, FloatLabelModule, InputTextModule, FormsModule, InputIconModule, IconFieldModule, ListboxModule, SkeletonModule, ButtonModule, TooltipModule
   ]
 })
 export class VideoResourceModule { }
