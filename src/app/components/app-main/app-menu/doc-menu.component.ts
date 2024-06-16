@@ -9,6 +9,8 @@ import {DomHandler} from "primeng/dom";
 import {NgForOf} from "@angular/common";
 import {DocMenuItemComponent} from "./app-menu-item/doc-menu-item.component";
 import {VideoStreamService} from "../../../services/rest/video-stream.service";
+import {getLocalStorage, isExpired} from "../../../guards/amhohwa";
+import * as FConstants from "../../../guards/f-constants";
 
 @Component({
   selector: 'doc-menu',
@@ -61,6 +63,11 @@ export class DocMenuComponent implements OnDestroy {
     });
   }
   initVideoMenu(): void {
+    const authToken = getLocalStorage(FConstants.AUTH_TOKEN);
+    if (isExpired(authToken)) {
+      return;
+    }
+
     this.videoStreamService.getCategoryRootList().then(x => {
       if (x.result) {
         const videoMenu = this.menu?.filter(x => x.name == "Video")
