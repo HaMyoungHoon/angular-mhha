@@ -97,6 +97,9 @@ export function toNumber(data: string): string {
 }
 
 export function isExpired(token: string): boolean {
+  if (token.length <= 0) {
+    return true;
+  }
   const now = Math.floor(new Date().getTime() / 1000);
   try {
     const exp = (JSON.parse(atob(token.split('.')[1]))).exp ?? 0;
