@@ -1,3 +1,25 @@
-<video #video *ngIf="videoSrc" width="1024" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
-       [controlsList]="controlList()" (canplay)="video.play()" (loadedmetadata)="video.muted = true">
-</video>
+<div class="video-resource-container">
+  <div [ngClass]="videoViewContainerStyle">
+    <div class="video-title-container">
+      <label class="video-title" *ngIf="selectedVideoModel">{{selectedVideoModel.title}}</label>
+      <p-iconField class="video-search" iconPosition="left">
+        <p-inputIcon [styleClass]="searchStyle" />
+        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
+      </p-iconField>
+    </div>
+    <video #videoView *ngIf="videoSrc" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
+           (playing)="videoPlaying($event)" [controlsList]="controlList()" [volume]="volume" (volumechange)="volumechange($event)">
+    </video>
+  </div>
+  <div [ngClass]="videoListContainerStyle">
+    <p-listbox class="video-model" [options]="videoModels" *ngIf="videoModels && videoModels.length > 0" optionLabel="title"
+               [filter]="true" [(ngModel)]="selectedVideoModel" (onChange)="selectVideoModel($event)" [disabled]="videoModelDisable">
+      <ng-template let-video pTemplate="item">
+        <div class="flex align-items-center">
+          {{ video.title }}
+        </div>
+      </ng-template>
+    </p-listbox>
+  </div>
+  <app-advertisement class="advertisement-right-container" />
+</div>
