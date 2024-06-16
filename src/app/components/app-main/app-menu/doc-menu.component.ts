@@ -8,6 +8,7 @@ import {NavigationEnd, Router} from "@angular/router";
 import {DomHandler} from "primeng/dom";
 import {NgForOf} from "@angular/common";
 import {DocMenuItemComponent} from "./app-menu-item/doc-menu-item.component";
+import {VideoStreamService} from "../../../services/rest/video-stream.service";
 
 @Component({
   selector: 'doc-menu',
@@ -27,7 +28,8 @@ export class DocMenuComponent implements OnDestroy {
   routerSubscription?: Subscription;
   constructor(private configService: AppConfigService, private el: ElementRef,
               private router: Router, private cd: ChangeDetectorRef,
-              private fDialogService: FDialogService, private angularCommonService: AngularCommonService) {
+              private fDialogService: FDialogService, private angularCommonService: AngularCommonService,
+              private videoStreamService: VideoStreamService) {
     this.initMenu();
     afterNextRender(() => {
       setTimeout(() => {
@@ -50,12 +52,30 @@ export class DocMenuComponent implements OnDestroy {
     this.angularCommonService.getMenu().then(x => {
       if (x.result) {
         this.menu = x.data;
+        this.initVideoMenu();
       } else {
         this.fDialogService.warn('menu', x.msg);
       }
     }).catch(x => {
       this.fDialogService.error('menu catch', x.message);
-    })
+    });
+  }
+  initVideoMenu(): void {
+    this.videoStreamService.getCategoryRootList().then(x => {
+      if (x.result) {
+        const videoMenu = this.menu?.filter(x => x.name == "Video")
+        if (videoMenu === undefined || videoMenu.length <= 0) {
+          return;
+        }
+        x.data?.forEach(y => {
+          videoMenu[0].children?.push(new DocMenuItem().setVideoMenu(y));
+        });
+        return;
+      }
+      this.fDialogService.warn('video menu init', x.msg);
+    }).catch(x => {
+      this.fDialogService.error('video menu init catch', x.message);
+    });
   }
   scrollToActiveItem(): void {
     const activeItem = DomHandler.findSingle(this.el.nativeElement, '.router-link-active');
