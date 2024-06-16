@@ -9,7 +9,7 @@
     "changeOrigin": true
   },
   "/apiSpring/" : {
-    "target": "http://spring.mhha.kr",
+    "target": "http://spring.mhha.kr:25801",
     "secure": false,
     "loglevel": "debug",
     "pathRewrite": {
