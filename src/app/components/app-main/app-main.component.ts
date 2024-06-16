@@ -25,7 +25,8 @@ import {AdvertisementComponent} from "../common/advertisement/advertisement.comp
     DocMenuComponent,
     AdvertisementComponent
   ],
-  templateUrl: './app-main.component.html'
+  templateUrl: './app-main.component.html',
+  styleUrl: './app-main.component.scss'
 })
 export class AppMainComponent {
   constructor(@Inject(DOCUMENT) private document: Document, private configService: AppConfigService) {
