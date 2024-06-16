@@ -19,5 +19,6 @@ export const DEF_TABLE_LIGHT_THEME = 'lara-light-blue';
 export const STORAGE_KEY_IS_DARK = "isDark";
 export const STORAGE_KEY_SCALE = "scale";
 export const STORAGE_KEY_NEWS = "news";
+export const DEF_VOLUME = "volume";
 
 export const AUTH_TOKEN = "auth_token";
