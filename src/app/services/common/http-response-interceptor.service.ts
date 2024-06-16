@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpContext, HttpHeaders, HttpParams} from "@angular/common/http";
 import {IRestResult} from "../../models/common/IRestResult";
-import {lastValueFrom, map} from "rxjs";
-import {ApiValidationService} from "./api-validation.service";
+import {lastValueFrom, map, Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +24,23 @@ export class HttpResponseInterceptorService {
     params?: HttpParams;
     reportProgress?: boolean;
     responseType: 'blob';
+    withCredentials?: boolean;
+    transferCache?: {
+      includeHeaders?: string[];
+    } | boolean;
+  }
+  anyOptions?: {
+    body?: any;
+    headers?: HttpHeaders | {
+      [header: string]: string | string[];
+    };
+    context?: HttpContext;
+    params?: HttpParams | {
+      [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>;
+    };
+    observe?: 'body' | 'events' | 'response';
+    reportProgress?: boolean;
+    responseType?: 'arraybuffer' | 'blob' | 'json' | 'text';
     withCredentials?: boolean;
     transferCache?: {
       includeHeaders?: string[];
@@ -70,26 +86,22 @@ export class HttpResponseInterceptorService {
     this.clear();
     return ret;
   }
+  requestAny(method: string, url: string): Observable<any> {
+    return this.http.request(method, url, this.anyOptions)
+  }
   getAny<T = any>(url: string, options?: {
-    headers?: HttpHeaders | {[header: string]: string | string[]},
+    headers?: HttpHeaders | { [ header: string ]: string | string[] },
     observe?: "body",
-    params?: HttpParams | {[param: string]: string | string[]},
+    params?: HttpParams,
     reportProgress?: boolean,
     responseType?: "json",
     withCredentials?: boolean,
-  }): Promise<T> {
-    return lastValueFrom(this.http.get<T>(url, options).pipe(
+  }): Promise<any> {
+    return lastValueFrom(this.http.get(url, options).pipe(
       map(response => response)
     ));
   }
-  postAny<T = any>(url: string, param?: FormData, options?: {
-    headers?: HttpHeaders | {[header: string]: string | string[]},
-    observe?: "body",
-    params?: HttpParams | {[param: string]: string | string[]},
-    reportProgress?: boolean,
-    responseType?: "json",
-    withCredentials?: boolean,
-  }): Promise<T> {
+  postAny<T = any>(url: string, param?: FormData): Promise<T> {
     return lastValueFrom(this.http.post<T>(url, param).pipe(
       map(response => response)
     ));
@@ -120,6 +132,11 @@ export class HttpResponseInterceptorService {
         "Content-Type": "video/mp4"
       }),
       responseType: "blob"
+    }
+    this.anyOptions = {
+      observe: 'events',
+      responseType: 'text',
+      reportProgress: true
     }
   }
 }
