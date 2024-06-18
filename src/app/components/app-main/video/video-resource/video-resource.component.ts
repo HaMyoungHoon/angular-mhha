@@ -1,21 +1,18 @@
-import {afterNextRender, ChangeDetectorRef, Component, ElementRef, Inject, ViewChild} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component, Inject, ViewChild} from "@angular/core";
 import {VideoStreamService} from "../../../../services/rest/video-stream.service";
-import {HttpEvent, HttpEventType} from "@angular/common/http";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {VideoModel} from "../../../../models/rest/file/video/video-model";
-import {getLocalStorage, setLocalStorage} from "../../../../guards/amhohwa";
-import * as FConstants from "../../../../guards/f-constants";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {DOCUMENT} from "@angular/common";
 import {VideoViewComponent} from "../../../common/video-view/video-view.component";
 
 @Component({
-  selector: 'app-video-resource',
-  templateUrl: './video-resource.component.html',
-  styleUrl: './video-resource.component.scss'
+  selector: "app-video-resource",
+  templateUrl: "./video-resource.component.html",
+  styleUrl: "./video-resource.component.scss"
 })
 export class VideoResourceComponent {
-  @ViewChild('videoView') videoView?: VideoViewComponent
+  @ViewChild("videoView") videoView?: VideoViewComponent
   selectedVideoModel?: VideoModel
   prevVideoModel?: VideoModel;
   videoModels?: VideoModel[];
@@ -29,7 +26,7 @@ export class VideoResourceComponent {
   isMobile: boolean = false;
   refreshSubject: Subject<boolean> = new Subject<boolean>();
   refreshObserver?: Subscription;
-  refreshDebounceTime: number = 1000;
+  refreshDebounceTime: number = 2000;
   mouseoverObserver?: Subscription;
   mouseleaveObserver?: Subscription;
   endedObserver?: Subscription;
@@ -61,7 +58,7 @@ export class VideoResourceComponent {
       this.videoOut(x);
       this.cd.detectChanges();
     })
-    this.endedObserver = this.videoView?.endedSubject?.subscribe(x => {
+    this.endedObserver = this.videoView?.endedSubject?.pipe(debounceTime(this.refreshDebounceTime)).subscribe(x => {
       this.refreshVideo(x);
       this.cd.detectChanges();
     })
@@ -111,9 +108,9 @@ export class VideoResourceComponent {
         this.videoView?.setVideoSrc(this.selectedVideoModel);
         return;
       }
-      this.fDialogService.warn('init', x.msg);
+      this.fDialogService.warn("init", x.msg);
     }).catch(x => {
-      this.fDialogService.error('init catch', x.message);
+      this.fDialogService.error("init catch", x.message);
     });
   }
   get searchStyle(): string {
@@ -158,11 +155,11 @@ export class VideoResourceComponent {
       this.videoModelDisable = false;
       this.videoModels = x.data;
       if (!x.result) {
-        this.fDialogService.warn('search', x.msg);
+        this.fDialogService.warn("search", x.msg);
       }
     }).catch(x => {
       this.videoModelDisable = false;
-      this.fDialogService.error('search catch', x.message);
+      this.fDialogService.error("search catch", x.message);
     });
   }
   selectVideoModel(data: any): void {

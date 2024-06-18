@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, Output, Renderer2} from '@angular/core';
+import {Component, EventEmitter, Inject, Output, Renderer2} from "@angular/core";
 import {DOCUMENT, NgClass, NgForOf} from "@angular/common";
 import {AppConfigService} from "../../../services/common/app-config.service";
 import {PrimeNGConfig} from "primeng/api";
@@ -9,7 +9,7 @@ import {FormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
 
 @Component({
-  selector: 'app-app-config',
+  selector: "app-app-config",
   standalone: true,
   imports: [
     SidebarModule,
@@ -20,12 +20,12 @@ import {ButtonModule} from "primeng/button";
     ButtonModule,
     NgForOf
   ],
-  templateUrl: './app-config.component.html'
+  templateUrl: "./app-config.component.html"
 })
 export class AppConfigComponent {
   inputStyles = [
-    { label: 'Outlined', value: 'outlined' },
-    { label: 'Filled', value: 'filled' }
+    { label: "Outlined", value: "outlined" },
+    { label: "Filled", value: "filled" }
   ];
   scales: number[] = [10, 12, 14, 16, 18];
   @Output() onDarkModeSwitch = new EventEmitter<any>();
@@ -43,7 +43,7 @@ export class AppConfigComponent {
   get inputStyle(): string {
     return this.config.inputStyle();
   }
-  set inputStyle(val: 'outlined' | 'filled') {
+  set inputStyle(val: "outlined" | "filled") {
     this.config.inputStyle.set(val);
   }
   get ripple(): boolean {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {IRestResult} from "../../models/common/IRestResult";
 import {DocPage} from "../../models/doc/DocPage";
@@ -6,7 +6,7 @@ import {NewsItem} from "../../models/rest/news/news-item";
 import {DocMenuItem} from "../../models/rest/doc/doc-menu-item";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AngularCommonService {
   private baseUrl = "/apiSpring/angular";

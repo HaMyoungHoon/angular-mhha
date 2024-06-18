@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 import {TableModule} from "primeng/table";
 import {NgForOf} from "@angular/common";
 import {TableDialogColumn} from "../../../models/common/table-dialog-column";
@@ -6,15 +6,15 @@ import {DialogService, DynamicDialogRef} from "primeng/dynamicdialog";
 import {ButtonModule} from "primeng/button";
 
 @Component({
-  selector: 'app-table-dialog',
+  selector: "app-table-dialog",
   standalone: true,
   imports: [
     TableModule,
     NgForOf,
     ButtonModule
   ],
-  templateUrl: './table-dialog.component.html',
-  styleUrl: './table-dialog.component.scss'
+  templateUrl: "./table-dialog.component.html",
+  styleUrl: "./table-dialog.component.scss"
 })
 export class TableDialogComponent {
   cols: TableDialogColumn[];
@@ -29,7 +29,7 @@ export class TableDialogComponent {
 
   ellipsis(data: string): string {
     if (data.length > 20) {
-      return data.substring(0, 20) + '...';
+      return data.substring(0, 20) + "...";
     }
 
     return data;

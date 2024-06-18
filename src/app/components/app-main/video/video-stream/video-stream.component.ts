@@ -1,6 +1,5 @@
-import {afterNextRender, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component, ViewChild} from "@angular/core";
 import {VideoStreamService} from "../../../../services/rest/video-stream.service";
-import {Observable, Subject} from "rxjs";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {VideoCategoryModel} from "../../../../models/rest/file/video/video-category-model";
 import {ActivatedRoute} from "@angular/router";
@@ -8,13 +7,13 @@ import {VideoModel} from "../../../../models/rest/file/video/video-model";
 import {VideoViewComponent} from "../../../common/video-view/video-view.component";
 
 @Component({
-  selector: 'app-video-stream',
-  templateUrl: './video-stream.component.html',
-  styleUrl: './video-stream.component.scss'
+  selector: "app-video-stream",
+  templateUrl: "./video-stream.component.html",
+  styleUrl: "./video-stream.component.scss"
 })
 export class VideoStreamComponent {
   rootDir?: string;
-  @ViewChild('videoView') videoView?: VideoViewComponent;
+  @ViewChild("videoView") videoView?: VideoViewComponent;
   videoCategoryModels?: VideoCategoryModel[];
   selectedVideoCategoryModel?: VideoCategoryModel;
   videoModelDisable: boolean;
@@ -24,7 +23,7 @@ export class VideoStreamComponent {
   constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef, private videoStreamService: VideoStreamService, private fDialogService: FDialogService) {
 //    this.videoSrc = ""
     route.paramMap.subscribe(x => {
-      this.rootDir = x.get('rootDir') ?? undefined;
+      this.rootDir = x.get("rootDir") ?? undefined;
       this.init();
     });
     this.videoModelDisable = false;
@@ -46,7 +45,7 @@ export class VideoStreamComponent {
         this.getVideoList();
         return;
       }
-      this.fDialogService.warn('init', x.msg);
+      this.fDialogService.warn("init", x.msg);
     }).catch(x => {
       this.fDialogService.error("init catch", x.message);
     });
@@ -72,7 +71,7 @@ export class VideoStreamComponent {
         this.cd.detectChanges();
         return;
       }
-      this.fDialogService.warn('videoList', x.msg);
+      this.fDialogService.warn("videoList", x.msg);
     }).catch(x => {
       this.fDialogService.error("videoList catch", x.message);
       this.videoModelDisable = false;

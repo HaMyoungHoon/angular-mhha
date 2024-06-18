@@ -1,4 +1,4 @@
-import {afterNextRender, ChangeDetectorRef, Component, ElementRef, OnDestroy} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component, ElementRef, OnDestroy} from "@angular/core";
 import {DocMenuItem} from "../../../models/rest/doc/doc-menu-item";
 import {FDialogService} from "../../../services/common/f-dialog.service";
 import {AngularCommonService} from "../../../services/rest/angular-common.service";
@@ -13,17 +13,17 @@ import {getLocalStorage, isExpired} from "../../../guards/amhohwa";
 import * as FConstants from "../../../guards/f-constants";
 
 @Component({
-  selector: 'doc-menu',
+  selector: "doc-menu",
   standalone: true,
   imports: [
     NgForOf, DocMenuItemComponent
   ],
-  templateUrl: './doc-menu.component.html',
+  templateUrl: "./doc-menu.component.html",
   host: {
-    class: 'layout-sidebar',
-    '[class.active]': 'isActive'
+    class: "layout-sidebar",
+    "[class.active]": "isActive"
   },
-  styleUrl: './doc-menu.component.scss'
+  styleUrl: "./doc-menu.component.scss"
 })
 export class DocMenuComponent implements OnDestroy {
   menu?: DocMenuItem[];
@@ -40,7 +40,7 @@ export class DocMenuComponent implements OnDestroy {
       this.routerSubscription = this.router.events.subscribe((event) => {
         if (event instanceof NavigationEnd && this.configService.state.menuActive) {
           this.configService.hideMenu();
-          DomHandler.unblockBodyScroll('blocked-scroll');
+          DomHandler.unblockBodyScroll("blocked-scroll");
         }
       })
       this.cd.markForCheck();
@@ -56,10 +56,10 @@ export class DocMenuComponent implements OnDestroy {
         this.menu = x.data;
         this.initVideoMenu();
       } else {
-        this.fDialogService.warn('menu', x.msg);
+        this.fDialogService.warn("menu", x.msg);
       }
     }).catch(x => {
-      this.fDialogService.error('menu catch', x.message);
+      this.fDialogService.error("menu catch", x.message);
     });
   }
   initVideoMenu(): void {
@@ -79,15 +79,15 @@ export class DocMenuComponent implements OnDestroy {
         });
         return;
       }
-      this.fDialogService.warn('video menu init', x.msg);
+      this.fDialogService.warn("video menu init", x.msg);
     }).catch(x => {
-      this.fDialogService.error('video menu init catch', x.message);
+      this.fDialogService.error("video menu init catch", x.message);
     });
   }
   scrollToActiveItem(): void {
-    const activeItem = DomHandler.findSingle(this.el.nativeElement, '.router-link-active');
+    const activeItem = DomHandler.findSingle(this.el.nativeElement, ".router-link-active");
     if (activeItem && !this.isInViewport(activeItem)) {
-      activeItem.scrollIntoView({ block: 'center' });
+      activeItem.scrollIntoView({ block: "center" });
     }
   }
   isInViewport(element: any): boolean {

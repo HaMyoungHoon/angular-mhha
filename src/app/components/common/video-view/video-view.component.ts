@@ -1,4 +1,4 @@
-import {afterNextRender, ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component, ElementRef, ViewChild} from "@angular/core";
 import {VideoStreamService} from "../../../services/rest/video-stream.service";
 import {NgIf} from "@angular/common";
 import {FDialogService} from "../../../services/common/f-dialog.service";
@@ -12,7 +12,7 @@ import {SafeUrlPipe} from "../../../guards/safe-url.pipe";
 import {Subject} from "rxjs";
 
 @Component({
-  selector: 'app-video-view',
+  selector: "app-video-view",
   standalone: true,
   imports: [
     NgIf,
@@ -20,14 +20,14 @@ import {Subject} from "rxjs";
     SkeletonModule,
     SafeUrlPipe
   ],
-  templateUrl: './video-view.component.html',
-  styleUrl: './video-view.component.scss'
+  templateUrl: "./video-view.component.html",
+  styleUrl: "./video-view.component.scss"
 })
 export class VideoViewComponent {
   volume: number = 0.3;
   videoSrc?: string;
   videoModel?: VideoModel;
-  @ViewChild('videoView') videoView?: ElementRef;
+  @ViewChild("videoView") videoView?: ElementRef;
   mouseoverSubject: Subject<any> = new Subject<any>();
   mouseleaveSubject: Subject<any> = new Subject<any>();
   fullscreenchangeSubject: Subject<any> = new Subject<any>();
@@ -59,7 +59,7 @@ export class VideoViewComponent {
 //      this.videoSrc = window.URL.createObjectURL(x.body);
 //      this.cd.detectChanges();
 //    }).catch(x => {
-//      this.fDialogService.error('setVideoSrc catch', x.message);
+//      this.fDialogService.error("setVideoSrc catch", x.message);
 //    })
 //    this.cd.detectChanges();
   }

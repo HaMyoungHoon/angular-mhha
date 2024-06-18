@@ -1,4 +1,4 @@
-import {afterNextRender, ChangeDetectorRef, Component} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {FormsModule} from "@angular/forms";
 import {FDialogService} from "../../../services/common/f-dialog.service";
@@ -11,7 +11,7 @@ import {setLocalStorage} from "../../../guards/amhohwa";
 import * as FConstants from "../../../guards/f-constants";
 
 @Component({
-  selector: 'app-sign-dialog',
+  selector: "app-sign-dialog",
   standalone: true,
   imports: [
     FloatLabelModule,
@@ -20,8 +20,8 @@ import * as FConstants from "../../../guards/f-constants";
     PasswordModule,
     ButtonModule
   ],
-  templateUrl: './sign-dialog.component.html',
-  styleUrl: './sign-dialog.component.scss'
+  templateUrl: "./sign-dialog.component.html",
+  styleUrl: "./sign-dialog.component.scss"
 })
 export class SignDialogComponent {
   id: string;

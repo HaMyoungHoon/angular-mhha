@@ -1,4 +1,4 @@
-import {effect, Inject, Injectable, PLATFORM_ID, signal, WritableSignal} from '@angular/core';
+import {effect, Inject, Injectable, PLATFORM_ID, signal, WritableSignal} from "@angular/core";
 import {AppConfig} from "../../models/common/app-config";
 import {AppState} from "../../models/common/app-state";
 import {Subject} from "rxjs";
@@ -7,7 +7,7 @@ import * as FConstants from "../../guards/f-constants";
 import {getLocalStorage, setLocalStorage} from "../../guards/amhohwa";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AppConfigService {
   private _config: AppConfig = {
@@ -35,7 +35,7 @@ export class AppConfigService {
       if (isPlatformBrowser(this.platformId)) {
         if (this.updateStyle(config)) {
           this.changeTheme();
-          const newTableTheme = !config.darkMode ? config.tableTheme?.replace('dark', 'light') : config.tableTheme?.replace('light', 'dark');
+          const newTableTheme = !config.darkMode ? config.tableTheme?.replace("dark", "light") : config.tableTheme?.replace("light", "dark");
           this.replaceTableTheme(newTableTheme ?? FConstants.DEF_TABLE_THEME);
         }
         this.changeScale(config.scale ?? 14);
@@ -49,7 +49,7 @@ export class AppConfigService {
   }
   onConfigUpdate(): void {
     const config = this.config();
-    config.tableTheme = !config.darkMode ? config.tableTheme?.replace('light', 'dark') : config.tableTheme?.replace('dark', 'light');
+    config.tableTheme = !config.darkMode ? config.tableTheme?.replace("light", "dark") : config.tableTheme?.replace("dark", "light");
     this._config = { ...config };
     this.configUpdate.next(this.config());
   }
@@ -74,36 +74,36 @@ export class AppConfigService {
   changeTheme(): void {
     const config = this.config();
     const themeLink = <HTMLLinkElement>document.getElementById(FConstants.THEME_LINK);
-    const themeLinkHref = themeLink.getAttribute('href')!;
-    const newHref = themeLinkHref.split('/')
+    const themeLinkHref = themeLink.getAttribute("href")!;
+    const newHref = themeLinkHref.split("/")
       .map((el) => (el == this._config.theme ? (el = config.theme ?? FConstants.DEF_THEME) : el == `theme-${this._config.darkMode}` ? (el = `theme-${config.darkMode}`) : el))
-      .join('/');
+      .join("/");
     this.replaceThemeLink(newHref);
   }
   replaceThemeLink(href: string): void {
     let themeLink = <HTMLLinkElement>document.getElementById(FConstants.THEME_LINK);
     const cloneLinkElement = <HTMLLinkElement>themeLink.cloneNode(true);
-    cloneLinkElement.setAttribute('href', href);
-    cloneLinkElement.setAttribute('id', FConstants.THEME_LINK + '-clone');
+    cloneLinkElement.setAttribute("href", href);
+    cloneLinkElement.setAttribute("id", FConstants.THEME_LINK + "-clone");
     themeLink.parentNode!.insertBefore(cloneLinkElement, themeLink.nextSibling);
-    cloneLinkElement.addEventListener('load', () => {
+    cloneLinkElement.addEventListener("load", () => {
       themeLink.remove();
-      cloneLinkElement.setAttribute('id', FConstants.THEME_LINK);
+      cloneLinkElement.setAttribute("id", FConstants.THEME_LINK);
     });
-    setLocalStorage(FConstants.STORAGE_KEY_IS_DARK, this.config().darkMode?.toString() ?? 'true');
+    setLocalStorage(FConstants.STORAGE_KEY_IS_DARK, this.config().darkMode?.toString() ?? "true");
   }
   replaceTableTheme(newTheme: string): void {
     const linkElement = <HTMLLinkElement>document.getElementById(FConstants.HOME_TABLE_LINK);
-    const tableThemeTokens = linkElement?.getAttribute('href')?.split('/') ?? null;
+    const tableThemeTokens = linkElement?.getAttribute("href")?.split("/") ?? null;
     const currentTableTheme = tableThemeTokens ? tableThemeTokens[tableThemeTokens.length - 2] : FConstants.DEF_TABLE_THEME;
     if (currentTableTheme !== newTheme && tableThemeTokens) {
-      const newThemeUrl = linkElement?.getAttribute('href')?.replace(currentTableTheme, newTheme) ?? FConstants.DEF_THEME;
+      const newThemeUrl = linkElement?.getAttribute("href")?.replace(currentTableTheme, newTheme) ?? FConstants.DEF_THEME;
       const cloneLinkElement = <HTMLLinkElement>linkElement.cloneNode(true);
-      cloneLinkElement.setAttribute('id', FConstants.HOME_TABLE_LINK + '-clone');
-      cloneLinkElement.setAttribute('href', newThemeUrl);
-      cloneLinkElement.addEventListener('load', () => {
+      cloneLinkElement.setAttribute("id", FConstants.HOME_TABLE_LINK + "-clone");
+      cloneLinkElement.setAttribute("href", newThemeUrl);
+      cloneLinkElement.addEventListener("load", () => {
         linkElement.remove();
-        cloneLinkElement.setAttribute('id', FConstants.HOME_TABLE_LINK);
+        cloneLinkElement.setAttribute("id", FConstants.HOME_TABLE_LINK);
       });
       linkElement.parentNode?.insertBefore(cloneLinkElement, linkElement.nextSibling);
     }

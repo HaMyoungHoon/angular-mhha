@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {ButtonModule} from "primeng/button";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {FormsModule} from "@angular/forms";
@@ -7,7 +7,7 @@ import {BokStatisticTableListRequest} from "../../../../../models/rest/bok/bok-s
 import {NgClass} from "@angular/common";
 
 @Component({
-  selector: 'app-bok-table-search',
+  selector: "app-bok-table-search",
   standalone: true,
   imports: [
     ButtonModule,
@@ -16,8 +16,8 @@ import {NgClass} from "@angular/common";
     InputTextModule,
     NgClass
   ],
-  templateUrl: './bok-table-search.component.html',
-  styleUrl: './bok-table-search.component.scss'
+  templateUrl: "./bok-table-search.component.html",
+  styleUrl: "./bok-table-search.component.scss"
 })
 export class BokTableSearchComponent {
   @Input() reqDataTable!: BokStatisticTableListRequest;

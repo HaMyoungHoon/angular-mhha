@@ -1,4 +1,4 @@
-import {booleanAttribute, Component, Input} from '@angular/core';
+import {booleanAttribute, Component, Input} from "@angular/core";
 import {DocMenuItem} from "../../../../models/rest/doc/doc-menu-item";
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
@@ -8,7 +8,7 @@ import {TagModule} from "primeng/tag";
 import {UndoIcon} from "primeng/icons/undo";
 
 @Component({
-  selector: '[doc-menu-item]',
+  selector: "[doc-menu-item]",
   standalone: true,
   imports: [
     NgIf,
@@ -20,8 +20,8 @@ import {UndoIcon} from "primeng/icons/undo";
     RouterLinkActive,
     NgForOf
   ],
-  templateUrl: './doc-menu-item.component.html',
-  styleUrl: './doc-menu-item.component.scss'
+  templateUrl: "./doc-menu-item.component.html",
+  styleUrl: "./doc-menu-item.component.scss"
 })
 export class DocMenuItemComponent {
   @Input() item?: DocMenuItem;
@@ -34,7 +34,7 @@ export class DocMenuItemComponent {
     if (menuItem === undefined) {
       return false
     }
-    const url = this.router.url.split('#')[0];
+    const url = this.router.url.split("#")[0];
     return menuItem.children !== undefined && !menuItem.children.some(item => item.routerLink === `${url}` ||
       (item.children && item.children.some(it => it.routerLink === `${url}`)));
   }

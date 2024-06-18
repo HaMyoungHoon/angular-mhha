@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component
-} from '@angular/core';
+} from "@angular/core";
 import {NgIf} from "@angular/common";
 import {NewsItem} from "../../../models/rest/news/news-item";
 import {AppConfigService} from "../../../services/common/app-config.service";
@@ -13,12 +13,12 @@ import {AngularCommonService} from "../../../services/rest/angular-common.servic
 import {FDialogService} from "../../../services/common/f-dialog.service";
 
 @Component({
-  selector: 'app-app-news',
+  selector: "app-app-news",
   standalone: true,
   imports: [
     NgIf
   ],
-  templateUrl: './app-news.component.html',
+  templateUrl: "./app-news.component.html",
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppNewsComponent {
@@ -50,7 +50,7 @@ export class AppNewsComponent {
         this.configService.showNews();
       }
     }).catch(x => {
-      this.fDialogService.warn('news', x.message);
+      this.fDialogService.warn("news", x.message);
     }).finally(() => {
       this.cd.detectChanges();
     });

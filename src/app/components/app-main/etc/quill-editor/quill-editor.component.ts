@@ -1,9 +1,9 @@
-import {afterNextRender, ChangeDetectorRef, Component} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
 
 @Component({
-  selector: 'app-quill-editor',
-  templateUrl: './quill-editor.component.html',
-  styleUrl: './quill-editor.component.scss'
+  selector: "app-quill-editor",
+  templateUrl: "./quill-editor.component.html",
+  styleUrl: "./quill-editor.component.scss"
 })
 export class QuillEditorComponent {
   editorData: any;

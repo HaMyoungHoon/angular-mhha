@@ -13,13 +13,13 @@
         bottom: 0;
         width: 100%;
         border-bottom: 1px solid var(--surface-border);
-        content: '';
+        content: "";
     }
 
     li {
         position: relative;
         z-index: 1;
-        
+
         button {
             background-color: transparent;
             border: 0 none;
@@ -219,9 +219,9 @@
     }
 }
 
-.doc-section-code { 
+.doc-section-code {
     position: relative;
-    
+
     div {
         &::-webkit-scrollbar {
             width: 5px;
@@ -253,7 +253,7 @@
     padding: 2px;
     backdrop-filter: blur(6px);
     border: 1px solid rgba(255, 255, 255, .1);
-    
+
     button {
         outline: 0 none;
         border-radius: 8px;

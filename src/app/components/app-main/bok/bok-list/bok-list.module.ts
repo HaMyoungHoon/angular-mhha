@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import {BokListComponent} from "./bok-list.component";
 import {BokListRoutingModule} from "./bok-list-routing.module";
 import {TreeModule} from "primeng/tree";

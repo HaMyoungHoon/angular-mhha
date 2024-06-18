@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import {QuillEditorComponent} from "./quill-editor.component";
 import {QuillEditorRoutingModule} from "./quill-editor-routing.module";
 import {EditorModule} from "primeng/editor";

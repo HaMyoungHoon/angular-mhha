@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import {VideoResourceComponent} from "./video-resource.component";
 import {VideoResourceRoutingModule} from "./video-resource-routing.module";
 import {AdvertisementComponent} from "../../../common/advertisement/advertisement.component";

@@ -1,4 +1,4 @@
-import {afterNextRender, ChangeDetectorRef, Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {NgIf} from "@angular/common";
 import {SharedModule, TreeNode} from "primeng/api";
 import {TreeModule} from "primeng/tree";
@@ -8,15 +8,15 @@ import {BokService} from "../../../../../services/rest/bok.service";
 import {FDialogService} from "../../../../../services/common/f-dialog.service";
 
 @Component({
-  selector: 'app-bok-table',
+  selector: "app-bok-table",
   standalone: true,
   imports: [
     NgIf,
     SharedModule,
     TreeModule
   ],
-  templateUrl: './bok-table.component.html',
-  styleUrl: './bok-table.component.scss'
+  templateUrl: "./bok-table.component.html",
+  styleUrl: "./bok-table.component.scss"
 })
 export class BokTableComponent {
   loading: boolean;

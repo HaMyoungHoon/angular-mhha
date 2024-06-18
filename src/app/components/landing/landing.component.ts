@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit} from "@angular/core";
 import {Subscription} from "rxjs";
 import {AppConfigService} from "../../services/common/app-config.service";
 import {Meta, Title} from "@angular/platform-browser";
@@ -10,10 +10,9 @@ import {getLocalStorage, setLocalStorage} from "../../guards/amhohwa";
 import * as FConstants from "../../guards/f-constants";
 import {AppMidComponent} from "./app-mid/app-mid.component";
 import {ToastModule} from "primeng/toast";
-import {MessageService} from "primeng/api";
 
 @Component({
-  selector: 'app-landing',
+  selector: "app-landing",
   standalone: true,
   imports: [
     NgClass,
@@ -23,15 +22,15 @@ import {MessageService} from "primeng/api";
     AppMidComponent,
     ToastModule
   ],
-  templateUrl: './landing.component.html'
+  templateUrl: "./landing.component.html"
 })
 export class LandingComponent implements OnInit {
   subscription!: Subscription;
   constructor(private configService: AppConfigService, private metaService: Meta, private titleService: Title) {
     if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK).length <= 0) {
-      setLocalStorage(FConstants.STORAGE_KEY_IS_DARK, 'true');
+      setLocalStorage(FConstants.STORAGE_KEY_IS_DARK, "true");
     }
-    if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK) != 'false') {
+    if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK) != "false") {
       this.toDark();
     } else {
       this.toLight();
@@ -43,10 +42,10 @@ export class LandingComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.titleService.setTitle('angular mhha');
+    this.titleService.setTitle("angular mhha");
     this.metaService.updateTag({
-      name: 'description',
-      content: '앵귤러 테스트'
+      name: "description",
+      content: "앵귤러 테스트"
     });
   }
 
@@ -55,9 +54,9 @@ export class LandingComponent implements OnInit {
   }
   get landingClass() {
     return {
-      'layout-dark': this.isDarkMode,
-      'layout-light': !this.isDarkMode,
-      'layout-news-active': this.isNewsActive
+      "layout-dark": this.isDarkMode,
+      "layout-light": !this.isDarkMode,
+      "layout-news-active": this.isNewsActive
     };
   }
   get isDarkMode() {
@@ -75,11 +74,11 @@ export class LandingComponent implements OnInit {
     }
   }
   toDark(): void {
-    const newTableTheme = this.tableTheme.replace('light', 'dark');
+    const newTableTheme = this.tableTheme.replace("light", "dark");
     this.configService.config.update((config) => ({ ...config, darkMode: true, theme: FConstants.DEF_THEME, tableTheme: newTableTheme }));
   }
   toLight(): void {
-    const newTableTheme = this.tableTheme.replace('dark', 'light');
+    const newTableTheme = this.tableTheme.replace("dark", "light");
     this.configService.config.update((config) => ({ ...config, darkMode: false, theme: FConstants.DEF_LIGHT_THEME, tableTheme: newTableTheme }));
   }
 }

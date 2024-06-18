@@ -1,4 +1,4 @@
-import {afterNextRender, ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component, ViewChild} from "@angular/core";
 import {BokStatisticTableListRequest} from "../../../../models/rest/bok/bok-statistic-table-list-request";
 import {BokTableComponent} from "./bok-table/bok-table.component";
 import {BokTableSearchComponent} from "./bok-table-search/bok-table-search.component";
@@ -8,9 +8,9 @@ import {AngularCommonService} from "../../../../services/rest/angular-common.ser
 import {AngularWriteService} from "../../../../services/rest/angular-write.service";
 
 @Component({
-  selector: 'app-bok-list',
-  templateUrl: './bok-list.component.html',
-  styleUrl: './bok-list.component.scss'
+  selector: "app-bok-list",
+  templateUrl: "./bok-list.component.html",
+  styleUrl: "./bok-list.component.scss"
 })
 export class BokListComponent {
   @ViewChild("BokTableSearchComponent") bokTableSearch!: BokTableSearchComponent;
@@ -38,7 +38,7 @@ export class BokListComponent {
     this.bokTableSub.getTableItem(row);
   }
   initSummary(): void {
-    this.angularWriteService.getWriteFile('Statistics List').then(x => {
+    this.angularWriteService.getWriteFile("Statistics List").then(x => {
       if (x.result) {
         this.statisticsSummary = x.data?.content ?? "";
       }

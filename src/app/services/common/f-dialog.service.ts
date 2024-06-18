@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable} from "@angular/core";
 import {ToastItem} from "../../models/common/toast-item";
 import {ToastLevel} from "../../models/common/toast-level";
 import {DialogService, DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
@@ -7,11 +7,10 @@ import {FDialogComponent} from "../../components/common/f-dialog/f-dialog.compon
 import {SignDialogComponent} from "../../components/common/sign-dialog/sign-dialog.component";
 import {Observable} from "rxjs";
 import {TableDialogComponent} from "../../components/common/table-dialog/table-dialog.component";
-import {TableDialogColumn} from "../../models/common/table-dialog-column";
 import {HtmlEditDialogComponent} from "../../components/common/html-edit-dialog/html-edit-dialog.component";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class FDialogService {
   ref?: DynamicDialogRef
@@ -25,7 +24,7 @@ export class FDialogService {
   }
   openSignIn(): Observable<any> {
     this.ref = this.dialogService.open(SignDialogComponent, {
-      header: 'sign in',
+      header: "sign in",
       modal: true,
       closable: true,
       closeOnEscape: false,

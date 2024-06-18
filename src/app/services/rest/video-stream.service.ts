@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {IRestResult} from "../../models/common/IRestResult";
 import {VideoCategoryModel} from "../../models/rest/file/video/video-category-model";
@@ -6,7 +6,7 @@ import {VideoModel} from "../../models/rest/file/video/video-model";
 import {getToken} from "../../guards/amhohwa";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class VideoStreamService {
   private videoUrl = "/apiSpring/v1/video";
@@ -24,7 +24,7 @@ export class VideoStreamService {
   }
   getVideoByDirname(dirName: string): Promise<IRestResult<VideoCategoryModel>> {
     const url = `${this.videoUrl}/get/category/list/withVideo`;
-    this.httpResponse.addParam('dirName', dirName);
+    this.httpResponse.addParam("dirName", dirName);
     return this.httpResponse.get(url);
   }
   getVideoList(): Promise<IRestResult<VideoModel[]>> {

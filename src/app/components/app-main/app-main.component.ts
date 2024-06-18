@@ -1,4 +1,4 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject} from "@angular/core";
 import {DOCUMENT, NgClass} from "@angular/common";
 import {AppConfigService} from "../../services/common/app-config.service";
 import * as FConstants from "../../guards/f-constants";
@@ -13,7 +13,7 @@ import {DocMenuComponent} from "./app-menu/doc-menu.component";
 import {AdvertisementComponent} from "../common/advertisement/advertisement.component";
 
 @Component({
-  selector: 'app-app-main',
+  selector: "app-app-main",
   standalone: true,
   imports: [
     NgClass,
@@ -25,12 +25,12 @@ import {AdvertisementComponent} from "../common/advertisement/advertisement.comp
     DocMenuComponent,
     AdvertisementComponent
   ],
-  templateUrl: './app-main.component.html',
-  styleUrl: './app-main.component.scss'
+  templateUrl: "./app-main.component.html",
+  styleUrl: "./app-main.component.scss"
 })
 export class AppMainComponent {
   constructor(@Inject(DOCUMENT) private document: Document, private configService: AppConfigService) {
-    if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK) != 'true') {
+    if (getLocalStorage(FConstants.STORAGE_KEY_IS_DARK) != "true") {
       this.toggleDarkMode();
     }
 
@@ -57,25 +57,25 @@ export class AppMainComponent {
   }
   get containerClass() {
     return {
-      'layout-news-active': this.isNewsActive,
-      'p-ripple-disabled': this.isRippleDisabled,
-      'layout-dark': this.isDarkMode,
-      'layout-light': !this.isDarkMode
+      "layout-news-active": this.isNewsActive,
+      "p-ripple-disabled": this.isRippleDisabled,
+      "layout-dark": this.isDarkMode,
+      "layout-light": !this.isDarkMode
     };
   }
   toggleDarkMode(): void {
     let newTheme = null;
     const { theme, darkMode } = this.configService.config();
     if (darkMode) {
-      newTheme = theme?.replace('dark', 'light');
+      newTheme = theme?.replace("dark", "light");
     } else {
-      if (theme?.includes('light') && theme !== 'fluent-light') newTheme = theme?.replace('light', 'dark');
+      if (theme?.includes("light") && theme !== "fluent-light") newTheme = theme?.replace("light", "dark");
       else newTheme = FConstants.DEF_THEME;
     }
     this.configService.config.update((config) => ({ ...config, darkMode: !darkMode, theme: newTheme }));
   }
   hideMenu(): void {
     this.configService.hideMenu();
-    DomHandler.unblockBodyScroll('blocked-scroll');
+    DomHandler.unblockBodyScroll("blocked-scroll");
   }
 }

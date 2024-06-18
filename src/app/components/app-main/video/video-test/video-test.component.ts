@@ -1,14 +1,12 @@
-import {afterNextRender, ChangeDetectorRef, Component} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
 import {VideoStreamService} from "../../../../services/rest/video-stream.service";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
-import {HttpEventType} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
-import {debounceTime, Subject, Subscription} from "rxjs";
 
 @Component({
-  selector: 'app-video-test',
-  templateUrl: './video-test.component.html',
-  styleUrl: './video-test.component.scss'
+  selector: "app-video-test",
+  templateUrl: "./video-test.component.html",
+  styleUrl: "./video-test.component.scss"
 })
 export class VideoTestComponent {
   blobURl: any

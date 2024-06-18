@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Inject, Output, PLATFORM_ID, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Inject, Output, PLATFORM_ID, ViewChild} from "@angular/core";
 import {Editor, EditorModule} from "primeng/editor";
 import {FormsModule} from "@angular/forms";
 import {DOCUMENT} from "@angular/common";
@@ -6,15 +6,15 @@ import {FDialogService} from "../../../services/common/f-dialog.service";
 import {ButtonModule} from "primeng/button";
 
 @Component({
-  selector: 'app-quill',
+  selector: "app-quill",
   standalone: true,
   imports: [
     EditorModule,
     FormsModule,
     ButtonModule
   ],
-  templateUrl: './quill.component.html',
-  styleUrl: './quill.component.scss'
+  templateUrl: "./quill.component.html",
+  styleUrl: "./quill.component.scss"
 })
 export class QuillComponent {
   @ViewChild("quillEditor") quillEditor!: Editor;
@@ -78,6 +78,6 @@ export class QuillComponent {
 
     toolbar.lastChild?.appendChild(htmlButton);
 
-//    this.quillEditor.quill.register('modules/imageResize')
+//    this.quillEditor.quill.register("modules/imageResize")
   }
 }

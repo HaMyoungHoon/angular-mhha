@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {HttpHeaders} from "@angular/common/http";
 import {BokResponse} from "../../models/rest/bok/bok-response";
@@ -7,7 +7,7 @@ import {BokStatisticSearchRequest} from "../../models/rest/bok/bok-statistic-sea
 import {BokStatisticTableListRequest} from "../../models/rest/bok/bok-statistic-table-list-request";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class BokService {
   private baseUrl = "/apiBOK/api";

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input} from "@angular/core";
 import {BokStatisticTableRow} from "../../../../../models/rest/bok/bok-statistic-table-row";
 import {BokService} from "../../../../../services/rest/bok.service";
 import {FDialogService} from "../../../../../services/common/f-dialog.service";
@@ -7,13 +7,13 @@ import {BokStatisticItemRow} from "../../../../../models/rest/bok/bok-statistic-
 import {TableModule} from "primeng/table";
 
 @Component({
-  selector: 'app-bok-table-sub',
+  selector: "app-bok-table-sub",
   standalone: true,
   imports: [
     TableModule
   ],
-  templateUrl: './bok-table-sub.component.html',
-  styleUrl: './bok-table-sub.component.scss'
+  templateUrl: "./bok-table-sub.component.html",
+  styleUrl: "./bok-table-sub.component.scss"
 })
 export class BokTableSubComponent {
   loading: boolean;

@@ -1,11 +1,11 @@
-import {afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, Renderer2} from '@angular/core';
+import {afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, Renderer2} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
 
 @Component({
-  selector: 'app-footer-section',
+  selector: "app-footer-section",
   standalone: true,
   imports: [],
-  templateUrl: './footer-section.component.html'
+  templateUrl: "./footer-section.component.html"
 })
 export class FooterSectionComponent implements AfterViewInit {
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef) {
@@ -19,8 +19,8 @@ export class FooterSectionComponent implements AfterViewInit {
   }
 
   injectScripts(): void {
-    const scriptBody = this.renderer.createElement('script');
-    scriptBody.type = 'text/javascript';
+    const scriptBody = this.renderer.createElement("script");
+    scriptBody.type = "text/javascript";
     scriptBody.text = `(adsbygoogle = window.adsbygoogle || []).push({});`;
     this.renderer.appendChild(this.document.body, scriptBody);
   }

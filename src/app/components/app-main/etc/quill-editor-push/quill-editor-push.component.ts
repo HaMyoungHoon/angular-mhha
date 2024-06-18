@@ -1,4 +1,4 @@
-import {afterNextRender, ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {afterNextRender, ChangeDetectorRef, Component, ViewChild} from "@angular/core";
 import {getLocalStorage, isExpired} from "../../../../guards/amhohwa";
 import * as FConstants from "../../../../guards/f-constants";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
@@ -10,9 +10,9 @@ import {TableDialogColumn} from "../../../../models/common/table-dialog-column";
 import {QuillComponent} from "../../../common/quill/quill.component";
 
 @Component({
-  selector: 'app-quill-editor-push',
-  templateUrl: './quill-editor-push.component.html',
-  styleUrl: './quill-editor-push.component.scss'
+  selector: "app-quill-editor-push",
+  templateUrl: "./quill-editor-push.component.html",
+  styleUrl: "./quill-editor-push.component.scss"
 })
 export class QuillEditorPushComponent {
   @ViewChild("quillEditor") quillEditor!: QuillComponent;
@@ -51,9 +51,9 @@ export class QuillEditorPushComponent {
         this.treeNode = this.convertTreeNode(x.data);
         return;
       }
-      this.fDialogService.error('init', x.msg);
+      this.fDialogService.error("init", x.msg);
     }).catch(x => {
-      this.fDialogService.error('init catch', x.message);
+      this.fDialogService.error("init catch", x.message);
     });
   }
   setQuillText(data: string | undefined): void {
@@ -73,8 +73,8 @@ export class QuillEditorPushComponent {
       return;
     }
     const col: TableDialogColumn[] = [];
-    col.push(new TableDialogColumn().build('name', 'file name'));
-    col.push(new TableDialogColumn().build('content', 'file content'))
+    col.push(new TableDialogColumn().build("name", "file name"));
+    col.push(new TableDialogColumn().build("content", "file content"))
 
     this.fDialogService.openTable({
       header: "files",
@@ -147,9 +147,9 @@ export class QuillEditorPushComponent {
         this.openTable(x.data);
         return;
       }
-      this.fDialogService.warn('loadFile', x.msg);
+      this.fDialogService.warn("loadFile", x.msg);
     }).catch(x => {
-      this.fDialogService.error('loadFile catch', x.message);
+      this.fDialogService.error("loadFile catch", x.message);
     });
   }
   loadClose(): void {
@@ -166,9 +166,9 @@ export class QuillEditorPushComponent {
           this.loadClose();
           return;
         }
-        this.fDialogService.warn('edit file', x.msg);
+        this.fDialogService.warn("edit file", x.msg);
       }).catch(x => {
-        this.fDialogService.error('edit file catch', x.message);
+        this.fDialogService.error("edit file catch", x.message);
       });
       return;
     }
@@ -178,17 +178,17 @@ export class QuillEditorPushComponent {
         this.loadClose();
         return;
       }
-      this.fDialogService.warn('post file', x.msg);
+      this.fDialogService.warn("post file", x.msg);
     }).catch(x => {
-      this.fDialogService.error('post file catch', x.message);
+      this.fDialogService.error("post file catch", x.message);
     });
   }
 
-  get treeSelectionMode(): 'single' | 'multiple' | 'checkbox' | null | undefined {
+  get treeSelectionMode(): "single" | "multiple" | "checkbox" | null | undefined {
     if (this.isLoaded) {
       return null;
     }
-    return 'single';
+    return "single";
   }
   get canFilter(): boolean {
     return this.treeNode.length > 0;

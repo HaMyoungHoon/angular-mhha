@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {HttpResponseInterceptorService} from "../common/http-response-interceptor.service";
 import {IRestResult} from "../../models/common/IRestResult";
 import {HttpResponse} from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class FileCommonService {
   private videoUrl = "/apiSpring/v1/video";
@@ -14,27 +14,27 @@ export class FileCommonService {
 
   getVideoStreamName(name: string): Promise<IRestResult<HttpResponse<[]>>> {
     const url = `${this.videoUrl}/get/video/name/stream`;
-    this.httpResponse.addParam('fileName', name);
+    this.httpResponse.addParam("fileName", name);
     return this.httpResponse.get(url).then();
   }
   getVideoStreamIndex(index: number): Promise<Blob> {
     const url = `${this.videoUrl}/get/video/index/stream`;
-    this.httpResponse.addBlobParam('index', index);
+    this.httpResponse.addBlobParam("index", index);
     return this.httpResponse.getBlob(url).then();
   }
   getVideoResourceName(name: string): Promise<IRestResult<HttpResponse<[]>>> {
     const url = `${this.videoUrl}/get/video/name/resource`;
-    this.httpResponse.addParam('fileName', name);
+    this.httpResponse.addParam("fileName", name);
     return this.httpResponse.get(url).then();
   }
   getVideoResourceIndex(index: number): Promise<IRestResult<HttpResponse<[]>>> {
     const url = `${this.videoUrl}/get/video/index/resource`;
-    this.httpResponse.addParam('index', index);
+    this.httpResponse.addParam("index", index);
     return this.httpResponse.get(url).then();
   }
   getVideoRestIndex(index: number): Promise<IRestResult<Blob>> {
     const url = `${this.videoUrl}/get/rest/video/index/stream`;
-    this.httpResponse.addParam('index', index);
+    this.httpResponse.addParam("index", index);
     return this.httpResponse.get(url).then();
   }
 
