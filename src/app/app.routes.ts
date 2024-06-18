@@ -15,6 +15,7 @@ export const routes: Routes = [
       { path: FConstants.ETC_QUILL_EDITOR_PUSH_URL, loadChildren: () => import('./components/app-main/etc/quill-editor-push/quill-editor-push.module').then(m => m.QuillEditorPushModule) },
       { path: FConstants.VIDEO_STREAM_URL + "/:rootDir", loadChildren: () => import('./components/app-main/video/video-stream/video-stream.module').then(m => m.VideoStreamModule) },
       { path: FConstants.VIDEO_RESOURCE_URL, loadChildren: () => import('./components/app-main/video/video-resource/video-resource.module').then(m => m.VideoResourceModule) },
+      { path: FConstants.VIDEO_TEST_URL, loadChildren: () => import('./components/app-main/video/video-test/video-test.module').then(m => m.VideoTestModule) },
       { path: FConstants.NOT_YET_URL, loadChildren: () => import('./components/app-main/not-yet/not-yet.module').then(m => m.NotYetModule) },
       { path: '**', redirectTo: FConstants.NOT_YET_URL },
     ]
