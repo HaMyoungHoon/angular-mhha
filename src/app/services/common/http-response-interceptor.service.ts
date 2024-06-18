@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpContext, HttpHeaders, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
 import {IRestResult} from "../../models/common/IRestResult";
 import {lastValueFrom, map, Observable} from "rxjs";
 
@@ -19,9 +19,11 @@ export class HttpResponseInterceptorService {
     headers?: HttpHeaders | {
       [header: string]: string | string[];
     };
+    observe: 'response';
     context?: HttpContext;
-    observe?: 'body';
-    params?: HttpParams;
+    params?: HttpParams | {
+      [param: string]: string | number | boolean | ReadonlyArray<string | number | boolean>;
+    };
     reportProgress?: boolean;
     responseType: 'blob';
     withCredentials?: boolean;
@@ -79,8 +81,8 @@ export class HttpResponseInterceptorService {
     this.clear();
     return ret;
   }
-  getBlob(url: string): Promise<Blob> {
-    const ret = lastValueFrom(this.http.head(url, this.blobOptions!).pipe(
+  getBlob(url: string): Promise<HttpResponse<Blob>> {
+    const ret = lastValueFrom(this.http.get(url, this.blobOptions!).pipe(
       map(response => response)
     ));
     this.clear();
@@ -115,11 +117,11 @@ export class HttpResponseInterceptorService {
     this.options!!.params = this.options!!.params.append(key, value);
   }
   addBlobParam(key: string, value: string | number | boolean): void {
-    if (this.blobOptions!!.params === undefined) {
-      this.blobOptions!!.params = new HttpParams()
-    }
-
-    this.blobOptions!!.params = this.blobOptions!!.params.append(key, value);
+//    if (this.blobOptions!!.params === undefined) {
+//      this.blobOptions!!.params = new HttpParams()
+//    }
+//
+//    this.blobOptions!!.params = this.blobOptions!!.params.append(key, value);
   }
   clear(): void {
     this.options = {
@@ -128,14 +130,12 @@ export class HttpResponseInterceptorService {
       }),
     };
     this.blobOptions = {
-      headers: new HttpHeaders({
-        "Content-Type": "video/mp4"
-      }),
+      observe: "response",
       responseType: "blob"
     }
     this.anyOptions = {
       observe: 'events',
-      responseType: 'text',
+      responseType: 'blob',
       reportProgress: true
     }
   }

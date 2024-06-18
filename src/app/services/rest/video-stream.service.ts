@@ -35,11 +35,14 @@ export class VideoStreamService {
     const url = `${this.videoUrl}/get/video/list/searchString/${searchValue}`;
     return this.httpResponse.get(url);
   }
-  getVideoStream(thisIndex: number): Observable<any> {
-    return this.httpResponse.requestAny("get",this.getVideoStreamUrl(thisIndex));
+  getVideoStream(thisIndex: number): Promise<any> {
+    return this.httpResponse.getBlob(this.getVideoResourceUrl(thisIndex));
   }
+//  getVideoStream(thisIndex: number): Observable<any> {
+//    return this.httpResponse.requestAny("get",this.getVideoStreamUrl(thisIndex));
+//  }
   getVideoResource(thisIndex: number): Observable<any> {
-    return this.httpResponse.requestAny("get",this.getVideoResourceUrl(thisIndex));
+    return this.httpResponse.requestAny("get", this.getVideoResourceUrl(thisIndex));
   }
   getVideoByte(thisIndex: number): Observable<any> {
     return this.httpResponse.requestAny("get", this.getVideoByteUrl(thisIndex));
