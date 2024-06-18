@@ -36,16 +36,13 @@ export class VideoStreamService {
     return this.httpResponse.get(url);
   }
   getVideoStream(thisIndex: number): Promise<any> {
+    return this.httpResponse.getBlob(this.getVideoStreamUrl(thisIndex));
+  }
+  getVideoResource(thisIndex: number): Promise<any> {
     return this.httpResponse.getBlob(this.getVideoResourceUrl(thisIndex));
   }
-//  getVideoStream(thisIndex: number): Observable<any> {
-//    return this.httpResponse.requestAny("get",this.getVideoStreamUrl(thisIndex));
-//  }
-  getVideoResource(thisIndex: number): Observable<any> {
-    return this.httpResponse.requestAny("get", this.getVideoResourceUrl(thisIndex));
-  }
-  getVideoByte(thisIndex: number): Observable<any> {
-    return this.httpResponse.requestAny("get", this.getVideoByteUrl(thisIndex));
+  getVideoByte(thisIndex: number): Promise<any> {
+    return this.httpResponse.getBlob(this.getVideoByteUrl(thisIndex));
   }
 
   getVideoStreamUrl(thisIndex: number): string {

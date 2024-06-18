@@ -1,7 +1,7 @@
 <div class="w-full flex flex-column">
   <p-skeleton class="flex" *ngIf="videoSrc === undefined" width="100%" height="100px"/>
   <label class="w-full mb-2" *ngIf="videoModel">{{videoModel.title}}</label>
-  <video class="w-full" width="100%" #videoView *ngIf="videoSrc" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
+  <video class="w-full" width="100%" #videoView *ngIf="videoSrc" [src]="videoSrc | safeUrl" controls autoplay oncontextmenu="return false;"
          (playing)="videoPlaying($event)" [controlsList]="controlList()" [volume]="volume" (volumechange)="volumechange($event)">
   </video>
 

@@ -18,7 +18,7 @@
       </p-button>
       <video #videoView *ngIf="videoSrc" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
              (mouseover)="videoIn($event)" (mouseleave)="videoOut($event)"
-             (fullscreenchange)="videoFullScreen($event)"
+             (fullscreenchange)="videoFullScreen($event)" (ended)="refreshVideo($event)"
              (playing)="videoPlaying($event)" [controlsList]="controlList()" [volume]="volume" (volumechange)="volumechange($event)">
       </video>
     </div>

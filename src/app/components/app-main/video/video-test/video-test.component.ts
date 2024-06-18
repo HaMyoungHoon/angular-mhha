@@ -22,10 +22,11 @@ export class VideoTestComponent {
   }
 
   init(): void {
-    this.videoStreamService.getVideoStream(1).then(x => {
+    this.videoStreamService.getVideoStream(2).then(x => {
       console.log(x);
-//      const safeUrl = this.sanitizer.bypassSecurityTrustUrl(x);
-//      console.log(safeUrl);
+      const url = window.URL.createObjectURL(x.body);
+      const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url);
+      console.log(safeUrl);
 //      this.blobURl = safeUrl;
     }).catch(x => {
       console.log("getVideoStream catch");

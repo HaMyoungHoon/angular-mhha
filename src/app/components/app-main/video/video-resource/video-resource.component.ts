@@ -141,6 +141,9 @@ export class VideoResourceComponent {
 //      console.log(this.mouseOver);
 //    }
   }
+  refreshVideo(data: any): void {
+    this.randomVideo();
+  }
   videoPlaying(data: any): void {
   }
   volumechange(data: any): void {

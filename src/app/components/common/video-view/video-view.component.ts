@@ -8,6 +8,7 @@ import {getLocalStorage, setLocalStorage} from "../../../guards/amhohwa";
 import * as FConstants from "../../../guards/f-constants";
 import {SkeletonModule} from "primeng/skeleton";
 import {HttpEvent, HttpEventType} from "@angular/common/http";
+import {SafeUrlPipe} from "../../../guards/safe-url.pipe";
 
 @Component({
   selector: 'app-video-view',
@@ -15,7 +16,8 @@ import {HttpEvent, HttpEventType} from "@angular/common/http";
   imports: [
     NgIf,
     SliderModule,
-    SkeletonModule
+    SkeletonModule,
+    SafeUrlPipe
   ],
   templateUrl: './video-view.component.html',
   styleUrl: './video-view.component.scss'
@@ -42,8 +44,12 @@ export class VideoViewComponent {
       return;
     }
     this.videoModel = videoModel;
-    this.videoSrc = this.videoStreamService.getVideoResourceUrl(videoModel.thisIndex);
-    this.cd.detectChanges();
+    this.videoStreamService.getVideoStream(videoModel.thisIndex).then(x => {
+      this.videoSrc = window.URL.createObjectURL(x.body);
+    }).catch(x => {
+      this.fDialogService.error('setVideoSrc catch', x.message);
+    })
+//    this.cd.detectChanges();
   }
   videoPlaying(data: any): void {
   }
