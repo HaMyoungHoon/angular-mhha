@@ -1,4 +1,5 @@
 import * as CryptoJS from "crypto-js";
+import {AUTH_TOKEN} from "./f-constants";
 
 export let getLocalStorage = (key: string): string => {
   return decrypt(localStorage.getItem(key));
@@ -107,4 +108,13 @@ export function isExpired(token: string): boolean {
   } catch (e) {
     return true;
   }
+}
+
+export function getToken(): string | null {
+  const token = getLocalStorage(AUTH_TOKEN)
+  if (isExpired(token)) {
+    removeLocalStorage(AUTH_TOKEN);
+    return null;
+  }
+  return token;
 }
