@@ -188,29 +188,29 @@ export class VideoResourceComponent {
     }
     this.videoSrc = this.videoStreamService.getVideoResourceUrl(this.selectedVideoModel.thisIndex);
     return;
-    this.videoStreamService.getVideoResource(this.selectedVideoModel?.thisIndex ?? 1).subscribe({
-      next: (event: HttpEvent<string>) => {
-        switch (event.type) {
-          case HttpEventType.DownloadProgress: {
-            if (this.consoleLog > 10) {
-              return;
-            }
-            this.consoleLog++;
-            console.log(event);
-          }
-            break;
-          case HttpEventType.Response: {
-            console.log(event);
-          }
-            break;
-          default: {
-            console.log(event);
-          }
-        }
-      },
-      error: (x) => {
-        console.log(x);
-      }
-    });
+//    this.videoStreamService.getVideoResource(this.selectedVideoModel?.thisIndex ?? 1).subscribe({
+//      next: (event: HttpEvent<string>) => {
+//        switch (event.type) {
+//          case HttpEventType.DownloadProgress: {
+//            if (this.consoleLog > 10) {
+//              return;
+//            }
+//            this.consoleLog++;
+//            console.log(event);
+//          }
+//            break;
+//          case HttpEventType.Response: {
+//            console.log(event);
+//          }
+//            break;
+//          default: {
+//            console.log(event);
+//          }
+//        }
+//      },
+//      error: (x) => {
+//        console.log(x);
+//      }
+//    });
   }
 }
