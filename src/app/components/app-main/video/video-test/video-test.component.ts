@@ -1,8 +1,9 @@
 import {afterNextRender, ChangeDetectorRef, Component} from '@angular/core';
 import {VideoStreamService} from "../../../../services/rest/video-stream.service";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
-import {HttpEvent, HttpEventType} from "@angular/common/http";
+import {HttpEventType} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
+import {debounceTime, Subject, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-video-test',
@@ -10,30 +11,20 @@ import {DomSanitizer} from "@angular/platform-browser";
   styleUrl: './video-test.component.scss'
 })
 export class VideoTestComponent {
-  streamCount: number = 0;
-  streamData: string = "";
-  blobURl?: any
+  blobURl: any
   constructor(private cd: ChangeDetectorRef, private videoStreamService: VideoStreamService, private fDialogService: FDialogService,
               private sanitizer: DomSanitizer) {
-    this.init();
     afterNextRender(() => {
       this.cd.markForCheck();
+      this.init();
     });
   }
 
+  getVideoData(): void {
+  }
   init(): void {
-    this.videoStreamService.getVideoStream(2).then(x => {
-      console.log(x);
-      const url = window.URL.createObjectURL(x.body);
-      const safeUrl = this.sanitizer.bypassSecurityTrustUrl(url);
-      console.log(safeUrl);
-//      this.blobURl = safeUrl;
-    }).catch(x => {
-      console.log("getVideoStream catch");
-      console.log(x);
-    })
-    return;
-//    this.videoStreamService.getVideoByte(1).pipe().subscribe({
+    this.getVideoData();
+//    this.videoStreamService.getVideoTest(1).pipe().subscribe({
 //      next: (event: HttpEvent<string>) => {
 //        switch (event.type) {
 //          case HttpEventType.Sent: {
