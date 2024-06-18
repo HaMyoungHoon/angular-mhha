@@ -132,11 +132,11 @@ export class HttpResponseInterceptorService {
     this.blobOptions = {
       observe: "response",
       responseType: "blob"
-    }
+    };
     this.anyOptions = {
       observe: 'events',
-      responseType: 'blob',
+      responseType: 'text',
       reportProgress: true
-    }
+    };
   }
 }
