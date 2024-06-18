@@ -49,7 +49,6 @@ export class VideoViewComponent {
   }
   consoleLog: number = 0;
   setVideoSrc(videoModel: VideoModel): void {
-    console.log(videoModel);
     if (this.videoModel?.thisIndex == videoModel.thisIndex) {
       return;
     }

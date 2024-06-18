@@ -137,10 +137,8 @@ export class VideoResourceComponent {
     // 이게 null 이면 full screen이 아닌 거임.
 //    if (screenElem != null) {
 //      this.mouseOver = true;
-//      console.log(this.mouseOver);
 //    } else {
 //      this.mouseOver = false;
-//      console.log(this.mouseOver);
 //    }
   }
   refreshVideo(data: any): void {
