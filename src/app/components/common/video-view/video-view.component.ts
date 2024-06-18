@@ -9,6 +9,7 @@ import * as FConstants from "../../../guards/f-constants";
 import {SkeletonModule} from "primeng/skeleton";
 import {HttpEvent, HttpEventType} from "@angular/common/http";
 import {SafeUrlPipe} from "../../../guards/safe-url.pipe";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-video-view',
@@ -23,35 +24,60 @@ import {SafeUrlPipe} from "../../../guards/safe-url.pipe";
   styleUrl: './video-view.component.scss'
 })
 export class VideoViewComponent {
-  volume: number;
+  volume: number = 0.3;
   videoSrc?: string;
   videoModel?: VideoModel;
   @ViewChild('videoView') videoView?: ElementRef;
+  mouseoverSubject: Subject<any> = new Subject<any>();
+  mouseleaveSubject: Subject<any> = new Subject<any>();
+  fullscreenchangeSubject: Subject<any> = new Subject<any>();
+  videoPlayingSubject: Subject<any> = new Subject<any>();
+  endedSubject: Subject<any> = new Subject<any>();
   constructor(private cd: ChangeDetectorRef, private videoStreamService: VideoStreamService, private fDialogService: FDialogService) {
+    this.init();
+    afterNextRender(() => {
+      this.cd.markForCheck();
+    });
+  }
+  init(): void {
     let defVolume = +getLocalStorage(FConstants.DEF_VOLUME)
     if (defVolume === 0 || defVolume > 1) {
       defVolume = 0.3;
       setLocalStorage(FConstants.DEF_VOLUME, "0.3");
     }
     this.volume = defVolume;
-    afterNextRender(() => {
-      this.cd.markForCheck();
-    });
   }
   consoleLog: number = 0;
   setVideoSrc(videoModel: VideoModel): void {
+    console.log(videoModel);
     if (this.videoModel?.thisIndex == videoModel.thisIndex) {
       return;
     }
     this.videoModel = videoModel;
-    this.videoStreamService.getVideoStream(videoModel.thisIndex).then(x => {
-      this.videoSrc = window.URL.createObjectURL(x.body);
-    }).catch(x => {
-      this.fDialogService.error('setVideoSrc catch', x.message);
-    })
+    this.videoSrc = this.videoStreamService.getVideoResourceUrl(videoModel.thisIndex);
+    this.cd.detectChanges();
+//    this.videoStreamService.getVideoResource(videoModel.thisIndex).then(x => {
+//      this.videoSrc = window.URL.createObjectURL(x.body);
+//      this.cd.detectChanges();
+//    }).catch(x => {
+//      this.fDialogService.error('setVideoSrc catch', x.message);
+//    })
 //    this.cd.detectChanges();
   }
+  mouseover(data: any): void {
+    this.mouseoverSubject.next(data);
+  }
+  mouseleave(data: any): void {
+    this.mouseleaveSubject.next(data);
+  }
+  fullscreenchange(data: any): void {
+    this.fullscreenchangeSubject.next(data);
+  }
   videoPlaying(data: any): void {
+    this.videoPlayingSubject.next(data);
+  }
+  ended(data: any): void {
+    this.endedSubject.next(data);
   }
   controlList(): string {
     return "nodownload";

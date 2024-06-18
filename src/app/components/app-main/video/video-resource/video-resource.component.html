@@ -16,11 +16,7 @@
       <p-button [ngClass]="videoRandomOverlayPlayStyle" (click)="randomVideo()" pTooltip="random" (mouseover)="refreshButtonIn($event)">
         <span class="pi pi-refresh"></span>
       </p-button>
-      <video #videoView *ngIf="videoSrc" [src]="videoSrc" controls autoplay oncontextmenu="return false;"
-             (mouseover)="videoIn($event)" (mouseleave)="videoOut($event)"
-             (fullscreenchange)="videoFullScreen($event)" (ended)="refreshVideo($event)"
-             (playing)="videoPlaying($event)" [controlsList]="controlList()" [volume]="volume" (volumechange)="volumechange($event)">
-      </video>
+      <app-video-view #videoView />
     </div>
   </div>
   <div [ngClass]="videoListContainerStyle">

@@ -7,6 +7,7 @@ import {getLocalStorage, setLocalStorage} from "../../../../guards/amhohwa";
 import * as FConstants from "../../../../guards/f-constants";
 import {debounceTime, Subject, Subscription} from "rxjs";
 import {DOCUMENT} from "@angular/common";
+import {VideoViewComponent} from "../../../common/video-view/video-view.component";
 
 @Component({
   selector: 'app-video-resource',
@@ -14,14 +15,11 @@ import {DOCUMENT} from "@angular/common";
   styleUrl: './video-resource.component.scss'
 })
 export class VideoResourceComponent {
-  volume: number = 0.3;
-  videoSrc: string = "";
-  @ViewChild('videoView') videoView?: ElementRef
+  @ViewChild('videoView') videoView?: VideoViewComponent
   selectedVideoModel?: VideoModel
   prevVideoModel?: VideoModel;
   videoModels?: VideoModel[];
   videoModelDisable: boolean = false;
-  consoleLog: number = 0;
   searchLoading: boolean = false;
   searchValue: string = "";
   searchSubject: Subject<string> = new Subject<string>();
@@ -32,14 +30,14 @@ export class VideoResourceComponent {
   refreshSubject: Subject<boolean> = new Subject<boolean>();
   refreshObserver?: Subscription;
   refreshDebounceTime: number = 1000;
+  mouseoverObserver?: Subscription;
+  mouseleaveObserver?: Subscription;
+  endedObserver?: Subscription;
   constructor(@Inject(DOCUMENT) private document: Document, private cd: ChangeDetectorRef,
               private videoStreamService: VideoStreamService, private fDialogService: FDialogService) {
-    this.init();
     afterNextRender(() => {
+      this.init();
       this.cd.markForCheck();
-//      if (this.video !== undefined) {
-//        this.video.muted = false;
-//      }
     });
   }
 
@@ -50,16 +48,23 @@ export class VideoResourceComponent {
     this.isMobile = !navigator.userAgent.includes("Window");
   }
   initVideo(): void {
-    let defVolume = +getLocalStorage(FConstants.DEF_VOLUME)
-    if (defVolume === 0 || defVolume > 1) {
-      defVolume = 0.3;
-      setLocalStorage(FConstants.DEF_VOLUME, "0.3");
-    }
-    this.volume = defVolume;
     this.refreshObserver = this.refreshSubject.pipe(debounceTime(this.refreshDebounceTime))
       .subscribe((x) => {
         this.mouseOver = x;
+        this.cd.detectChanges();
       });
+    this.mouseoverObserver = this.videoView?.mouseoverSubject?.subscribe(x => {
+      this.videoIn(x);
+      this.cd.detectChanges();
+    });
+    this.mouseleaveObserver = this.videoView?.mouseleaveSubject?.subscribe(x => {
+      this.videoOut(x);
+      this.cd.detectChanges();
+    })
+    this.endedObserver = this.videoView?.endedSubject?.subscribe(x => {
+      this.refreshVideo(x);
+      this.cd.detectChanges();
+    })
   }
   initSearch(): void {
     this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
@@ -95,9 +100,6 @@ export class VideoResourceComponent {
     }
     return "video-list-container";
   }
-  controlList(): string {
-    return "nodownload";
-  }
   randomVideo(): void {
     this.videoStreamService.getVideoList().then(x => {
       if (x.result) {
@@ -106,7 +108,7 @@ export class VideoResourceComponent {
           return;
         }
         this.selectedVideoModel = videoModels[Math.floor(Math.random() * videoModels.length)];
-        this.videoSrc = this.videoStreamService.getVideoResourceUrl(this.selectedVideoModel.thisIndex);
+        this.videoView?.setVideoSrc(this.selectedVideoModel);
         return;
       }
       this.fDialogService.warn('init', x.msg);
@@ -144,15 +146,6 @@ export class VideoResourceComponent {
   refreshVideo(data: any): void {
     this.randomVideo();
   }
-  videoPlaying(data: any): void {
-  }
-  volumechange(data: any): void {
-    let volume = Math.floor(this.videoView?.nativeElement.volume * 100000) / 100000;
-    if (volume > 1) {
-      volume = 0.3;
-    }
-    setLocalStorage(FConstants.DEF_VOLUME, volume.toString());
-  }
   searchChange(data: any): void {
     this.searchLoading = true;
     this.searchSubject.next(data);
@@ -189,31 +182,6 @@ export class VideoResourceComponent {
     if (this.selectedVideoModel === undefined) {
       return;
     }
-    this.videoSrc = this.videoStreamService.getVideoResourceUrl(this.selectedVideoModel.thisIndex);
-    return;
-//    this.videoStreamService.getVideoResource(this.selectedVideoModel?.thisIndex ?? 1).subscribe({
-//      next: (event: HttpEvent<string>) => {
-//        switch (event.type) {
-//          case HttpEventType.DownloadProgress: {
-//            if (this.consoleLog > 10) {
-//              return;
-//            }
-//            this.consoleLog++;
-//            console.log(event);
-//          }
-//            break;
-//          case HttpEventType.Response: {
-//            console.log(event);
-//          }
-//            break;
-//          default: {
-//            console.log(event);
-//          }
-//        }
-//      },
-//      error: (x) => {
-//        console.log(x);
-//      }
-//    });
+    this.videoView?.setVideoSrc(this.selectedVideoModel);
   }
 }

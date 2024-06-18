@@ -3,7 +3,7 @@ import {HttpResponseInterceptorService} from "../common/http-response-intercepto
 import {IRestResult} from "../../models/common/IRestResult";
 import {VideoCategoryModel} from "../../models/rest/file/video/video-category-model";
 import {VideoModel} from "../../models/rest/file/video/video-model";
-import {Observable} from "rxjs";
+import {getToken} from "../../guards/amhohwa";
 
 @Injectable({
   providedIn: 'root'
@@ -46,12 +46,27 @@ export class VideoStreamService {
   }
 
   getVideoStreamUrl(thisIndex: number): string {
-    return `${this.videoUrl}/get/play/stream/index/${thisIndex}`
+    let url = `${this.videoUrl}/get/play/stream/index/${thisIndex}`;
+    const token = getToken();
+    if (token) {
+      url += `/${token}`;
+    }
+    return url;
   }
   getVideoResourceUrl(thisIndex: number): string {
-    return `${this.videoUrl}/get/play/resource/index/${thisIndex}`
+    let url = `${this.videoUrl}/get/play/resource/index/${thisIndex}`;
+    const token = getToken();
+    if (token) {
+      url += `/${token}`;
+    }
+    return url;
   }
   getVideoByteUrl(thisIndex: number): string {
-    return `${this.videoUrl}/get/play/byte/index/${thisIndex}`
+    let url = `${this.videoUrl}/get/play/byte/index/${thisIndex}`;
+    const token = getToken();
+    if (token) {
+      url += `/${token}`;
+    }
+    return url;
   }
 }
