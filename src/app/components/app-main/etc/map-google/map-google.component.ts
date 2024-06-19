@@ -106,7 +106,7 @@ export class MapGoogleComponent implements AfterViewInit {
       });
 
       const infoContent = `
-<div id="content" class="card flex">
+<div id="content" class="card flex-row">
     <div id="siteNotice"></div>
     <h5 id="firstHeading" class="firstHeading">${this.position}</h5>
     <div id="bodyContent" class="card flex-row">
