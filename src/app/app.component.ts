@@ -6,6 +6,7 @@ import {environment} from "../environments/environment.development";
 import {AppConfigService} from "./services/common/app-config.service";
 import {DEF_LIGHT_THEME, DEF_THEME} from "./guards/f-constants";
 import {ToastModule} from "primeng/toast";
+import * as FConstants from "./guards/f-constants";
 
 @Component({
   selector: "app-root",

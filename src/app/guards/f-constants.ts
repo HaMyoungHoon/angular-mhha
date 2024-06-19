@@ -26,3 +26,4 @@ export const STORAGE_KEY_NEWS = "news";
 export const DEF_VOLUME = "volume";
 
 export const AUTH_TOKEN = "auth_token";
+export const MAP_GOOGLE_API_KEY = "AIzaSyAcz6O5HVUam-TG_vuR7Hc6CNSuuvSiDsc";
