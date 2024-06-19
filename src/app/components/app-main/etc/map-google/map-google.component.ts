@@ -3,7 +3,13 @@ import {DOCUMENT} from "@angular/common";
 import * as FConstants from "../../../../guards/f-constants";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {addWarning} from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
-import {MAP_ID} from "../../../../guards/f-constants";
+import {
+  googleAubergineTheme,
+  googleNightTheme,
+  googleRetroTheme,
+  googleStandardTheme,
+  MAP_ID
+} from "../../../../guards/f-constants";
 declare let google:any;
 declare global {
   interface Window {
@@ -18,6 +24,7 @@ declare global {
     position: { lat: number, lng: number };
     infoWindow: any;
     marker: any[];
+    nightTheme: any;
   }
 }
 
@@ -32,8 +39,10 @@ export class MapGoogleComponent implements AfterViewInit {
   position = { lat: 37.5020656, lng: 126.8880897 };
   infoWindow: any;
   marker: any[] = [];
+  selectedTheme: any;
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef, private fDialogService: FDialogService) {
     window.fDialogService = this.fDialogService;
+    this.selectedTheme = this.googleThemeList[3];
     afterNextRender(() => {
       this.cd.markForCheck();
     });
@@ -50,6 +59,7 @@ export class MapGoogleComponent implements AfterViewInit {
     window.position = this.position;
     window.infoWindow = this.infoWindow;
     window.marker = this.marker;
+    window.nightTheme = this.nightTheme;
     this.injectScriptsGoogleMap();
     this.cd.detectChanges();
   }
@@ -57,7 +67,8 @@ export class MapGoogleComponent implements AfterViewInit {
     this.map = new google.maps.Map(document.getElementById("map-view"), {
       center: this.position,
       zoom: 13,
-      mapId: FConstants.MAP_ID
+//      mapId: FConstants.MAP_ID,
+      styles: this.nightTheme
     });
     this.geocoder = new google.maps.Geocoder();
     this.infoWindow = new google.maps.InfoWindow({
@@ -128,11 +139,16 @@ export class MapGoogleComponent implements AfterViewInit {
   async setMarker(content: string): Promise<void> {
     const map = this.map;
     try {
-      const markerBuff = new google.maps.marker.AdvancedMarkerElement({
+      const markerBuff = new google.maps.Marker({
         title: "mhha",
         position: this.position,
         map
       });
+//      const markerBuff = new google.maps.marker.AdvancedMarkerElement({
+//        title: "mhha",
+//        position: this.position,
+//        map
+//      });
       markerBuff.addListener("click", (x: any): void => {
         this.openInfoWindow(content, markerBuff.position);
       });
@@ -152,5 +168,49 @@ export class MapGoogleComponent implements AfterViewInit {
     } catch (e: any) {
       this.fDialogService.error("clear marker", e);
     }
+  }
+
+  themeSelectionChange(data: any): void {
+    window.map.setOptions({ styles: this.selectedTheme.func });
+  }
+  get googleThemeList(): any {
+    return [
+      {
+        label: "standard",
+        func: this.standardTheme,
+      },
+      {
+        label: "dark",
+        func: this.darkTheme,
+      },
+      {
+        label: "retro",
+        func: this.retroTheme,
+      },
+      {
+        label: "night",
+        func: this.nightTheme,
+      },
+      {
+        label: "aubergine",
+        func: this.aubergineTheme,
+      }
+    ];
+  }
+
+  get standardTheme(): any {
+    return FConstants.googleStandardTheme();
+  }
+  get darkTheme(): any {
+    return FConstants.googleDarkTheme();
+  }
+  get retroTheme(): any {
+    return FConstants.googleRetroTheme();
+  }
+  get nightTheme(): any {
+    return FConstants.googleNightTheme();
+  }
+  get aubergineTheme(): any {
+    return FConstants.googleAubergineTheme();
   }
 }
