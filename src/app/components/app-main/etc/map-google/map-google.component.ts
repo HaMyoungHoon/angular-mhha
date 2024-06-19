@@ -1,10 +1,23 @@
 import {afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, Renderer2} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
 import * as FConstants from "../../../../guards/f-constants";
+import {FDialogService} from "../../../../services/common/f-dialog.service";
+import {addWarning} from "@angular-devkit/build-angular/src/utils/webpack-diagnostics";
+import {MAP_ID} from "../../../../guards/f-constants";
 declare let google:any;
 declare global {
   interface Window {
+    fDialogService: any;
     initMap: (data: any) => Promise<void>;
+    mapClick: (data: any) => Promise<void>;
+    setGeocoder: () => Promise<void>;
+    openInfoWindow: (data: string, position: any) => Promise<void>;
+    setMarker: (content: string) => Promise<void>;
+    map: any;
+    geocoder: any;
+    position: { lat: number, lng: number };
+    infoWindow: any;
+    marker: any[];
   }
 }
 
@@ -15,9 +28,12 @@ declare global {
 })
 export class MapGoogleComponent implements AfterViewInit {
   map: any;
+  geocoder: any;
   position = { lat: 37.5020656, lng: 126.8880897 };
   infoWindow: any;
-  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef) {
+  marker: any[] = [];
+  constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef, private fDialogService: FDialogService) {
+    window.fDialogService = this.fDialogService;
     afterNextRender(() => {
       this.cd.markForCheck();
     });
@@ -25,6 +41,15 @@ export class MapGoogleComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     window.initMap = this.initMap;
+    window.mapClick = this.mapClick;
+    window.setGeocoder = this.setGeocoder;
+    window.openInfoWindow = this.openInfoWindow;
+    window.setMarker = this.setMarker;
+    window.map = this.map;
+    window.geocoder = this.geocoder;
+    window.position = this.position;
+    window.infoWindow = this.infoWindow;
+    window.marker = this.marker;
     this.injectScriptsGoogleMap();
     this.cd.detectChanges();
   }
@@ -32,8 +57,9 @@ export class MapGoogleComponent implements AfterViewInit {
     this.map = new google.maps.Map(document.getElementById("map-view"), {
       center: this.position,
       zoom: 13,
+      mapId: FConstants.MAP_ID
     });
-
+    this.geocoder = new google.maps.Geocoder();
     this.infoWindow = new google.maps.InfoWindow({
       content: `${this.position}`,
       position: this.position
@@ -44,20 +70,87 @@ export class MapGoogleComponent implements AfterViewInit {
   }
   injectScriptsGoogleMap(): void {
     const scriptBody = this.renderer.createElement("script");
-    scriptBody.src = `https://maps.googleapis.com/maps/api/js?key=${FConstants.MAP_GOOGLE_API_KEY}&loading=async&callback=initMap`;
+    scriptBody.src = `https://maps.googleapis.com/maps/api/js?key=${FConstants.MAP_GOOGLE_API_KEY}&loading=async&callback=initMap&libraries=marker`;
     scriptBody.async = true;
+    scriptBody.defer = true;
     this.renderer.appendChild(this.document.getElementById("map-view"), scriptBody);
+    const scriptGeocoder = this.renderer.createElement("script");
+    scriptGeocoder.src = `https://maps.googleapis.com/maps/api/geocode/json?key=${FConstants.MAP_GOOGLE_API_KEY}`;
+    scriptGeocoder.async = true;
+    this.renderer.appendChild(this.document.getElementById("map-view"), scriptGeocoder);
   }
   async mapClick(data: any): Promise<void> {
     this.position = data.latLng;
-    this.infoWindow?.close();
-    this.infoWindow = new google.maps.InfoWindow({
-      content: `<div class="card flex">${this.position}</div>`,
-      position: this.position,
-      shadowStyle: 1,
-      color: "var(--primary-color-text);"
+    await this.setGeocoder();
+  }
+  async setGeocoder(): Promise<void> {
+    await this.geocoder.geocode({location: this.position,}).then((x: any) => {
+      let geoResult = "";
+      let skip = 0;
+      x.results.forEach((y: any) => {
+        if (skip < 3) {
+          geoResult += `<div class="flex">${y.formatted_address}</div>`;
+        }
+        skip++;
+      });
+
+      const infoContent = `
+<div id="content" class="card flex">
+    <div id="siteNotice"></div>
+    <h5 id="firstHeading" class="firstHeading">${this.position}</h5>
+    <div id="bodyContent" class="card flex-row">
+        ${geoResult}
+    </div>
+</div>`;
+      this.setMarker(infoContent);
+      this.openInfoWindow(infoContent);
+      return infoContent;
+    }).catch((x: any) => {
+      this.fDialogService.error("geocoder", x);
     });
-    this.infoWindow?.open(this.map);
-    console.log(data);
+  }
+  async openInfoWindow(content: string, position: any = undefined): Promise<void> {
+    let positionBuff = position;
+    if (position === undefined) {
+      positionBuff = this.position;
+    }
+    try {
+      this.infoWindow?.close();
+      this.infoWindow = new google.maps.InfoWindow({
+        content: content,
+        position: positionBuff
+      });
+      this.infoWindow?.open(this.map);
+    } catch (e: any) {
+      this.fDialogService.error("open info", e);
+    }
+  }
+  async setMarker(content: string): Promise<void> {
+    const map = this.map;
+    try {
+      const markerBuff = new google.maps.marker.AdvancedMarkerElement({
+        title: "mhha",
+        position: this.position,
+        map
+      });
+      markerBuff.addListener("click", (x: any): void => {
+        this.openInfoWindow(content, markerBuff.position);
+      });
+
+      this.marker.push(markerBuff);
+    } catch (e: any) {
+      this.fDialogService.error("marker", e);
+    }
+  }
+
+  clearMarker(data: any): void {
+    try {
+      this.marker.forEach(x => {
+        x.setMap(null);
+      });
+      this.marker = [];
+    } catch (e: any) {
+      this.fDialogService.error("clear marker", e);
+    }
   }
 }
