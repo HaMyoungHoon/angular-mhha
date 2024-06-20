@@ -36,6 +36,7 @@
 }
 .naver-info-window-container {
   background: var(--surface-card);
+  display: block;
   flex-direction: row !important;
   width: 100%;
   height: 100%;
@@ -55,8 +56,7 @@
 }
 .naver-info-body {
   width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: row !important;
+  display: block;
+  align-content: center;
   padding: 5px;
 }
