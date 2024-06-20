@@ -1,0 +1,6 @@
+<div class="dashboard-container">
+  <div *ngIf="history.length > 0" class="dashboard-history-view">
+    <span [innerHTML]="history | safeHtml"></span>
+  </div>
+  <app-advertisement class="advertisement-right-container" />
+</div>

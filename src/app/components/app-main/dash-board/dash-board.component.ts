@@ -1,5 +1,5 @@
 import {afterNextRender, ChangeDetectorRef, Component} from "@angular/core";
-import {DomSanitizer} from "@angular/platform-browser";
+import {AngularWriteService} from "../../../services/rest/angular-write.service";
 
 @Component({
   selector: "app-dash-board",
@@ -7,9 +7,22 @@ import {DomSanitizer} from "@angular/platform-browser";
   styleUrl: "./dash-board.component.scss"
 })
 export class DashBoardComponent {
-  constructor(private cd: ChangeDetectorRef, private domSanitizer: DomSanitizer) {
+  history: string = "";
+  constructor(private cd: ChangeDetectorRef, private angularWriteService: AngularWriteService) {
+    this.init();
     afterNextRender(() => {
       this.cd.markForCheck();
+    });
+  }
+
+  init(): void {
+    this.angularWriteService.getWriteFile("History").then(x => {
+      if (x.result) {
+        this.history = x.data?.content ?? "";
+        this.cd.detectChanges();
+      }
+    }).catch(x => {
+
     });
   }
 }
