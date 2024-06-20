@@ -27,7 +27,11 @@ export const DEF_VOLUME = "volume";
 
 export const AUTH_TOKEN = "auth_token";
 export const MAP_GOOGLE_API_KEY = "AIzaSyAcz6O5HVUam-TG_vuR7Hc6CNSuuvSiDsc";
-export const MAP_ID = "b2f2db3f481c08e6 ";
+export const GOOGLE_MAP_ID = "b2f2db3f481c08e6 ";
+export const MAP_NAVER_CLIENT_ID = "pcohyj6l3l";
+export const MAP_NAVER_CLIENT_ID_HEADER = "X-NCP-APIGW-API-KEY-ID";
+export const MAP_NAVER_CLIENT_SECRET = "mPz6sCGhDbNJtCQkBj24yaEBumYsZL5YhtMlcSIc";
+export const MAP_NAVER_CLIENT_SECRET_HEADER = "X-NCP-APIGW-API-KEY";
 
 export function googleStandardTheme(): any {
   return [];
