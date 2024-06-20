@@ -1,9 +1,29 @@
 <div class="map-naver-container">
-  <div class="w-full flex">
-    <p-button class="m-1" (click)="naverZoomControlOnOff($event)">zoom</p-button>
-    <p-button class="m-1" (click)="markerClear($event)">marker clear</p-button>
+  <div [ngClass]="mapViewContainerStyle">
+    <section class="map-title-container">
+      <p-button class="m-1" (click)="naverZoomControlOnOff($event)">zoom</p-button>
+      <p-button class="m-1" (click)="markerClear($event)">marker clear</p-button>
+      <p-iconField class="address-search" iconPosition="left">
+        <p-inputIcon [styleClass]="searchStyle" />
+        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
+      </p-iconField>
+    </section>
+    <div id="map-view" class="map-view">
+    </div>
   </div>
-  <div id="map-view" class="map-view-container">
+  <div [ngClass]="addressListContainerStyle">
+    <p-checkbox class="road-check-box" *ngIf="addressList && addressList.length > 0" [(ngModel)]="isSearchResultRoad" [binary]="true" label="도로명" />
+    <p-listbox class="address-model" [options]="addressList" *ngIf="addressList && addressList.length > 0" [optionLabel]="searchResultLabel"
+               [filter]="true" [(ngModel)]="selectedAddress" (onChange)="selectAddressList($event)">
+      <ng-template let-address pTemplate="item">
+        <div class="flex align-items-center" *ngIf="!isSearchResultRoad">
+          {{ address.jibunAddress }}
+        </div>
+        <div class="flex align-items-center" *ngIf="isSearchResultRoad">
+          {{ address.roadAddress }}
+        </div>
+      </ng-template>
+    </p-listbox>
   </div>
   <app-advertisement class="advertisement-right-container" />
 </div>

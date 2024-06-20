@@ -3,16 +3,17 @@ import {DOCUMENT} from "@angular/common";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import * as FConstants from "../../../../guards/f-constants";
 import * as FExtensions from "../../../../guards/f-extentions";
+import {debounceTime, Subject, Subscription} from "rxjs";
 declare global {
   interface Window {
     fDialogService: any;
     initNaverMap: (data: any) => Promise<void>;
     naverMapClick: (data: any) => Promise<void>;
-    getNaverReverseGeocoder: (lat: number, lng: number,func: (status: any, response: any) => void) => void;
+    getNaverReverseGeocoder: (coordinate: any, func: (status: any, response: any) => void) => void;
     MarkerClustering: () => void;
-    addNaverMarkers: (lat: number, lng: number) => void;
+    addNaverMarkers: (coordinate: any) => void;
     naverMarkerClick: (data: any) => void;
-    addNaverInfoWindow: (lat: number, lng: number, content: string) => void;
+    addNaverInfoWindow: (coordinate: any, content: string) => void;
     naverInfoTimesClick: (data: any) => void;
     getNaverLatLng: (lat: number, lng: number) => any;
     naverMap: any;
@@ -33,6 +34,15 @@ declare global {
 })
 export class MapNaverComponent implements AfterViewInit {
   mapLoadTimeout: number = 0;
+  isSearchResultRoad: boolean = false;
+  searchLoading: boolean = false;
+  searchValue: string = "";
+  searchSubject: Subject<string> = new Subject<string>();
+  searchObserver?: Subscription;
+  searchDebounceTime: number = 1000;
+  addressList: any[] = [];
+  selectedAddress: any;
+  prevAddress: any;
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef, private fDialogService: FDialogService) {
     window.fDialogService = this.fDialogService;
     window.naver = undefined;
@@ -56,6 +66,7 @@ export class MapNaverComponent implements AfterViewInit {
     window.naverLat = FExtensions.defLat;
     window.naverLng = FExtensions.defLng;
     this.initNaverMap().then();
+    this.initSearch();
   }
   injectScriptsNaverMap(): void {
     if (this.document.getElementById("naver-maps-script") !== null) {
@@ -124,6 +135,13 @@ export class MapNaverComponent implements AfterViewInit {
       }
     });
   }
+  initSearch(): void {
+    this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
+      .subscribe((x) => {
+        this.searchLoading = false;
+        this.searchAddress();
+      });
+  }
 
   async onSuccessGeolocation(data: any): Promise<void> {
     await FExtensions.awaitDelay(1000);
@@ -135,15 +153,13 @@ export class MapNaverComponent implements AfterViewInit {
     }
     window.naverLat = data.coords.latitude;
     window.naverLng = data.coords.longitude;
-    window.naverMap.setCenter(window.getNaverLatLng(data.coords.latitude, data.coords.longitude));
+    window.naverMap.panTo(window.getNaverLatLng(data.coords.latitude, data.coords.longitude));
   }
   onErrorGeolocation(): void {
 //    window.fDialogService.warn('location', "not allow current location");
   }
   async naverMapClick(data: any): Promise<void> {
-    const lat = data.coord.y;
-    const lng = data.coord.x;
-    window.getNaverReverseGeocoder(lat, lng, (status: any, response: any): void => {
+    window.getNaverReverseGeocoder(data.coord, (status: any, response: any): void => {
       if (status !== window.naver.maps.Service.Status.OK) {
         if (response) {
           window.fDialogService.warn("reverse geocoder", response.v2.status.message);
@@ -152,6 +168,7 @@ export class MapNaverComponent implements AfterViewInit {
         }
         return;
       }
+
       let bodyContent = "";
       if (response.v2.address.jibunAddress.length > 0) {
         bodyContent += `<div class="flex">${response.v2.address.jibunAddress}</div>`;
@@ -168,17 +185,17 @@ export class MapNaverComponent implements AfterViewInit {
     </p-button>
     -->
     <div class="naver-info-header">
-        <label>(${lat}, ${lng})</label>
+        <label>(${data.coord.y}, ${data.coord.x})</label>
     </div>
     <div class="naver-info-body flex-row">${bodyContent}</div>
 </div>`;
-      window.addNaverMarkers(lat, lng);
-      window.addNaverInfoWindow(lat, lng, infoContent);
+      window.addNaverMarkers(data.coord);
+      window.addNaverInfoWindow(data.coord, infoContent);
     });
   }
-  addNaverMarkers(lat: number, lng: number): void {
+  addNaverMarkers(coordinate: any): void {
     const marker = new window.naver.maps.Marker({
-      position: window.getNaverLatLng(lat, lng),
+      position: coordinate,
       draggable: false,
     });
     window.naver.maps.Event.addListener(marker, "click", (x: any): void => {
@@ -207,9 +224,9 @@ export class MapNaverComponent implements AfterViewInit {
       window.fDialogService.error('marker click', e.message);
     }
   }
-  addNaverInfoWindow(lat: number, lng: number, content: string): void {
+  addNaverInfoWindow(coordinate: any, content: string): void {
     const infoWindow = new window.naver.maps.InfoWindow({
-      position: window.getNaverLatLng(lat, lng),
+      position: coordinate,
       content: content
     });
     infoWindow.open(window.naverMap);
@@ -217,10 +234,15 @@ export class MapNaverComponent implements AfterViewInit {
   }
   naverInfoTimesClick(data: any): void {
   }
-  getNaverReverseGeocoder(lat: number, lng: number, func: (status: any, response: any) => void): void {
-    const latLng = window.getNaverLatLng(lat, lng);
+  getNaverReverseGeocoder(coordinate: any, func: (status: any, response: any) => void): void {
     try {
-      window.naver.maps.Service.reverseGeocode({ coords: latLng }, function(status: any, response: any): void {
+      window.naver.maps.Service.reverseGeocode({
+        coords: coordinate,
+        orders: [
+          window.naver.maps.Service.OrderType.ADDR,
+          window.naver.maps.Service.OrderType.ROAD_ADDR,
+        ].join(",")
+      }, function(status: any, response: any): void {
         func(status, response);
       });
     } catch (e: any) {
@@ -273,5 +295,67 @@ export class MapNaverComponent implements AfterViewInit {
       x.setMap();
     });
     window.naverMarkerClustering.markers = [];
+  }
+  searchChange(data: any): void {
+    this.searchLoading = true;
+    this.searchSubject.next(data);
+  }
+  searchAddress(): void {
+    if (this.searchValue.length <= 0) {
+      this.addressList = [];
+      return;
+    }
+
+    try {
+      window.naver.maps.Service.geocode({ query: this.searchValue}, (status: any, response: any) => {
+        if (status !== window.naver.maps.Service.Status.OK) {
+          if (response) {
+            window.fDialogService.warn("reverse geocoder", response.v2.status.message);
+          } else {
+            window.fDialogService.warn("reverse geocoder", status.toString());
+          }
+          return;
+        }
+
+        this.addressList = response.v2.addresses;
+        if (this.addressList.length <= 0) {
+          this.fDialogService.warn('search', "count : 0");
+        }
+      });
+    } catch (e: any) {
+      this.fDialogService.error('search', e.message);
+    }
+  }
+  selectAddressList(data: any): void {
+    if (this.selectedAddress === undefined) {
+      this.selectedAddress = this.prevAddress;
+    }
+
+    this.prevAddress = this.selectedAddress;
+    if (this.selectedAddress) {
+      window.naverMap.panTo(window.getNaverLatLng(this.selectedAddress.y, this.selectedAddress.x));
+      window.naverMap.setZoom(14);
+    }
+  }
+
+  get mapViewContainerStyle(): string {
+    if (this.addressList && this.addressList.length > 0) {
+      return "map-view-container-active";
+    }
+    return "map-view-container";
+  }
+  get addressListContainerStyle(): string {
+    if (this.addressList && this.addressList.length > 0) {
+      return "address-list-container-active";
+    }
+    return "address-list-container";
+  }
+  get searchStyle(): string {
+    if (this.searchLoading) return "pi pi-spinner pi-spin";
+    else return "pi pi-search";
+  }
+  get searchResultLabel(): string {
+    if (this.isSearchResultRoad) return "roadAddress";
+    return "jibunAddress";
   }
 }
