@@ -9,3 +9,54 @@
 .collapse-element {
   visibility: collapse;
 }
+.naver-map-cluster-marker {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  line-height: 42px;
+  font-size: 10px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+.naver-map-cluster-marker.marker1 {
+  background:url(/assets/img/cluster-marker-1.png);background-size:contain;
+}
+.naver-map-cluster-marker.marker2 {
+  background:url(/assets/img/cluster-marker-2.png);background-size:contain;
+}
+.naver-map-cluster-marker.marker3 {
+  background:url(/assets/img/cluster-marker-3.png);background-size:contain;
+}
+.naver-map-cluster-marker.marker4 {
+  background:url(/assets/img/cluster-marker-4.png);background-size:contain;
+}
+.naver-map-cluster-marker.marker5 {
+  background:url(/assets/img/cluster-marker-5.png);background-size:contain;
+}
+.naver-info-window-container {
+  background: var(--surface-card);
+  flex-direction: row !important;
+  width: 100%;
+  height: 100%;
+}
+.naver-info-header {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+.naver-info-header-times {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+  padding: 5px;
+}
+.naver-info-body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row !important;
+  padding: 5px;
+}
