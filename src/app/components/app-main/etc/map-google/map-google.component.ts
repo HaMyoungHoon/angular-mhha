@@ -27,7 +27,7 @@ declare global {
   styleUrl: "./map-google.component.scss"
 })
 export class MapGoogleComponent implements AfterViewInit {
-  marker: any[] = [];
+  googleMarker: any[] = [];
   selectedTheme: any;
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef, private fDialogService: FDialogService) {
     window.fDialogService = this.fDialogService;
@@ -44,6 +44,7 @@ export class MapGoogleComponent implements AfterViewInit {
     window.googleSetGeocoder = this.googleSetGeocoder;
     window.googleOpenInfoWindow = this.googleOpenInfoWindow;
     window.googleSetMarker = this.googleSetMarker;
+    window.googleMarker = this.googleMarker;
     this.injectScriptsGoogleMap();
     this.cd.detectChanges();
   }
@@ -137,7 +138,7 @@ export class MapGoogleComponent implements AfterViewInit {
         this.googleOpenInfoWindow(content, markerBuff.position);
       });
 
-      this.marker.push(markerBuff);
+      this.googleMarker.push(markerBuff);
     } catch (e: any) {
       this.fDialogService.error("marker", e);
     }
@@ -145,10 +146,10 @@ export class MapGoogleComponent implements AfterViewInit {
 
   clearMarker(data: any): void {
     try {
-      this.marker.forEach(x => {
+      this.googleMarker.forEach(x => {
         x.setMap(null);
       });
-      this.marker = [];
+      this.googleMarker = [];
     } catch (e: any) {
       this.fDialogService.error("clear marker", e);
     }
