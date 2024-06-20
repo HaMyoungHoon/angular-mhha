@@ -155,7 +155,7 @@ export class MapGoogleComponent implements AfterViewInit {
   }
 
   themeSelectionChange(data: any): void {
-    window.naverMap.setOptions({ styles: this.selectedTheme.func });
+    window.googleMap.setOptions({ styles: this.selectedTheme.func });
   }
   get googleThemeList(): any {
     return [
