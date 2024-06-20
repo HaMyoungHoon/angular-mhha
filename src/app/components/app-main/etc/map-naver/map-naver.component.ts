@@ -114,26 +114,27 @@ export class MapNaverComponent implements AfterViewInit {
       });
     });
     const htmlMarkers = this.htmlNaverClusterMarker;
-    // @ts-ignore
-    window.naverMarkerClustering = new MarkerClustering({
-      minClusterSize: 2,
-      maxZoom: 11,
-      map: window.naverMap,
-      markers: window.naverMarkers,
-      disableClickZoom: false,
-      gridSize: 120,
-      icons: [htmlMarkers[0], htmlMarkers[1], htmlMarkers[2], htmlMarkers[3], htmlMarkers[4]],
-      indexGenerator: [10, 100, 200, 500, 1000],
-      stylingFunction: function(clusterMarker: any, count: any): void {
-        try {
+    try {
+      // @ts-ignore
+      window.naverMarkerClustering = new MarkerClustering({
+        minClusterSize: 2,
+        maxZoom: 11,
+        map: window.naverMap,
+        markers: window.naverMarkers,
+        disableClickZoom: false,
+        gridSize: 120,
+        icons: [htmlMarkers[0], htmlMarkers[1], htmlMarkers[2], htmlMarkers[3], htmlMarkers[4]],
+        indexGenerator: [10, 100, 200, 500, 1000],
+        stylingFunction: function(clusterMarker: any, count: any): void {
           const firstCluster = clusterMarker.getElement().firstElementChild;
           if (firstCluster) {
             firstCluster.textContent = count;
           }
-        } catch (e: any) {
         }
-      }
-    });
+      });
+    } catch (e: any) {
+      this.fDialogService.error('marker', e.message);
+    }
   }
   initSearch(): void {
     this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
