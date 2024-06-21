@@ -1,8 +1,9 @@
 <div class="w-full flex flex-column">
-  <video #videoView *ngIf="videoSrc" [src]="videoSrc | safeUrl" controls autoplay oncontextmenu="return false;"
+  <video #videoView *ngIf="videoSrc" controls autoplay playsinline oncontextmenu="return false;"
          (mouseover)="mouseover($event)" (mouseleave)="mouseleave($event)"
          (fullscreenchange)="fullscreenchange($event)" (ended)="ended($event)"
          (playing)="videoPlaying($event)" [controlsList]="controlList()" [volume]="volume" (volumechange)="volumechange($event)">
+    <source *ngIf="videoSrc" [src]="videoSrc | safeUrl" type="video/webm">
   </video>
 
 </div>
