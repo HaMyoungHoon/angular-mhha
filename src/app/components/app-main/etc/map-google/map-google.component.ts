@@ -3,12 +3,13 @@ import {DOCUMENT} from "@angular/common";
 import * as FConstants from "../../../../guards/f-constants";
 import * as FExtensions from "../../../../guards/f-extentions";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
+import {debounceTime, Subject, Subscription} from "rxjs";
 declare global {
   interface Window {
     fDialogService: any;
     googleInitMap: (data: any) => Promise<void>;
     googleMapClick: (data: any) => Promise<void>;
-    googleSetGeocoder: () => Promise<void>;
+    googleSetReverseGeocoder: () => Promise<void>;
     googleOpenInfoWindow: (data: string, position: any) => Promise<void>;
     googleSetMarker: (content: string) => Promise<void>;
     google: any;
@@ -29,6 +30,14 @@ declare global {
 export class MapGoogleComponent implements AfterViewInit {
   googleMarker: any[] = [];
   selectedTheme: any;
+  searchLoading: boolean = false;
+  searchValue: string = "";
+  searchSubject: Subject<string> = new Subject<string>();
+  searchObserver?: Subscription;
+  searchDebounceTime: number = 1000;
+  addressList: any[] = [];
+  selectedAddress: any;
+  prevAddress: any;
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef, private fDialogService: FDialogService) {
     window.fDialogService = this.fDialogService;
     window.googlePosition = FExtensions.defPosition;
@@ -41,12 +50,13 @@ export class MapGoogleComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     window.googleInitMap = this.googleInitMap;
     window.googleMapClick = this.googleMapClick;
-    window.googleSetGeocoder = this.googleSetGeocoder;
+    window.googleSetReverseGeocoder = this.googleSetReverseGeocoder;
     window.googleOpenInfoWindow = this.googleOpenInfoWindow;
     window.googleSetMarker = this.googleSetMarker;
     window.googleMarker = this.googleMarker;
     this.injectScriptsGoogleMap();
     this.cd.detectChanges();
+    this.initSearch();
   }
   async googleInitMap(data: any): Promise<void> {
     window.googleMap = new window.google.maps.Map(document.getElementById("map-view"), {
@@ -75,12 +85,23 @@ export class MapGoogleComponent implements AfterViewInit {
     scriptGeocoder.async = true;
     this.renderer.appendChild(this.document.getElementById("map-view"), scriptGeocoder);
   }
+  initSearch(): void {
+    this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
+      .subscribe((x) => {
+        this.searchLoading = false;
+        if (x) {
+          this.searchValue += x;
+        }
+        this.searchAddress();
+      });
+  }
+
   async googleMapClick(data: any): Promise<void> {
     window.googlePosition = data.latLng;
-    await this.googleSetGeocoder();
+    await this.googleSetReverseGeocoder();
   }
-  async googleSetGeocoder(): Promise<void> {
-    await window.googleGeocoder.geocode({location: window.googlePosition,}).then((x: any) => {
+  async googleSetReverseGeocoder(): Promise<void> {
+    await window.googleGeocoder.geocode({ location: window.googlePosition }).then((x: any) => {
       let geoResult = "";
       let skip = 0;
       x.results.forEach((y: any) => {
@@ -154,6 +175,39 @@ export class MapGoogleComponent implements AfterViewInit {
       this.fDialogService.error("clear marker", e);
     }
   }
+  searchChange(data: any): void {
+    this.searchLoading = true;
+    this.searchSubject.next(data.data);
+  }
+  searchAddress(): void {
+    if (this.searchValue.length <= 0) {
+      this.addressList = [];
+      return;
+    }
+    console.log(this.searchValue);
+
+    try {
+      window.googleGeocoder.geocode({ address: this.searchValue }).then((x: any) => {
+        this.addressList = x.results;
+        console.log(x);
+      }).catch((x: any) => {
+        this.fDialogService.warn('search', x.message);
+      });
+    } catch (e: any) {
+      this.fDialogService.error('search', e.message);
+    }
+  }
+  selectAddressList(data: any): void {
+    if (this.selectedAddress === undefined) {
+      this.selectedAddress = this.prevAddress;
+    }
+
+    this.prevAddress = this.selectedAddress;
+    if (this.selectedAddress) {
+      window.googleMap.fitBounds(this.selectedAddress.geometry.bounds);
+      window.googleMap.setZoom(15);
+    }
+  }
 
   themeSelectionChange(data: any): void {
     window.googleMap.setOptions({ styles: this.selectedTheme.func });
@@ -197,5 +251,21 @@ export class MapGoogleComponent implements AfterViewInit {
   }
   get aubergineTheme(): any {
     return FConstants.googleAubergineTheme();
+  }
+  get searchStyle(): string {
+    if (this.searchLoading) return "pi pi-spinner pi-spin";
+    else return "pi pi-search";
+  }
+  get mapViewContainerStyle(): string {
+    if (this.addressList && this.addressList.length > 0) {
+      return "map-view-container-active";
+    }
+    return "map-view-container";
+  }
+  get addressListContainerStyle(): string {
+    if (this.addressList && this.addressList.length > 0) {
+      return "address-list-container-active";
+    }
+    return "address-list-container";
   }
 }

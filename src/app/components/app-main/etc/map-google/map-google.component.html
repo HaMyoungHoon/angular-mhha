@@ -1,21 +1,34 @@
 <div class="map-google-container">
-  <div class="w-full flex">
-    <p-button class="flex m-1" (click)="clearMarker($event)">clear marker</p-button>
-    <p-dropdown class="flex m-1" [options]="googleThemeList" [(ngModel)]="selectedTheme" optionLabel="label" (onChange)="themeSelectionChange($event)">
-      <ng-template pTemplate="selectedItem">
-        <div *ngIf="selectedTheme">
-          <div>{{selectedTheme.label}}</div>
+  <div [ngClass]="mapViewContainerStyle">
+    <div class="w-full flex">
+      <p-button class="flex m-1" (click)="clearMarker($event)">clear marker</p-button>
+      <p-dropdown class="flex m-1" [options]="googleThemeList" [(ngModel)]="selectedTheme" optionLabel="label" (onChange)="themeSelectionChange($event)">
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="selectedTheme">
+            <div>{{selectedTheme.label}}</div>
+          </div>
+        </ng-template>
+        <ng-template let-theme pTemplate="item">
+          <div>{{theme.label}}</div>
+        </ng-template>
+      </p-dropdown>
+      <p-iconField class="address-search" iconPosition="left">
+        <p-inputIcon [styleClass]="searchStyle" />
+        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (input)="searchChange($event)">
+      </p-iconField>
+    </div>
+    <div id="map-view" class="map-view">
+    </div>
+  </div>
+  <div [ngClass]="addressListContainerStyle">
+    <p-listbox class="address-model" [options]="addressList" *ngIf="addressList && addressList.length > 0" optionLabel="formatted_address"
+               [filter]="true" [(ngModel)]="selectedAddress" (onChange)="selectAddressList($event)">
+      <ng-template let-address pTemplate="item">
+        <div class="flex align-items-center">
+          {{ address.formatted_address }}
         </div>
       </ng-template>
-      <ng-template let-theme pTemplate="item">
-        <div>{{theme.label}}</div>
-      </ng-template>
-    </p-dropdown>
-  </div>
-  <div id="map-view" class="map-view-container">
+    </p-listbox>
   </div>
   <app-advertisement class="advertisement-right-container" />
-  <label class="w-full"><strong>google.maps.Marker</strong>는 legacy여서 <strong>google.maps.marker.AdvancedMarkerElement</strong>를 써야 하는데</label>
-  <label class="w-full"><strong>google.maps.marker.AdvancedMarkerElement</strong> 는 mapId가 있어야 함.</label>
-  <label class="w-full">근데 mapId를 만들면 맵 스타일을 하나밖에 못하고, 동적변경이 불가능함.</label>
 </div>
