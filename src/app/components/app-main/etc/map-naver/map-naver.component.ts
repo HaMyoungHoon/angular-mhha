@@ -140,6 +140,9 @@ export class MapNaverComponent implements AfterViewInit {
     this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
       .subscribe((x) => {
         this.searchLoading = false;
+        if (x) {
+          this.searchValue += x;
+        }
         this.searchAddress();
       });
   }
@@ -299,7 +302,7 @@ export class MapNaverComponent implements AfterViewInit {
   }
   searchChange(data: any): void {
     this.searchLoading = true;
-    this.searchSubject.next(data);
+    this.searchSubject.next(data.data);
   }
   searchAddress(): void {
     if (this.searchValue.length <= 0) {

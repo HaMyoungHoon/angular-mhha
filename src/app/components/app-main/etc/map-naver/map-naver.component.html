@@ -5,7 +5,7 @@
       <p-button class="m-1" (click)="markerClear($event)">marker clear</p-button>
       <p-iconField class="address-search" iconPosition="left">
         <p-inputIcon [styleClass]="searchStyle" />
-        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
+        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (input)="searchChange($event)">
       </p-iconField>
     </section>
     <div id="map-view" class="map-view">
