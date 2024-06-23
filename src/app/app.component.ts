@@ -56,7 +56,11 @@ export class AppComponent implements OnInit {
     this.renderer.appendChild(this.document.body, scriptBody);
   }
   injectScriptsAds(): void {
+    if (this.document.getElementById("google-adsense-script") !== null) {
+      return;
+    }
     const script = this.renderer.createElement("script");
+    script.id = "google-adsense-script";
     script.type = "text/javascript";
     script.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5278104943482837";
     script.crossOrigin = true;
