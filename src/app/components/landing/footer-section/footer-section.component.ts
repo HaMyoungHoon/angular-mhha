@@ -1,4 +1,12 @@
-import {afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, Renderer2} from "@angular/core";
+import {
+  afterNextRender,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  Renderer2
+} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
 
 @Component({
@@ -7,7 +15,7 @@ import {DOCUMENT} from "@angular/common";
   imports: [],
   templateUrl: "./footer-section.component.html"
 })
-export class FooterSectionComponent implements AfterViewInit {
+export class FooterSectionComponent implements AfterViewInit, OnDestroy {
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef) {
     afterNextRender(() => {
       this.cd.markForCheck();
@@ -17,15 +25,25 @@ export class FooterSectionComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.injectScripts();
   }
+  ngOnDestroy() {
+    this.extractScripts();
+  }
 
   injectScripts(): void {
-    if (this.document.getElementById("google-adsense-script") !== null) {
+    if (this.document.getElementById("google-adsense-footer-script") !== null) {
       return;
     }
     const scriptBody = this.renderer.createElement("script");
-    scriptBody.id = "google-adsense-script";
+    scriptBody.id = "google-adsense-footer-script";
     scriptBody.type = "text/javascript";
     scriptBody.text = `(adsbygoogle = window.adsbygoogle || []).push({});`;
-    this.renderer.appendChild(this.document.body, scriptBody);
+    this.renderer.appendChild(this.document.getElementById("google-adsense-footer-component"), scriptBody);
+  }
+  extractScripts(): void {
+    const scriptBody = this.document.getElementById("google-adsense-footer-script");
+    if (scriptBody === null) {
+      return;
+    }
+    scriptBody.remove();
   }
 }
