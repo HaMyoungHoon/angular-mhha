@@ -7,6 +7,7 @@ import {AppConfigService} from "./services/common/app-config.service";
 import {DEF_LIGHT_THEME, DEF_THEME} from "./guards/f-constants";
 import {ToastModule} from "primeng/toast";
 import * as FConstants from "./guards/f-constants";
+import * as FExtensions from "./guards/f-extentions";
 
 @Component({
   selector: "app-root",
@@ -29,6 +30,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.injectScriptsAds();
+    this.injectScriptsGoogleMap();
+    this.injectScriptsGoogleGeocode();
+    this.injectScriptsNaverMap().then((_: void): void => {
+      this.injectClusteringScript().then((_: void): void => {
+      });
+    });
     this.primeng.ripple = true;
   }
   injectScripts(): void {
@@ -55,6 +62,48 @@ export class AppComponent implements OnInit {
     script.crossOrigin = true;
     script.async = true;
     this.renderer.appendChild(this.document.head, script);
+  }
+  injectScriptsGoogleMap(): void {
+    if (this.document.getElementById("google-maps-script") !== null) {
+      return;
+    }
+    const scriptBody = this.renderer.createElement("script");
+    scriptBody.id = "google-maps-script"
+    scriptBody.src = `https://maps.googleapis.com/maps/api/js?key=${FConstants.MAP_GOOGLE_API_KEY}&loading=async&libraries=marker`;
+    scriptBody.async = true;
+    scriptBody.defer = true;
+    this.renderer.appendChild(this.document.head, scriptBody);
+  }
+  injectScriptsGoogleGeocode(): void {
+    if (this.document.getElementById("google-geocode-script") !== null) {
+      return;
+    }
+    const scriptBody = this.renderer.createElement("script");
+    scriptBody.id = "google-geocode-script";
+    scriptBody.src = `https://maps.googleapis.com/maps/api/geocode/json?key=${FConstants.MAP_GOOGLE_API_KEY}`;
+    scriptBody.async = true;
+    this.renderer.appendChild(this.document.head, scriptBody);
+  }
+  async injectScriptsNaverMap(): Promise<void> {
+    if (this.document.getElementById("naver-maps-script") !== null) {
+      return;
+    }
+    const scriptBody = this.renderer.createElement("script");
+    scriptBody.id = "naver-maps-script";
+    scriptBody.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${FConstants.MAP_NAVER_CLIENT_ID}&submodules=geocoder`;
+    scriptBody.async = true;
+    this.renderer.appendChild(this.document.head, scriptBody);
+    await FExtensions.awaitDelay(1000);
+  }
+  async injectClusteringScript(): Promise<void> {
+    if (this.document.getElementById("naver-marker-clustering") !== null) {
+      return;
+    }
+    const scriptMarkerClustering = this.renderer.createElement("script");
+    scriptMarkerClustering.id = "naver-marker-clustering";
+    scriptMarkerClustering.src = "/assets/js/MarkerClustering.js";
+    this.renderer.appendChild(this.document.head, scriptMarkerClustering);
+    await FExtensions.awaitDelay(1000);
   }
   bindRouteEvents(): void {
     this.router.events.subscribe((event) => {
