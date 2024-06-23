@@ -20,7 +20,11 @@ export class AdvertisementComponent implements AfterViewInit {
   }
 
   injectScripts(): void {
+    if (this.document.getElementById("google-adsense-script") !== null) {
+      return;
+    }
     const scriptBody = this.renderer.createElement("script");
+    scriptBody.id = "google-adsense-script";
     scriptBody.type = "text/javascript";
     scriptBody.text = `(adsbygoogle = window.adsbygoogle || []).push({});`;
     this.renderer.appendChild(this.document.body, scriptBody);
