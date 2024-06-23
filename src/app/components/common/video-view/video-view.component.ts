@@ -53,8 +53,9 @@ export class VideoViewComponent {
       return;
     }
     this.videoModel = videoModel;
-    this.videoSrc = this.videoStreamService.getVideoResourceUrl(videoModel.thisIndex);
+    this.videoSrc = undefined;
     this.cd.detectChanges();
+    this.videoSrc = this.videoStreamService.getVideoResourceUrl(videoModel.thisIndex);
 //    this.videoStreamService.getVideoResource(videoModel.thisIndex).then(x => {
 //      this.videoSrc = window.URL.createObjectURL(x.body);
 //      this.cd.detectChanges();
