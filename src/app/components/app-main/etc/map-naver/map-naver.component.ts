@@ -1,4 +1,12 @@
-import {afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, Renderer2} from "@angular/core";
+import {
+  afterNextRender,
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  Inject,
+  OnDestroy,
+  Renderer2
+} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import * as FConstants from "../../../../guards/f-constants";
@@ -6,9 +14,6 @@ import * as FExtensions from "../../../../guards/f-extentions";
 import {debounceTime, Subject, Subscription} from "rxjs";
 declare global {
   interface Window {
-    fDialogService: any;
-    initNaverMap: (data: any) => Promise<void>;
-    naverMapClick: (data: any) => Promise<void>;
     getNaverReverseGeocoder: (coordinate: any, func: (status: any, response: any) => void) => void;
     MarkerClustering: () => void;
     addNaverMarkers: (coordinate: any) => void;
@@ -32,7 +37,7 @@ declare global {
   templateUrl: "./map-naver.component.html",
   styleUrl: "./map-naver.component.scss"
 })
-export class MapNaverComponent implements AfterViewInit {
+export class MapNaverComponent implements AfterViewInit, OnDestroy {
   mapLoadTimeout: number = 0;
   isSearchResultRoad: boolean = false;
   searchLoading: boolean = false;
@@ -45,16 +50,12 @@ export class MapNaverComponent implements AfterViewInit {
   prevAddress: any;
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef, private fDialogService: FDialogService) {
     window.fDialogService = this.fDialogService;
-    window.naver = undefined;
-    this.injectScriptsNaverMap();
     afterNextRender(() => {
       this.cd.markForCheck();
     });
   }
 
   ngAfterViewInit(): void {
-    window.initNaverMap = this.initNaverMap;
-    window.naverMapClick = this.naverMapClick;
     window.getNaverReverseGeocoder = this.getNaverReverseGeocoder;
     window.addNaverMarkers = this.addNaverMarkers;
     window.naverMarkerClick = this.naverMarkerClick;
@@ -65,22 +66,14 @@ export class MapNaverComponent implements AfterViewInit {
     window.naverInfoWindow = [];
     window.naverLat = FExtensions.defLat;
     window.naverLng = FExtensions.defLng;
-    this.initNaverMap().then();
+    this.initNaverMap().then((_: void): void => {
+      this.initClusterMarker();
+    });
     this.initSearch();
   }
-  injectScriptsNaverMap(): void {
-    if (this.document.getElementById("naver-maps-script") !== null) {
-      return;
-    }
-    const scriptBody = this.renderer.createElement("script");
-    scriptBody.id = "naver-maps-script";
-    scriptBody.src = `https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${FConstants.MAP_NAVER_CLIENT_ID}&submodules=geocoder`;
-    scriptBody.async = true;
-    this.renderer.appendChild(this.document.head, scriptBody);
-    const scriptMarkerClustering = this.renderer.createElement("script");
-    scriptMarkerClustering.src = "/assets/js/MarkerClustering.js";
-    this.renderer.appendChild(this.document.head, scriptMarkerClustering);
+  ngOnDestroy(): void {
   }
+
   async initNaverMap(data: any = undefined): Promise<void> {
     this.mapLoadTimeout = 0;
     while (window.naver === undefined) {
@@ -96,7 +89,7 @@ export class MapNaverComponent implements AfterViewInit {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.onSuccessGeolocation, this.onErrorGeolocation);
     }
-    const mapView = this.document.getElementById("map-view");
+    const mapView = this.document.getElementById("naver-map-view");
     const mapOptions = {
       useStyleMap: true,
       center: window.getNaverLatLng(FExtensions.defLat, FExtensions.defLng),
@@ -109,10 +102,12 @@ export class MapNaverComponent implements AfterViewInit {
     };
     window.naverMap = new window.naver.maps.Map(mapView, mapOptions);
     window.naver.maps.Event.addListener(window.naverMap, "click", (x: any): void => {
-      window.naverMapClick(x).then(x => {
+      this.naverMapClick(x).then(x => {
 
       });
     });
+  }
+  initClusterMarker(): void {
     const htmlMarkers = this.htmlNaverClusterMarker;
     try {
       // @ts-ignore
