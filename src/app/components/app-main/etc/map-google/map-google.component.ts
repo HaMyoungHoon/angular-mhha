@@ -1,4 +1,4 @@
-import {afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, Renderer2} from "@angular/core";
+import {afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, OnDestroy, Renderer2} from "@angular/core";
 import {DOCUMENT} from "@angular/common";
 import * as FConstants from "../../../../guards/f-constants";
 import * as FExtensions from "../../../../guards/f-extentions";
@@ -27,7 +27,8 @@ declare global {
   templateUrl: "./map-google.component.html",
   styleUrl: "./map-google.component.scss"
 })
-export class MapGoogleComponent implements AfterViewInit {
+export class MapGoogleComponent implements AfterViewInit, OnDestroy {
+  mapLoadTimeout: number = 0;
   googleMarker: any[] = [];
   selectedTheme: any;
   searchLoading: boolean = false;
@@ -54,12 +55,29 @@ export class MapGoogleComponent implements AfterViewInit {
     window.googleOpenInfoWindow = this.googleOpenInfoWindow;
     window.googleSetMarker = this.googleSetMarker;
     window.googleMarker = this.googleMarker;
-    this.injectScriptsGoogleMap();
-    this.cd.detectChanges();
+    this.googleInitMap().then((_: void): void => {
+      this.cd.detectChanges();
+    });
     this.initSearch();
   }
-  async googleInitMap(data: any): Promise<void> {
-    window.googleMap = new window.google.maps.Map(document.getElementById("map-view"), {
+  ngOnDestroy(): void {
+
+  }
+
+  async googleInitMap(): Promise<void> {
+    this.mapLoadTimeout = 0;
+    while (window.google === undefined) {
+      await FExtensions.awaitDelay(1000);
+      if (this.mapLoadTimeout > 10) {
+        break;
+      }
+      this.mapLoadTimeout++;
+    }
+    if (window.google === undefined) {
+      return;
+    }
+
+    window.googleMap = new window.google.maps.Map(document.getElementById("google-map-view"), {
       center: window.googlePosition,
       zoom: 13,
 //      mapId: FConstants.MAP_ID,
@@ -73,17 +91,7 @@ export class MapGoogleComponent implements AfterViewInit {
     window.googleMap.addListener("click", (x: any): void => {
       this.googleMapClick(x);
     });
-  }
-  injectScriptsGoogleMap(): void {
-    const scriptBody = this.renderer.createElement("script");
-    scriptBody.src = `https://maps.googleapis.com/maps/api/js?key=${FConstants.MAP_GOOGLE_API_KEY}&loading=async&callback=googleInitMap&libraries=marker`;
-    scriptBody.async = true;
-    scriptBody.defer = true;
-    this.renderer.appendChild(this.document.getElementById("map-view"), scriptBody);
-    const scriptGeocoder = this.renderer.createElement("script");
-    scriptGeocoder.src = `https://maps.googleapis.com/maps/api/geocode/json?key=${FConstants.MAP_GOOGLE_API_KEY}`;
-    scriptGeocoder.async = true;
-    this.renderer.appendChild(this.document.getElementById("map-view"), scriptGeocoder);
+    await FExtensions.awaitDelay(1000);
   }
   initSearch(): void {
     this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
@@ -184,12 +192,10 @@ export class MapGoogleComponent implements AfterViewInit {
       this.addressList = [];
       return;
     }
-    console.log(this.searchValue);
 
     try {
       window.googleGeocoder.geocode({ address: this.searchValue }).then((x: any) => {
         this.addressList = x.results;
-        console.log(x);
       }).catch((x: any) => {
         this.fDialogService.warn('search', x.message);
       });
