@@ -1,4 +1,4 @@
-import {afterNextRender, ChangeDetectorRef, Component, Inject, ViewChild} from "@angular/core";
+import {afterNextRender, AfterViewInit, ChangeDetectorRef, Component, Inject, ViewChild} from "@angular/core";
 import {VideoStreamService} from "../../../../services/rest/video-stream.service";
 import {FDialogService} from "../../../../services/common/f-dialog.service";
 import {VideoModel} from "../../../../models/rest/file/video/video-model";
@@ -11,7 +11,7 @@ import {VideoViewComponent} from "../../../common/video-view/video-view.componen
   templateUrl: "./video-resource.component.html",
   styleUrl: "./video-resource.component.scss"
 })
-export class VideoResourceComponent {
+export class VideoResourceComponent implements AfterViewInit {
   @ViewChild("videoView") videoView?: VideoViewComponent
   selectedVideoModel?: VideoModel
   prevVideoModel?: VideoModel;
@@ -33,12 +33,11 @@ export class VideoResourceComponent {
   constructor(@Inject(DOCUMENT) private document: Document, private cd: ChangeDetectorRef,
               private videoStreamService: VideoStreamService, private fDialogService: FDialogService) {
     afterNextRender(() => {
-      this.init();
       this.cd.markForCheck();
     });
   }
 
-  init(): void {
+  ngAfterViewInit(): void {
     this.initVideo();
     this.initSearch();
     this.randomVideo();
@@ -142,8 +141,16 @@ export class VideoResourceComponent {
     this.randomVideo();
   }
   searchChange(data: any): void {
-    this.searchLoading = true;
-    this.searchSubject.next(data);
+    if (this.isMobile) {
+      this.searchLoading = true;
+      this.searchSubject.next(data.data);
+      return;
+    }
+
+    if (data.key == 'Enter') {
+      this.searchLoading = true;
+      this.searchSubject.next(data.data);
+    }
   }
   searchVideo(): void {
     if (this.searchValue.length <= 0) {
