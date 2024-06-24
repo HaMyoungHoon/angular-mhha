@@ -43,19 +43,17 @@
   .video-view-container, .video-view-container-active {
     width: 100%;
     height: fit-content;
-    padding: 1px;
     flex: 0 0 auto;
   }
   .video-list-container, .video-list-container-active {
     display: block;
     width: 100%;
-    padding: 1px;
     flex: 0 0 auto;
   }
   .advertisement-right-container {
     display: flex;
     width: 100%;
-    padding: 1px;
+    height: 10%;
     flex: 0 0 auto;
   }
   .video-model {
@@ -67,9 +65,40 @@
 }
 @media screen and (min-width: 700px) {
   .video-view-container {
+    width: 100%;
+    height: fit-content;
+    flex: 0 0 auto;
+  }
+  .video-list-container {
+    width: 0;
+    padding: 0;
+    flex: 0 0 auto;
+  }
+  .video-view-container-active {
+    width: 80%;
+    max-height: 1080px;
+    flex: 0 0 auto;
+  }
+  .video-list-container-active {
+    width: 20%;
+    flex: 0 0 auto;
+  }
+  .advertisement-right-container {
+    display: flex;
+    width: 100%;
+    height: 10%;
+    flex: 0 0 auto;
+  }
+  .video-model {
+    display: flex;
+    margin-top: 5px;
+    justify-content: flex-end;
+  }
+}
+@media screen and (min-width: 1690px) {
+  .video-view-container {
     width: 90%;
     height: fit-content;
-    padding: 1px;
     flex: 0 0 auto;
   }
   .video-list-container {
@@ -80,17 +109,14 @@
   .video-view-container-active {
     width: 70%;
     max-height: 1080px;
-    padding: 1px;
     flex: 0 0 auto;
   }
   .video-list-container-active {
     width: 20%;
-    padding: 1px;
     flex: 0 0 auto;
   }
   .advertisement-right-container {
     width: 10%;
-    padding: 1px;
     flex: 0 0 auto;
   }
   .video-model {
