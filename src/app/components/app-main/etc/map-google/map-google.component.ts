@@ -39,6 +39,7 @@ export class MapGoogleComponent implements AfterViewInit, OnDestroy {
   addressList: any[] = [];
   selectedAddress: any;
   prevAddress: any;
+  isMobile: boolean = false;
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef, private fDialogService: FDialogService) {
     window.fDialogService = this.fDialogService;
     window.googlePosition = FExtensions.defPosition;
@@ -59,6 +60,7 @@ export class MapGoogleComponent implements AfterViewInit, OnDestroy {
       this.cd.detectChanges();
     });
     this.initSearch();
+    this.isMobile = !navigator.userAgent.includes("Window");
   }
   ngOnDestroy(): void {
 
@@ -97,9 +99,6 @@ export class MapGoogleComponent implements AfterViewInit, OnDestroy {
     this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
       .subscribe((x) => {
         this.searchLoading = false;
-        if (x) {
-          this.searchValue += x;
-        }
         this.searchAddress();
       });
   }
@@ -184,8 +183,16 @@ export class MapGoogleComponent implements AfterViewInit, OnDestroy {
     }
   }
   searchChange(data: any): void {
-    this.searchLoading = true;
-    this.searchSubject.next(data.data);
+    if (this.isMobile) {
+      this.searchLoading = true;
+      this.searchSubject.next(data.data);
+      return;
+    }
+
+    if (data.key == 'Enter') {
+      this.searchLoading = true;
+      this.searchSubject.next(data.data);
+    }
   }
   searchAddress(): void {
     if (this.searchValue.length <= 0) {

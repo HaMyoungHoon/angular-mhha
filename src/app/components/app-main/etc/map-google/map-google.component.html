@@ -14,7 +14,7 @@
       </p-dropdown>
       <p-iconField class="address-search" iconPosition="left">
         <p-inputIcon [styleClass]="searchStyle" />
-        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (input)="searchChange($event)">
+        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
       </p-iconField>
     </div>
     <div id="google-map-view" class="map-view">
