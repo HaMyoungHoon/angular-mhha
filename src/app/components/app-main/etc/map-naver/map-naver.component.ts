@@ -48,6 +48,7 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
   addressList: any[] = [];
   selectedAddress: any;
   prevAddress: any;
+  isMobile: boolean = false;
   constructor(@Inject(DOCUMENT) private document: Document, private renderer: Renderer2, private cd: ChangeDetectorRef, private fDialogService: FDialogService) {
     window.fDialogService = this.fDialogService;
     afterNextRender(() => {
@@ -70,6 +71,7 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
       this.initClusterMarker();
     });
     this.initSearch();
+    this.isMobile = !navigator.userAgent.includes("Window");
   }
   ngOnDestroy(): void {
   }
@@ -135,9 +137,6 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
     this.searchObserver = this.searchSubject.pipe(debounceTime(this.searchDebounceTime))
       .subscribe((x) => {
         this.searchLoading = false;
-        if (x) {
-          this.searchValue += x;
-        }
         this.searchAddress();
       });
   }
@@ -296,8 +295,16 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
     window.naverMarkerClustering.markers = [];
   }
   searchChange(data: any): void {
-    this.searchLoading = true;
-    this.searchSubject.next(data.data);
+    if (this.isMobile) {
+      this.searchLoading = true;
+      this.searchSubject.next(data.data);
+      return;
+    }
+
+    if (data.key == 'Enter') {
+      this.searchLoading = true;
+      this.searchSubject.next(data.data);
+    }
   }
   searchAddress(): void {
     if (this.searchValue.length <= 0) {
