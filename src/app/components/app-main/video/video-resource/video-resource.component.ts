@@ -17,6 +17,7 @@ export class VideoResourceComponent implements AfterViewInit {
   prevVideoModel?: VideoModel;
   videoModels?: VideoModel[];
   videoModelDisable: boolean = false;
+  randomButtonDisable: boolean = false;
   searchLoading: boolean = false;
   searchValue: string = "";
   searchSubject: Subject<string> = new Subject<string>();
@@ -97,6 +98,7 @@ export class VideoResourceComponent implements AfterViewInit {
     return "video-list-container";
   }
   randomVideo(): void {
+    this.randomButtonDisable = true;
     this.videoStreamService.getVideoList().then(x => {
       if (x.result) {
         const videoModels = x.data;
@@ -105,11 +107,13 @@ export class VideoResourceComponent implements AfterViewInit {
         }
         this.selectedVideoModel = videoModels[Math.floor(Math.random() * videoModels.length)];
         this.videoView?.setVideoSrc(this.selectedVideoModel);
+        this.randomButtonDisable = false;
         return;
       }
       this.fDialogService.warn("init", x.msg);
     }).catch(x => {
       this.fDialogService.error("init catch", x.message);
+      this.randomButtonDisable = false;
     });
   }
   get searchStyle(): string {
