@@ -68,7 +68,7 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
     window.naverLat = FExtensions.defLat;
     window.naverLng = FExtensions.defLng;
     this.initNaverMap().then((_: void): void => {
-      this.initClusterMarker();
+      this.initClusterMarker().then();
     });
     this.initSearch();
     this.isMobile = !navigator.userAgent.includes("Window");
@@ -109,8 +109,9 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
       });
     });
   }
-  initClusterMarker(): void {
+  async initClusterMarker(): Promise<void> {
     const htmlMarkers = this.htmlNaverClusterMarker;
+    await FExtensions.awaitDelay(1000);
     try {
       // @ts-ignore
       window.naverMarkerClustering = new MarkerClustering({
