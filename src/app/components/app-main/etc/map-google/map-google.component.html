@@ -1,7 +1,7 @@
 <div class="map-google-container">
   <div [ngClass]="mapViewContainerStyle">
     <div class="w-full flex">
-      <p-button class="flex m-1" (click)="clearMarker($event)">clear marker</p-button>
+      <p-button class="flex m-1" (click)="clearMarker($event)">clear</p-button>
       <p-dropdown class="flex m-1" [options]="googleThemeList" [(ngModel)]="selectedTheme" optionLabel="label" (onChange)="themeSelectionChange($event)">
         <ng-template pTemplate="selectedItem">
           <div *ngIf="selectedTheme">
@@ -12,9 +12,11 @@
           <div>{{theme.label}}</div>
         </ng-template>
       </p-dropdown>
+    </div>
+    <div class="w-full flex">
       <p-iconField class="address-search" iconPosition="left">
         <p-inputIcon [styleClass]="searchStyle" />
-        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
+        <input pInputText type="text" class="w-full" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
       </p-iconField>
     </div>
     <div id="google-map-view" class="map-view">

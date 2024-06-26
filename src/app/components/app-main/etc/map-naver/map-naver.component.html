@@ -1,13 +1,15 @@
 <div class="map-naver-container">
   <div [ngClass]="mapViewContainerStyle">
-    <section class="map-title-container">
+    <div class="w-full flex">
       <p-button class="m-1" (click)="naverZoomControlOnOff($event)">zoom</p-button>
-      <p-button class="m-1" (click)="markerClear($event)">marker clear</p-button>
+      <p-button class="m-1" (click)="markerClear($event)">clear</p-button>
+    </div>
+    <div class="w-full flex">
       <p-iconField class="address-search" iconPosition="left">
         <p-inputIcon [styleClass]="searchStyle" />
-        <input pInputText type="text" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
+        <input pInputText type="text" class="w-full" [(ngModel)]="searchValue" placeholder="search" (keydown)="searchChange($event)">
       </p-iconField>
-    </section>
+    </div>
     <div id="naver-map-view" class="map-view">
     </div>
   </div>
