@@ -7,7 +7,6 @@ import {SliderModule} from "primeng/slider";
 import {getLocalStorage, setLocalStorage} from "../../../guards/amhohwa";
 import * as FConstants from "../../../guards/f-constants";
 import {SkeletonModule} from "primeng/skeleton";
-import {HttpEvent, HttpEventType} from "@angular/common/http";
 import {SafeUrlPipe} from "../../../guards/safe-url.pipe";
 import {Subject} from "rxjs";
 
@@ -47,7 +46,6 @@ export class VideoViewComponent {
     }
     this.volume = defVolume;
   }
-  consoleLog: number = 0;
   setVideoSrc(videoModel: VideoModel): void {
     if (this.videoModel?.thisIndex == videoModel.thisIndex) {
       return;
