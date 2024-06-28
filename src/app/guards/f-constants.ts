@@ -9,17 +9,18 @@ export const ETC_QUILL_EDITOR_URL = "etc/quill_editor";
 export const ETC_QUILL_EDITOR_PUSH_URL = "etc/quill_editor/push";
 export const ETC_MAP_GOOGLE_URL = "etc/map/google";
 export const ETC_MAP_NAVER_URL = "etc/map/naver";
-export const ETC_MAP_KAKAO_URL = "etc/map/kakao"
+export const ETC_MAP_KAKAO_URL = "etc/map/kakao";
+export const ETC_PDF_CONVERT_URL = "etc/pdf-convert";
 export const VIDEO_STREAM_URL = "video/stream";
 export const VIDEO_RESOURCE_URL = "video/resource";
 export const VIDEO_TEST_URL = "video/test";
 
 export const THEME_LINK = "theme-link";
 export const HOME_TABLE_LINK = "home-table-link";
-export const DEF_THEME = "aura-dark-green";
-export const DEF_LIGHT_THEME = "aura-light-green";
-export const DEF_TABLE_THEME = "lara-dark-blue";
-export const DEF_TABLE_LIGHT_THEME = "lara-light-blue";
+export const DEF_THEME = "aura-dark-noir";
+export const DEF_LIGHT_THEME = "aura-light-noir";
+export const DEF_TABLE_THEME = "aura-dark-noir";
+export const DEF_TABLE_LIGHT_THEME = "aura-light-noir";
 export const STORAGE_KEY_IS_DARK = "isDark";
 export const STORAGE_KEY_SCALE = "scale";
 export const STORAGE_KEY_NEWS = "news";
@@ -32,6 +33,10 @@ export const MAP_NAVER_CLIENT_ID = "pcohyj6l3l";
 export const MAP_NAVER_CLIENT_ID_HEADER = "X-NCP-APIGW-API-KEY-ID";
 export const MAP_NAVER_CLIENT_SECRET = "mPz6sCGhDbNJtCQkBj24yaEBumYsZL5YhtMlcSIc";
 export const MAP_NAVER_CLIENT_SECRET_HEADER = "X-NCP-APIGW-API-KEY";
+
+export const MIME_WORD = "application/vnd.openxmlformats";
+export const KILO = 1024;
+export const FILE_SIZE_TYPES = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
 export function googleStandardTheme(): any {
   return [];
