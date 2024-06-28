@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import {HttpClient, HttpContext, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
+import {HttpClient, HttpContext, HttpEvent, HttpHeaders, HttpParams, HttpResponse} from "@angular/common/http";
 import {IRestResult} from "../../models/common/IRestResult";
 import {lastValueFrom, map, Observable} from "rxjs";
 
@@ -88,8 +88,22 @@ export class HttpResponseInterceptorService {
     this.clear();
     return ret;
   }
+  postBlob(url: string, formData: FormData): Observable<HttpResponse<any>> {
+    return this.http.post(url, formData, {
+      observe: "response",
+      responseType: 'blob'
+    });
+  }
+  postBlobEvent(url: string, formData: FormData): Observable<HttpEvent<Blob>> {
+    return this.http.post(url, formData, {
+      observe: "events",
+      responseType: 'blob'
+    });
+  }
   requestAny(method: string, url: string): Observable<any> {
-    return this.http.request(method, url, this.anyOptions)
+    const ret = this.http.request(method, url, this.anyOptions)
+    this.clear();
+    return ret;
   }
   getAny<T = any>(url: string, options?: {
     headers?: HttpHeaders | { [ header: string ]: string | string[] },
