@@ -1,0 +1,41 @@
+<div class="pdf-convert-container">
+  <div class="pdf-to-word-container">
+    <a>pdf to ms-word</a>
+    <p-fileUpload name="file" class="w-full h-min" [multiple]="false" accept=".pdf" [maxFileSize]="maxFileSize" (onSelect)="onSelectFile($event)">
+      <ng-template pTemplate="header" let-chooseCallback="chooseCallback">
+        <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-1">
+          <div class="flex gap-1">
+            <p-progressSpinner styleClass="w-2rem h-2rem" animationDuration="0.5s" strokeWidth="4" *ngIf="isUploading" />
+            <p-button (onClick)="upload($event, chooseCallback)" icon="pi pi-cloud-upload" [rounded]="true" [outlined]="true" *ngIf="dragDropEnable" />
+            <p-floatLabel>
+              <input type="text" id="pdf_password" class="w-full" pInputText [(ngModel)]="pdfPassword">
+              <label for="pdf_password">pdf password</label>
+            </p-floatLabel>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="file" [ngIf]="dragDropEnable"> </ng-template>
+      <ng-template pTemplate="empty">
+        <div class="flex align-items-center justify-content-center flex-column">
+          <i class="pi pi-cloud-upload border-2 border-circle p-1 text-2xl text-200 border-200"></i>
+          <p class="mt-1 mb-0">Drag and drop files to here to upload.</p>
+        </div>
+      </ng-template>
+    </p-fileUpload>
+    <div *ngIf="downloadFiles.length > 0">
+      <div class="flex flex-wrap p-0 sm:p-1 gap-1">
+        <div *ngFor="let file of downloadFiles; let i = index" class="card m-0 px-6 flex flex-column border-1 surface-border align-items-center gap-1">
+          <div>
+            <a role="presentation" [href]="file.url" [download]="file.orgFileName" class="pi pi-file-word"></a>
+          </div>
+          <span class="font-semibold">{{ file.fileName }}</span>
+          <div>{{ formatSize(file.fileSize) }}</div>
+          <div>
+            <p-button icon="pi pi-download" (onClick)="downloadFile(file)" [outlined]="true" [rounded]="true" severity="success" />
+            <p-button icon="pi pi-times" (onClick)="removeFile(file)" [outlined]="true" [rounded]="true" severity="warning" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
