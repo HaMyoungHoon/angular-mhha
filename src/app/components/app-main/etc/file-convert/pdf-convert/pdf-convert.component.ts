@@ -1,12 +1,20 @@
 import {afterNextRender, ChangeDetectorRef, Component, Inject} from '@angular/core';
-import {AspService} from "../../../../services/rest/asp.service";
-import {FDialogService} from "../../../../services/common/f-dialog.service";
-import * as FConstants from "../../../../guards/f-constants";
-import {DownloadFileModel} from "../../../../models/rest/file/download-file-model";
-import {DOCUMENT} from "@angular/common";
+import {AspService} from "../../../../../services/rest/asp.service";
+import {FDialogService} from "../../../../../services/common/f-dialog.service";
+import * as FConstants from "../../../../../guards/f-constants";
+import {DownloadFileModel} from "../../../../../models/rest/file/download-file-model";
+import {DOCUMENT, NgForOf, NgIf} from "@angular/common";
+import {FileUploadModule} from "primeng/fileupload";
+import {BadgeModule} from "primeng/badge";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {FloatLabelModule} from "primeng/floatlabel";
+import {InputTextModule} from "primeng/inputtext";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-pdf-convert',
+  standalone: true,
+  imports: [FileUploadModule, BadgeModule, ProgressSpinnerModule, FloatLabelModule, InputTextModule, ReactiveFormsModule, FormsModule, NgIf, NgForOf],
   templateUrl: './pdf-convert.component.html',
   styleUrl: './pdf-convert.component.scss'
 })
