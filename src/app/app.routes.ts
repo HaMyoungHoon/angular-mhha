@@ -16,6 +16,7 @@ export const routes: Routes = [
       { path: FConstants.ETC_MAP_GOOGLE_URL, loadChildren: () => import("./components/app-main/etc/map-google/map-google.module").then(m => m.MapGoogleModule) },
       { path: FConstants.ETC_MAP_NAVER_URL, loadChildren: () => import("./components/app-main/etc/map-naver/map-naver.module").then(m => m.MapNaverModule) },
       { path: FConstants.ETC_MAP_KAKAO_URL, loadChildren: () => import("./components/app-main/etc/map-kakao/map-kakao.module").then(m => m.MapKakaoModule) },
+      { path: FConstants.ETC_PDF_CONVERT_URL, loadChildren: () => import("./components/app-main/etc/pdf-convert/pdf-convert.module").then(m => m.PdfConvertModule) },
       { path: FConstants.VIDEO_STREAM_URL + "/:rootDir", loadChildren: () => import("./components/app-main/video/video-stream/video-stream.module").then(m => m.VideoStreamModule) },
       { path: FConstants.VIDEO_RESOURCE_URL, loadChildren: () => import("./components/app-main/video/video-resource/video-resource.module").then(m => m.VideoResourceModule) },
       { path: FConstants.VIDEO_TEST_URL, loadChildren: () => import("./components/app-main/video/video-test/video-test.module").then(m => m.VideoTestModule) },
