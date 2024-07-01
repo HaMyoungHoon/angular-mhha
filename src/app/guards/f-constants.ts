@@ -11,6 +11,7 @@ export const ETC_MAP_GOOGLE_URL = "etc/map/google";
 export const ETC_MAP_NAVER_URL = "etc/map/naver";
 export const ETC_MAP_KAKAO_URL = "etc/map/kakao";
 export const ETC_FILE_CONVERT_URL = "etc/file-convert";
+export const ETC_WRITE_BOARD_URL = "etc/write-board";
 export const VIDEO_STREAM_URL = "video/stream";
 export const VIDEO_RESOURCE_URL = "video/resource";
 export const VIDEO_TEST_URL = "video/test";
