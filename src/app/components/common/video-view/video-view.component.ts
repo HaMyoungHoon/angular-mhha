@@ -24,6 +24,7 @@ import {Subject} from "rxjs";
 })
 export class VideoViewComponent {
   volume: number = 0.3;
+  videoType: string = "video/webm";
   videoSrc?: string;
   videoModel?: VideoModel;
   @ViewChild("videoView") videoView?: ElementRef;
@@ -53,6 +54,7 @@ export class VideoViewComponent {
     this.videoModel = videoModel;
     this.videoSrc = undefined;
     this.cd.detectChanges();
+    this.videoType = `video/${videoModel.fileExt}`;
     this.videoSrc = this.videoStreamService.getVideoResourceUrl(videoModel.thisIndex);
 //    this.videoStreamService.getVideoResource(videoModel.thisIndex).then(x => {
 //      this.videoSrc = window.URL.createObjectURL(x.body);

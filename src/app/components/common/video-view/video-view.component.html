@@ -3,7 +3,7 @@
          (mouseover)="mouseover($event)" (mouseleave)="mouseleave($event)"
          (fullscreenchange)="fullscreenchange($event)" (ended)="ended($event)"
          (playing)="videoPlaying($event)" [controlsList]="controlList()" [volume]="volume" (volumechange)="volumechange($event)">
-    <source *ngIf="videoSrc" [src]="videoSrc | safeUrl" type="video/webm">
+    <source *ngIf="videoSrc" [src]="videoSrc | safeUrl" [type]="videoType">
   </video>
 
 </div>
