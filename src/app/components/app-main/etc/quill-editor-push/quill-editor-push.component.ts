@@ -16,19 +16,13 @@ import {QuillComponent} from "../../../common/quill/quill.component";
 })
 export class QuillEditorPushComponent {
   @ViewChild("quillEditor") quillEditor!: QuillComponent;
-  viewPage: boolean
-  treeNode: TreeNode<WriteDirectory>[];
+  viewPage: boolean = false;
+  treeNode: TreeNode<WriteDirectory>[] = [];
   selectedNode?: TreeNode<WriteDirectory>;
   selectedDir?: WriteDirectory;
-  writeFile: WriteFile
-  isLoaded: boolean;
+  writeFile: WriteFile = new WriteFile();
+  isLoaded: boolean = false;
   constructor(private cd: ChangeDetectorRef, private fDialogService: FDialogService, private angularWriteService: AngularWriteService) {
-    this.viewPage = false;
-    this.treeNode = [];
-    this.writeFile = new class implements WriteFile {
-      name = "";
-    }
-    this.isLoaded = false;
     this.initPage();
     afterNextRender(() => {
       this.cd.markForCheck();
