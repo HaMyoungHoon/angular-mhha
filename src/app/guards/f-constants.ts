@@ -33,6 +33,7 @@ export const MAP_NAVER_CLIENT_ID = "pcohyj6l3l";
 export const MAP_NAVER_CLIENT_ID_HEADER = "X-NCP-APIGW-API-KEY-ID";
 export const MAP_NAVER_CLIENT_SECRET = "mPz6sCGhDbNJtCQkBj24yaEBumYsZL5YhtMlcSIc";
 export const MAP_NAVER_CLIENT_SECRET_HEADER = "X-NCP-APIGW-API-KEY";
+export const MAP_KAKAO_API_KEY = "24b819298860bc276eb61881c04e925d";
 
 export const MIME_WORD = "application/vnd.openxmlformats";
 export const KILO = 1024;
