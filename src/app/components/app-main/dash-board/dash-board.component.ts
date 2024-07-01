@@ -16,7 +16,7 @@ export class DashBoardComponent {
   }
 
   init(): void {
-    this.angularWriteService.getWriteFile("History").then(x => {
+    this.angularWriteService.getWriteFileName("History").then(x => {
       if (x.result) {
         this.history = x.data?.content ?? "";
         this.cd.detectChanges();
