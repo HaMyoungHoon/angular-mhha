@@ -38,7 +38,7 @@ export class BokListComponent {
     this.bokTableSub.getTableItem(row);
   }
   initSummary(): void {
-    this.angularWriteService.getWriteFile("Statistics List").then(x => {
+    this.angularWriteService.getWriteFileName("Statistics List").then(x => {
       if (x.result) {
         this.statisticsSummary = x.data?.content ?? "";
       }
