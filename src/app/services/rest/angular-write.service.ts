@@ -28,9 +28,13 @@ export class AngularWriteService {
   getWriteFileAll(): Promise<IRestResult<WriteFile[]>> {
     return this.httpResponse.get(`${this.baseUrl}/get/file/all`).then();
   }
-  getWriteFile(name: string): Promise<IRestResult<WriteFile>> {
+  getWriteFileName(name: string): Promise<IRestResult<WriteFile>> {
     this.httpResponse.addParam("name", name);
     return this.httpResponse.get(`${this.baseUrl}/get/file/name`).then();
+  }
+  getWriteFileIndex(index: number): Promise<IRestResult<WriteFile>> {
+    this.httpResponse.addParam("index", index);
+    return this.httpResponse.get(`${this.baseUrl}/get/file/index`).then();
   }
   postWriteFile(dirName: string, data: WriteFile): Promise<IRestResult<WriteFile>> {
     this.httpResponse.addParam("dirName", dirName);
