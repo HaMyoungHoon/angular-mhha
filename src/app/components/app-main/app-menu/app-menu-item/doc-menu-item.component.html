@@ -18,7 +18,7 @@
   <div *ngIf="haveIcon()" class="menu-icon">
     <i [ngClass]="itemIcon()"></i>
   </div>
-  <span>{{ itemName() }}</span>
+  <span class="ml-1">{{ itemName() }}</span>
   <p-tag *ngIf="item?.badge" [value]="item?.badge" />
 </a>
 <span *ngIf="haveChild()" class="menu-child-category">{{ itemName() }}</span>

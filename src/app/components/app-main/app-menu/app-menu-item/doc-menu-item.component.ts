@@ -32,7 +32,7 @@ export class DocMenuItemComponent {
 
   isActiveRootMenuItem(menuItem?: DocMenuItem): boolean {
     if (menuItem === undefined) {
-      return false
+      return false;
     }
     const url = this.router.url.split("#")[0];
     return menuItem.children !== undefined && !menuItem.children.some(item => item.routerLink === `${url}` ||
@@ -40,39 +40,36 @@ export class DocMenuItemComponent {
   }
   canSlideDown(): boolean {
     if (!this.root) {
-      return false
+      return false;
     }
     if (this.item?.children?.length === undefined) {
-      return false
+      return false;
     }
 
     return this.item?.children?.length > 0;
   }
   haveChild(): boolean {
     if (this.root) {
-      return false
+      return false;
     }
     if (this.item?.children?.length === undefined) {
-      return false
+      return false;
     }
 
     return this.item?.children?.length > 0;
   }
   haveIcon(): boolean {
-    if (!this.root) {
-      return false
-    }
     if (this.item?.icon === undefined) {
-      return false
+      return false;
     }
 
-    return true
+    return this.item?.icon?.length > 0;
   }
   itemName(): string {
-    return this.item?.name ?? ""
+    return this.item?.name ?? "";
   }
   itemIcon(): string {
-    return this.item?.icon ?? ""
+    return this.item?.icon ?? "";
   }
 
   protected readonly UndoIcon = UndoIcon;
