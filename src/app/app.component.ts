@@ -36,6 +36,10 @@ export class AppComponent implements OnInit {
       this.injectClusteringScript().then((_: void): void => {
       });
     });
+    this.injectKakaoMap1Script().then((_: void): void => {
+      this.injectKakaoMap2Script().then((_: void): void => {
+      });
+    });
     this.primeng.ripple = true;
   }
   injectScripts(): void {
@@ -107,6 +111,26 @@ export class AppComponent implements OnInit {
     scriptMarkerClustering.id = "naver-marker-clustering";
     scriptMarkerClustering.src = "/assets/js/MarkerClustering.js";
     this.renderer.appendChild(this.document.head, scriptMarkerClustering);
+    await FExtensions.awaitDelay(1000);
+  }
+  async injectKakaoMap1Script(): Promise<void> {
+    if (this.document.getElementById("kakao-maps-script_1") != null) {
+      return;
+    }
+    const scriptBody = this.renderer.createElement("script");
+    scriptBody.id = "kakao-maps-script_1";
+    scriptBody.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${FConstants.MAP_KAKAO_API_KEY}&amp;libraries=services`;
+    this.renderer.appendChild(this.document.head, scriptBody);
+    await FExtensions.awaitDelay(1000);
+  }
+  async injectKakaoMap2Script(): Promise<void> {
+    if (this.document.getElementById("kakao-maps-script_2") != null) {
+      return;
+    }
+    const scriptBody = this.renderer.createElement("script");
+    scriptBody.id = "kakao-maps-script_2";
+    scriptBody.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    this.renderer.appendChild(this.document.head, scriptBody);
     await FExtensions.awaitDelay(1000);
   }
   bindRouteEvents(): void {
