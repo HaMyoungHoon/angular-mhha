@@ -1,0 +1,33 @@
+<div class="component-base-container">
+  <div class="mqtt-test-header-container">
+    <label>mqtt test</label>
+    <label>원래는 로그인을 해서 topic을 받는다던지 뭐 그렇게</label>
+  </div>
+
+  <div class="w-full card">
+    <div *ngIf="mqttConnectData" class="w-full">
+      <p-dropdown [options]="mqttConnectData.topic" [(ngModel)]="selectedTopic" (onChange)="selectTopic($event)">
+        <ng-template pTemplate="selectedItem">
+          <div *ngIf="selectedTopic">
+            <div>{{selectedTopic}}</div>
+          </div>
+        </ng-template>
+        <ng-template let-topic pTemplate="item">
+          <div>{{topic}}</div>
+        </ng-template>
+      </p-dropdown>
+      <p-button [disabled]="postDisable" (click)="postPublish()">publish</p-button>
+    </div>
+    <div class="w-full">
+      <div class="send-data-container">
+        <label>send</label>
+        <textarea class="send-data-area" [(ngModel)]="publishData"></textarea>
+      </div>
+      <div class="recv-data-container">
+        <label>recv</label>
+        <textarea class="recv-data-area" [(ngModel)]="subscribeData" readonly></textarea>
+      </div>
+    </div>
+  </div>
+  <app-advertisement class="advertisement-bottom-container"/>
+</div>
