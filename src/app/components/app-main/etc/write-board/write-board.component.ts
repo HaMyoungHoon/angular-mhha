@@ -74,6 +74,5 @@ export class WriteBoardComponent {
     });
   }
   selectWriteDir(data: any): void {
-    console.log(data);
   }
 }

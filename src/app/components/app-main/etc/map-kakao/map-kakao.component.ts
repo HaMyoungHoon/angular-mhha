@@ -64,13 +64,11 @@ export class MapKakaoComponent implements AfterViewInit, OnDestroy {
         center: new window.kakao.maps.LatLng(FExtensions.defLat, FExtensions.defLng),
         level: 5
       };
-      console.log(mapView);
       window.kakaoMap = new window.kakao.maps.Map(mapView, mapOption);
       const zoomControl = new window.kakao.maps.ZoomControl();
       window.kakaoMap.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
     } catch (e: any) {
       this.fDialogService.warn('init map', e.message);
-      console.log(e.message);
     }
   }
 
