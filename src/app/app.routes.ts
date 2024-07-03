@@ -18,6 +18,7 @@ export const routes: Routes = [
       { path: FConstants.ETC_MAP_KAKAO_URL, loadChildren: () => import("./components/app-main/etc/map-kakao/map-kakao.module").then(m => m.MapKakaoModule) },
       { path: FConstants.ETC_FILE_CONVERT_URL, loadChildren: () => import("./components/app-main/etc/file-convert/file-convert.module").then(m => m.FileConvertModule) },
       { path: FConstants.ETC_WRITE_BOARD_URL, loadChildren: () => import("./components/app-main/etc/write-board/write-board.module").then(m => m.WriteBoardModule) },
+      { path: FConstants.ETC_MQTT_TEST_URL, loadChildren: () => import("./components/app-main/etc/mqtt-test/mqtt-test.module").then(m => m.MqttTestModule) },
       { path: FConstants.VIDEO_STREAM_URL + "/:rootDir", loadChildren: () => import("./components/app-main/video/video-stream/video-stream.module").then(m => m.VideoStreamModule) },
       { path: FConstants.VIDEO_RESOURCE_URL, loadChildren: () => import("./components/app-main/video/video-resource/video-resource.module").then(m => m.VideoResourceModule) },
       { path: FConstants.VIDEO_TEST_URL, loadChildren: () => import("./components/app-main/video/video-test/video-test.module").then(m => m.VideoTestModule) },
