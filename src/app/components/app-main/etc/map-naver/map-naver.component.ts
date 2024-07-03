@@ -26,8 +26,6 @@ declare global {
     naverMarkers: any[];
     naverMarkerClustering: any;
     naverInfoWindow: any[];
-    naverLat: number;
-    naverLng: number;
     clusterMarkerBuff: any;
   }
 }
@@ -65,8 +63,6 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
     window.getNaverLatLng = this.getNaverLatLng;
     window.naverMarkers = [];
     window.naverInfoWindow = [];
-    window.naverLat = FExtensions.defLat;
-    window.naverLng = FExtensions.defLng;
     this.initNaverMap().then((_: void): void => {
       this.initClusterMarker().then();
     });
@@ -150,8 +146,6 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
     if (window.naverMap === null) {
       return;
     }
-    window.naverLat = data.coords.latitude;
-    window.naverLng = data.coords.longitude;
     window.naverMap.panTo(window.getNaverLatLng(data.coords.latitude, data.coords.longitude));
   }
   onErrorGeolocation(): void {
@@ -340,8 +334,10 @@ export class MapNaverComponent implements AfterViewInit, OnDestroy {
 
     this.prevAddress = this.selectedAddress;
     if (this.selectedAddress) {
-      window.naverMap.panTo(window.getNaverLatLng(this.selectedAddress.y, this.selectedAddress.x));
-      window.naverMap.setZoom(14);
+      const latLng = window.getNaverLatLng(this.selectedAddress.y, this.selectedAddress.x);
+      console.log(latLng);
+      window.naverMap.setZoom(15);
+      window.naverMap.panTo(latLng);
     }
   }
 
