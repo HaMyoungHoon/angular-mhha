@@ -1,7 +1,7 @@
 <div class="component-base-container">
   <div class="card" *ngIf="etcDir && etcDir.children">
     <p-accordion class="w-full">
-      <p-accordionTab header="list">
+      <p-accordionTab header="{{writeData?.name ?? 'list'}}">
         <div>
           <label>대분류</label>
           <p-dropdown [options]="etcDir.children" [(ngModel)]="selectDir" optionLabel="dirName" (onChange)="selectWriteDir($event)">
@@ -22,7 +22,6 @@
     </p-accordion>
   </div>
   <div *ngIf="writeData" class="write-data-container">
-    <label>{{writeData.name}}</label>
     <span [innerHTML]=" writeData.content | safeHtml "></span>
   </div>
   <app-advertisement class="advertisement-bottom-container" />
